@@ -1,0 +1,4 @@
+﻿  {{xgTaskID=00000005}} ²main.cpp ²c:\users\adu\desktop\thesis!\thesis\thesis\basecalculators.h(23) : warning C4715: 'Heuristic': not all control paths return a value ²{{xgTaskID=00000000}} ²
+  {{xgTaskID=00000006}} ² ²{{xgTaskID=00000000}} ²
+  Thesis.vcxproj -> C:\Users\Adu\Desktop\Thesis!\Thesis\Debug\Thesis.exe
+  Thesis.vcxproj -> C:\Users\Adu\Desktop\Thesis!\Thesis\Debug\Thesis.pdb (Full PDB)

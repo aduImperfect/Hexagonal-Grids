@@ -1,0 +1,31 @@
+Thesis:
+- Fix map for square and hex grids,
+- Implement BFS visted for Square Grids,
+- Implement BFS visited for Hex Grids,
+- Implement time calculation for the algorithms
+- Implement BFS came_from for Square Grids,
+- Implement BFS came_from for Hex Grids,
+- Implement BFS early_exit for Square Grids,
+- Implement BFS early_exit for Hex Grids,
+- Implement BFS movement_costs for Square Grids,
+- Implement BFS movement_costs for Hex Grids,
+- Implement Dijkstra for Square Grids,
+- Implement Dijkstra for Hex Grids,
+- Implement Greedy for Square Grids,
+- Implement Greedy for Hex Grids,
+- Implement A* for Square Grids,
+- Implement A* for Hex Grids,
+- Implement Wall/Border/Outside calculations for Square Grids,
+- Implement LDDB for Square Grids,
+- Fix any LDDB computation bugs!!,
+
+- Implement BlockA* expansion of current block algrotihm?
+- Implement ingress/egress cells usage in current block expansion?
+- Implement BlockA* for Square Grids?,
+- Implement Wall/Border/Outside calculations for Hex Grids?,
+- Implement LDDB for Hex Grids?,
+- Implement BlockA* for Hex Grids?,
+- Implement grids to be of dynamic sizes (instead of a constant),
+- Integrating the official square grid maps for testing purposes (https://pdfs.semanticscholar.org/82ca/e9f97b7dfa0c244452065916cbc0348438a7.pdf, http://movingai.com/benchmarks/)?,
+- Converting the official square grid maps to hex grid maps for testing purposes (https://pdfs.semanticscholar.org/82ca/e9f97b7dfa0c244452065916cbc0348438a7.pdf, http://movingai.com/benchmarks/)?,
+- Implement distance, time, and open list memory space calculations for the algorithms?
