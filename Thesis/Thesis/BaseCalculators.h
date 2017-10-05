@@ -20,6 +20,8 @@ double Heuristic(int heuType, double xDiff, double yDiff)
     return fmin(xDiff, yDiff) * sqrt(2) + fmax(xDiff, yDiff) - fmin(xDiff, yDiff);
     break;
   }
+
+  return -1;
 }
 
 template <typename T>

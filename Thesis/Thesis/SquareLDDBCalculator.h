@@ -5,6 +5,7 @@
 #include "BaseDefines.h"
 #include "Position.h"
 #include "SquareDijkstra.h"
+#include "PositionRelations.h"
 
 #define SQUARE_LDDB_BLOCK_SPLIT_SIZE_X 4
 #define SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y 4
@@ -270,121 +271,105 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
       if ((NextBlock.p_x < 0) || (NextBlock.p_y < 0) || (NextBlock.p_x >= SIZE) || (NextBlock.p_y >= SIZE))
         continue;
 
-      std::vector<Position> sideCurBlock;
       //(Side of curblock) : [Neighborblk, side of neighbor blk].
-      std::vector<std::pair<Position, std::pair<Position, Position> > > neigborsideNextBlock;
+      PositionRelations neigborsideNextBlock[MAX_BLOCK_CORNERS];
+      unsigned int rot_count = 0;
 
       //Neighbor: [-1, -1]
       if (i == -1 && j == -1)
       {
-        //Side of CurBlock: [1, 1].
-        sideCurBlock.push_back(Position(1, 1));
-        //Side of NeighborBlock: NBlk[-1, -1]: [4, 4].
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 1), std::make_pair<Position, Position>(Position(-1, -1), Position(4, 4))));
+        //Side of CurBlock: [1, 1]. Side of NeighborBlock: NBlk[curBlock-1, curBlock-1]: [4, 4].
+        neigborsideNextBlock[rot_count].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 4)), 2);
       }
       //Neighbor: [-1, 0]
       else if (i == -1 && j == 0)
       {
-        //Side of CurBlock: [1, 1], [1, 2], [1, 3], [1, 4].
-        sideCurBlock.push_back(Position(1, 1));
-        sideCurBlock.push_back(Position(1, 2));
-        sideCurBlock.push_back(Position(1, 3));
-        sideCurBlock.push_back(Position(1, 4));
-        //Side of NeighborBlock: NBlk[-1, 0]: [4, 1], NBlk[-1, 0]: [4, 2], NBlk[-1, 0]: [4, 3], NBlk[-1, 0]: [4, 4].
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 1), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 1), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 2))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 2), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 2), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 2))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 2), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 3))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 3), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 2))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 3), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 3))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 3), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 4), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 3))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 4), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 4))));
+        //Side of CurBlock: [1, 1], [1, 2], [1, 3], [1, 4]. Side of NeighborBlock: NBlk[-1, 0]: [4, 1], NBlk[-1, 0]: [4, 2], NBlk[-1, 0]: [4, 3], NBlk[-1, 0]: [4, 4].
+        neigborsideNextBlock[rot_count].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 1)), 3);
+        neigborsideNextBlock[rot_count].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 2)), 4);
+
+        neigborsideNextBlock[rot_count + 1].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 2)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 1)), 0);
+        neigborsideNextBlock[rot_count + 1].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 2)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 2)), 1);
+        neigborsideNextBlock[rot_count + 1].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 2)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 3)), 2);
+
+        neigborsideNextBlock[rot_count + 2].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 3)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 2)), 0);
+        neigborsideNextBlock[rot_count + 2].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 3)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 3)), 1);
+        neigborsideNextBlock[rot_count + 2].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 3)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 4)), 2);
+
+        neigborsideNextBlock[rot_count + 3].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 3)), 0);
+        neigborsideNextBlock[rot_count + 3].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 4)), 1);
       }
       //Neighbor: [-1, 1]
       else if (i == -1 && j == 1)
       {
-        //Side of CurBlock: [1, 4].
-        sideCurBlock.push_back(Position(1, 4));
-        //Side of NeighborBlock: NBlk[-1, 1]: [4, 1].
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 4), std::make_pair<Position, Position>(Position(-1, 1), Position(4, 1))));
+        //Side of CurBlock: [1, 4]. Side of NeighborBlock: NBlk[-1, 1]: [4, 1].
+        neigborsideNextBlock[rot_count + 3].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 1)), 2);
       }
       //Neighbor: [0, 1]
       else if (i == 0 && j == 1)
       {
-        //Side of CurBlock: [1, 4], [2, 4], [3, 4], [4, 4].
-        sideCurBlock.push_back(Position(1, 4));
-        sideCurBlock.push_back(Position(2, 4));
-        sideCurBlock.push_back(Position(3, 4));
-        sideCurBlock.push_back(Position(4, 4));
-        //Side of NeighborBlock: NBlk[0, 1]: [1, 1], NBlk[0, 1]: [2, 1], NBlk[0, 1]: [3, 1], NBlk[0, 1]: [4, 1].
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 4), std::make_pair<Position, Position>(Position(0, 1), Position(1, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 4), std::make_pair<Position, Position>(Position(0, 1), Position(2, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(2, 4), std::make_pair<Position, Position>(Position(0, 1), Position(1, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(2, 4), std::make_pair<Position, Position>(Position(0, 1), Position(2, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(2, 4), std::make_pair<Position, Position>(Position(0, 1), Position(3, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(3, 4), std::make_pair<Position, Position>(Position(0, 1), Position(2, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(3, 4), std::make_pair<Position, Position>(Position(0, 1), Position(3, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(3, 4), std::make_pair<Position, Position>(Position(0, 1), Position(4, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 4), std::make_pair<Position, Position>(Position(0, 1), Position(3, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 4), std::make_pair<Position, Position>(Position(0, 1), Position(4, 1))));
+        //Side of CurBlock: [1, 4], [2, 4], [3, 4], [4, 4]. Side of NeighborBlock: NBlk[0, 1]: [1, 1], NBlk[0, 1]: [2, 1], NBlk[0, 1]: [3, 1], NBlk[0, 1]: [4, 1].
+        neigborsideNextBlock[rot_count + 3].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 1)), 3);
+        neigborsideNextBlock[rot_count + 3].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(2, 1)), 4);
+
+        neigborsideNextBlock[rot_count + 4].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(2, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 1)), 0);
+        neigborsideNextBlock[rot_count + 4].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(2, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(2, 1)), 1);
+        neigborsideNextBlock[rot_count + 4].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(2, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(3, 1)), 2);
+
+        neigborsideNextBlock[rot_count + 5].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(3, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(2, 1)), 0);
+        neigborsideNextBlock[rot_count + 5].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(3, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(3, 1)), 1);
+        neigborsideNextBlock[rot_count + 5].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(3, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 1)), 2);
+
+        neigborsideNextBlock[rot_count + 6].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(3, 1)), 0);
+        neigborsideNextBlock[rot_count + 6].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 1)), 1);
       }
       //Neighbor: [1, 1]
       else if (i == 1 && j == 1)
       {
-        //Side of CurBlock: [4, 4].
-        sideCurBlock.push_back(Position(4, 4));
-        //Side of NeighborBlock: NBlk[1, 1]: [1, 1].
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 4), std::make_pair<Position, Position>(Position(1, 1), Position(1, 1))));
+        //Side of CurBlock: [4, 4]. Side of NeighborBlock: NBlk[1, 1]: [1, 1].
+        neigborsideNextBlock[rot_count + 6].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 1)), 2);
       }
       //Neighbor: [1, 0]
       else if (i == 1 && j == 0)
       {
-        //Side of CurBlock: [4, 1], [4, 2], [4, 3], [4, 4].
-        sideCurBlock.push_back(Position(4, 1));
-        sideCurBlock.push_back(Position(4, 2));
-        sideCurBlock.push_back(Position(4, 3));
-        sideCurBlock.push_back(Position(4, 4));
-        //Side of NeighborBlock: NBlk[1, 0]: [1, 1], NBlk[1, 0]: [1, 2], NBlk[1, 0]: [1, 3], NBlk[1, 0]: [1, 4].
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 1), std::make_pair<Position, Position>(Position(1, 0), Position(1, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 1), std::make_pair<Position, Position>(Position(1, 0), Position(1, 2))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 2), std::make_pair<Position, Position>(Position(1, 0), Position(1, 1))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 2), std::make_pair<Position, Position>(Position(1, 0), Position(1, 2))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 2), std::make_pair<Position, Position>(Position(1, 0), Position(1, 3))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 3), std::make_pair<Position, Position>(Position(1, 0), Position(1, 2))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 3), std::make_pair<Position, Position>(Position(1, 0), Position(1, 3))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 3), std::make_pair<Position, Position>(Position(1, 0), Position(1, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 4), std::make_pair<Position, Position>(Position(1, 0), Position(1, 3))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 4), std::make_pair<Position, Position>(Position(1, 0), Position(1, 4))));
+        //Side of CurBlock: [4, 1], [4, 2], [4, 3], [4, 4]. Side of NeighborBlock: NBlk[1, 0]: [1, 1], NBlk[1, 0]: [1, 2], NBlk[1, 0]: [1, 3], NBlk[1, 0]: [1, 4].
+        neigborsideNextBlock[rot_count + 6].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 3)), 3);
+        neigborsideNextBlock[rot_count + 6].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 4)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 4)), 4);
+
+        neigborsideNextBlock[rot_count + 7].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 3)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 2)), 0);
+        neigborsideNextBlock[rot_count + 7].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 3)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 3)), 1);
+        neigborsideNextBlock[rot_count + 7].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 3)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 4)), 2);
+
+        neigborsideNextBlock[rot_count + 8].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 2)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 1)), 0);
+        neigborsideNextBlock[rot_count + 8].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 2)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 2)), 1);
+        neigborsideNextBlock[rot_count + 8].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 2)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 3)), 2);
+
+        neigborsideNextBlock[rot_count + 9].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 1)), 0);
+        neigborsideNextBlock[rot_count + 9].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 2)), 1);
       }
       //Neighbor: [1, -1]
       else if (i == 1 && j == -1)
       {
-        //Side of CurBlock: [4, 1].
-        sideCurBlock.push_back(Position(4, 1));
-        //Side of NeighborBlock: NBlk[1, -1]: [1, -1].
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 1), std::make_pair<Position, Position>(Position(1, -1), Position(1, -1))));
+        //Side of CurBlock: [4, 1]. Side of NeighborBlock: NBlk[1, -1]: [1, 4].
+        neigborsideNextBlock[rot_count + 9].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 4)), 2);
       }
       //Neighbor: [0, -1]
       else if (i == 0 && j == -1)
       {
-        //Side of CurBlock: [1, 1], [2, 1], [3, 1], [4, 1].
-        sideCurBlock.push_back(Position(1, 1));
-        sideCurBlock.push_back(Position(2, 1));
-        sideCurBlock.push_back(Position(3, 1));
-        sideCurBlock.push_back(Position(4, 1));
-        //Side of NeighborBlock: NBlk[0, -1]: [1, 4], NBlk[0, -1]: [2, 4], NBlk[0, -1]: [3, 4], NBlk[0, -1]: [4, 4].
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 1), std::make_pair<Position, Position>(Position(0, -1), Position(1, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 1), std::make_pair<Position, Position>(Position(0, -1), Position(2, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(2, 1), std::make_pair<Position, Position>(Position(0, -1), Position(1, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(2, 1), std::make_pair<Position, Position>(Position(0, -1), Position(2, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(2, 1), std::make_pair<Position, Position>(Position(0, -1), Position(3, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(3, 1), std::make_pair<Position, Position>(Position(0, -1), Position(2, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(3, 1), std::make_pair<Position, Position>(Position(0, -1), Position(3, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(3, 1), std::make_pair<Position, Position>(Position(0, -1), Position(4, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 1), std::make_pair<Position, Position>(Position(0, -1), Position(3, 4))));
-        neigborsideNextBlock.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(4, 1), std::make_pair<Position, Position>(Position(0, -1), Position(4, 4))));
+        //Side of CurBlock: [1, 1], [2, 1], [3, 1], [4, 1]. Side of NeighborBlock: NBlk[0, -1]: [1, 4], NBlk[0, -1]: [2, 4], NBlk[0, -1]: [3, 4], NBlk[0, -1]: [4, 4].
+        neigborsideNextBlock[rot_count + 9].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(3, 4)), 3);
+        neigborsideNextBlock[rot_count + 9].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(4, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 4)), 4);
+
+        neigborsideNextBlock[rot_count + 10].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(3, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(2, 4)), 0);
+        neigborsideNextBlock[rot_count + 10].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(3, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(3, 4)), 1);
+        neigborsideNextBlock[rot_count + 10].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(3, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(4, 4)), 2);
+
+        neigborsideNextBlock[rot_count + 11].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(2, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 4)), 0);
+        neigborsideNextBlock[rot_count + 11].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(2, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(2, 4)), 1);
+        neigborsideNextBlock[rot_count + 11].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(2, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(3, 4)), 2);
+
+        neigborsideNextBlock[rot_count].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(1, 4)), 0);
+        neigborsideNextBlock[rot_count].Set(BlockPosition(Position(curBlock.p_x, curBlock.p_y), Position(1, 1)), BlockPosition(Position(NextBlock.p_x, NextBlock.p_y), Position(2, 4)), 1);
       }
 
       /*
@@ -400,18 +385,17 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
       /*
       Valid egress node check is basically to check if the current node and neighbor nodes are walls. In addition for any diagonal neighbor nodes, any of the vertical/horizontal neighbor nodes are walls. If any of these checks come out to be true then the curnode is not a valid egress node.
       */
-      std::vector<std::pair<Position, std::pair<Position, Position> > > validEgressCells;
 
       //Neighbor: [-1, -1]
       if (i == -1 && j == -1)
       {
         //If CurBlock[0, 0] : [1, 1], and NBlk[-1, -1] : [4, 4] are not WALLS! check.
         //If NBlk[0, -1] : [1, 4], and NBlk[-1, 0] : [4, 1] are not WALLS! check.
-        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y] != WALL))
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
         {
-          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
           {
-            validEgressCells.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 1), std::make_pair<Position, Position>(Position(-1, -1), Position(4, 4))));
+            neigborsideNextBlock[rot_count].bValidRelation[2] = true;
           }
         }
       }
@@ -420,17 +404,398 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
       else if (i == -1 && j == 0)
       {
         //If CurBlock[0, 0] : [1, 1], and NBlk[-1, 0]: [4, 1] are not WALLS! check.
-        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
         {
-          validEgressCells.push_back(std::make_pair<Position, std::pair<Position, Position> >(Position(1, 1), std::make_pair<Position, Position>(Position(-1, 0), Position(4, 1))));
+          neigborsideNextBlock[rot_count].bValidRelation[3] = true;
+        }
+
+        //If CurBlock[0, 0] : [1, 1], and NBlk[-1, 0]: [4, 2] are not WALLS! check.
+        //If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0] : [4, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count].bValidRelation[4] = true;
+          }
         }
         
+        //If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0]: [4, 1] are not WALLS! check.
+        //If CurBlock[0, 0] : [1, 1], and NBlk[-1, 0] : [4, 2] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 1].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0]: [4, 2] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 1].bValidRelation[1] = true;
+        }
+
+        //If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0]: [4, 3] are not WALLS! check.
+        //If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0] : [4, 2] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 1].bValidRelation[2] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0]: [4, 2] are not WALLS! check.
+        //If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0] : [4, 3] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 2].bValidRelation[0] = true;
+          }
+        }
+      
+        //If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0]: [4, 3] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 2].bValidRelation[1] = true;
+        }
+
+        //If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0]: [4, 4] are not WALLS! check.
+        //If CurBlock[0, 0] : [1, 4], and NBlk[-1, 0] : [4, 3] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 2].bValidRelation[2] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [1, 4], and NBlk[-1, 0]: [4, 3] are not WALLS! check.
+        //If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0] : [4, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 3].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [1, 4], and NBlk[-1, 0]: [4, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 3].bValidRelation[1] = true;
+        }
       }
+
+      //Neighbor: [-1, 1]
+      else if (i == -1 && j == 1)
+      {
+        //If CurBlock[0, 0] : [1, 4], and NBlk[-1, 1] : [4, 1] are not WALLS! check.
+        //If NBlk[0, 1] : [1, 1], and NBlk[-1, 0] : [4, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x - 4 + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 3].bValidRelation[2] = true;
+          }
+        }
+      }
+
+      //Neighbor: [0, 1]
+      else if (i == 0 && j == 1)
+      {
+        //If CurBlock[0, 0] : [1, 4], and NBlk[0, 1]: [1, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 3].bValidRelation[3] = true;
+        }
+
+        //If CurBlock[0, 0] : [1, 4], and NBlk[0, 1]: [2, 1] are not WALLS! check.
+        //If CurBlock[0, 0] : [2, 4], and NBlk[0, 1] : [1, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 3].bValidRelation[4] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [2, 4], and NBlk[0, 1]: [1, 1] are not WALLS! check.
+        //If CurBlock[0, 0] : [1, 4], and NBlk[0, 1] : [2, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 4].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [2, 4], and NBlk[0, 1]: [2, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 4].bValidRelation[1] = true;
+        }
+
+        //If CurBlock[0, 0] : [2, 4], and NBlk[0, 1]: [3, 1] are not WALLS! check.
+        //If CurBlock[0, 0] : [3, 4], and NBlk[0, 1] : [2, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 4].bValidRelation[2] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [3, 4], and NBlk[0, 1]: [2, 1] are not WALLS! check.
+        //If CurBlock[0, 0] : [2, 4], and NBlk[0, 1] : [3, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 5].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [3, 4], and NBlk[0, 1]: [3, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 5].bValidRelation[1] = true;
+        }
+
+        //If CurBlock[0, 0] : [3, 4], and NBlk[0, 1]: [4, 1] are not WALLS! check.
+        //If CurBlock[0, 0] : [4, 4], and NBlk[0, 1] : [3, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 5].bValidRelation[2] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [4, 4], and NBlk[0, 1]: [3, 1] are not WALLS! check.
+        //If CurBlock[0, 0] : [3, 4], and NBlk[0, 1] : [4, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 6].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [4, 4], and NBlk[0, 1] : [4, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 6].bValidRelation[1] = true;
+        }
+      }
+
+      //Neighbor: [1, 1]
+      else if (i == 1 && j == 1)
+      {
+        //If CurBlock[0, 0] : [4, 4], and NBlk[1, 1] : [1, 1] are not WALLS! check.
+        //If NBlk[0, 1] : [4, 1], and NBlk[1, 0] : [1, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4 + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 6].bValidRelation[2] = true;
+          }
+        }
+      }
+
+      //Neighbor: [1, 0]
+      else if (i == 1 && j == 0)
+      {
+        //If CurBlock[0, 0] : [4, 4], and NBlk[1, 0]: [1, 3] are not WALLS! check.
+        //If CurBlock[0, 0] : [4, 3], and NBlk[1, 0] : [1, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 6].bValidRelation[3] = true;
+          }
+        }
+        
+        //If CurBlock[0, 0] : [4, 4], and NBlk[1, 0]: [1, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 6].bValidRelation[4] = true;
+        }
+
+        //If CurBlock[0, 0] : [4, 3], and NBlk[1, 0]: [1, 2] are not WALLS! check.
+        //If CurBlock[0, 0] : [4, 2], and NBlk[1, 0] : [1, 3] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 7].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [4, 3], and NBlk[1, 0]: [1, 3] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 7].bValidRelation[1] = true;
+        }
+
+        //If CurBlock[0, 0] : [4, 3], and NBlk[1, 0]: [1, 4] are not WALLS! check.
+        //If CurBlock[0, 0] : [4, 4], and NBlk[1, 0] : [1, 3] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 7].bValidRelation[2] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [4, 2], and NBlk[1, 0]: [1, 1] are not WALLS! check.
+        //If CurBlock[0, 0] : [4, 1], and NBlk[1, 0] : [1, 2] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 8].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [4, 2], and NBlk[1, 0]: [1, 2] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 8].bValidRelation[1] = true;
+        }
+
+        //If CurBlock[0, 0] : [4, 2], and NBlk[1, 0]: [1, 3] are not WALLS! check.
+        //If CurBlock[0, 0] : [4, 3], and NBlk[1, 0] : [1, 2] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 3] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 8].bValidRelation[2] = true;
+          }
+        }
+        //If CurBlock[0, 0] : [4, 1], and NBlk[1, 0]: [1, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 9].bValidRelation[0] = true;
+        }
+
+        //If CurBlock[0, 0] : [4, 1], and NBlk[1, 0]: [1, 2] are not WALLS! check.
+        //If CurBlock[0, 0] : [4, 2], and NBlk[1, 0] : [1, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 2] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 9].bValidRelation[1] = true;
+          }
+        }
+      }
+
+      //Neighbor: [1, -1]
+      else if (i == 1 && j == -1)
+      {
+        //If CurBlock[0, 0] : [4, 1], and NBlk[1, -1] : [1, 4] are not WALLS! check.
+        //If NBlk[0, -1] : [4, 4], and NBlk[1, 0] : [1, 1] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4 + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 9].bValidRelation[2] = true;
+          }
+        }
+      }
+
+      //Neighbor: [0, 1]
+      else if (i == 0 && j == -1)
+      {
+        //If CurBlock[0, 0] : [4, 1], and NBlk[0, -1]: [3, 4] are not WALLS! check.
+        //If CurBlock[0, 0] : [3, 1], and NBlk[0, -1] : [4, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 9].bValidRelation[3] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [4, 1], and NBlk[0, -1]: [4, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 9].bValidRelation[4] = true;
+        }
+
+        //If CurBlock[0, 0] : [3, 1], and NBlk[0, -1]: [2, 4] are not WALLS! check.
+        //If CurBlock[0, 0] : [2, 1], and NBlk[0, -1] : [3, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 10].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [3, 1], and NBlk[0, -1]: [3, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 10].bValidRelation[1] = true;
+        }
+
+        //If CurBlock[0, 0] : [3, 1], and NBlk[0, -1]: [4, 4] are not WALLS! check.
+        //If CurBlock[0, 0] : [4, 1], and NBlk[0, -1] : [3, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 4][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 10].bValidRelation[2] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [2, 1], and NBlk[0, -1]: [1, 4] are not WALLS! check.
+        //If CurBlock[0, 0] : [1, 1], and NBlk[0, -1] : [2, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 11].bValidRelation[0] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [2, 1], and NBlk[0, -1]: [2, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          neigborsideNextBlock[rot_count + 11].bValidRelation[1] = true;
+        }
+
+        //If CurBlock[0, 0] : [2, 1], and NBlk[0, -1]: [3, 4] are not WALLS! check.
+        //If CurBlock[0, 0] : [3, 1], and NBlk[0, -1] : [2, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 3][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count + 11].bValidRelation[2] = true;
+          }
+        }
+
+        //If CurBlock[0, 0] : [1, 1], and NBlk[0, -1] : [1, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          neigborsideNextBlock[rot_count].bValidRelation[0] = true;
+        }
+
+        //If CurBlock[0, 0] : [1, 1], and NBlk[0, -1]: [2, 4] are not WALLS! check.
+        //If CurBlock[0, 0] : [2, 1], and NBlk[0, -1] : [1, 4] are not WALLS! check.
+        if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+        {
+          if ((mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 2][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y + 1] != WALL) && (mapVisited[SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * curBlock.p_x + 1][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * curBlock.p_y - 4 + 4] != WALL))
+          {
+            neigborsideNextBlock[rot_count].bValidRelation[1] = true;
+          }
+        }
+      }
+
+
 
       //for valid egress node x on current side
-
-      {
-      }
 
     }
   }

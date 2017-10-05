@@ -98,5 +98,8 @@
     <ClInclude Include="SquareLDDBCalculator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PositionRelations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
