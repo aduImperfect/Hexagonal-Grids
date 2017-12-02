@@ -1,8 +1,15 @@
+///////////////////////////////////////////////////////////////////////////////////////
+/// All content (c) 2017 DigiPen Institute of Technology, all rights reserved
+/// FILE: PositionRelations.h
+/// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
+///////////////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 #include "Position.h"
 
 #define MAX_RELATIONS 5
-#define MAX_BLOCK_CORNERS 12
+#define MAX_OUT_CORNER_RELATIONS 5
+#define MAX_IN_CORNER_RELATIONS 3
 
 struct BlockPosition
 {
@@ -53,10 +60,10 @@ public:
     }
   }
 
-  bool Set(BlockPosition pos_F, BlockPosition pos_T, int nRelNo)
+  bool Set(BlockPosition pos_F, BlockPosition pos_T, int nRelNo, int nMaxRel)
   {
     pos_From = pos_F;
-    if (nRelNo >= MAX_RELATIONS)
+    if (nRelNo >= nMaxRel)
       return false;
 
     bValidRelation[nRelNo] = false;

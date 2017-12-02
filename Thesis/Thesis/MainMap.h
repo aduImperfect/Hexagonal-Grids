@@ -1,9 +1,16 @@
+///////////////////////////////////////////////////////////////////////////////////////
+/// All content (c) 2017 DigiPen Institute of Technology, all rights reserved
+/// FILE: MainMap.h
+/// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
+///////////////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 #include "BaseBFS.h"
 #include "BaseDijkstra.h"
 #include "BaseGreedy.h"
 #include "BaseAStar.h"
 #include "BaseBlockAStar.h"
+
 
 double Map(int gridSpace, int algoType, Position nposStart, Position nposGoal)
 {
@@ -48,7 +55,8 @@ double Map(int gridSpace, int algoType, Position nposStart, Position nposGoal)
       gCost = SquareAStar(nposStart, nposGoal, false, Position(0, 0), Position(SIZE + SQUARE_GRID, SIZE + SQUARE_GRID));
       break;
     case PathfindingAlgo::ALGO_BLOCKASTAR:
-      SquareLDDBInitializer();
+      /*
+	  SquareLDDBInitializer();
       InitializeFirstSquare(COST_MAX_TERM);
       GenerateSquare(nposStart, nposGoal);
       PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
@@ -57,6 +65,7 @@ double Map(int gridSpace, int algoType, Position nposStart, Position nposGoal)
       PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
       PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
       gCost = SquareBlockAStar(nposStart, nposGoal);
+	  */
       break;
     case PathfindingAlgo::ALGO_JPS:
       break;
