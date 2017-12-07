@@ -4,6 +4,9 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef BASE_DIJKSTRA_H
+#define BASE_DIJKSTRA_H
+//Including the two different types of DIJKSTRA algorithms.
 #include "SquareDijkstra.h"
 #include "HexDijkstra.h"
+#endif

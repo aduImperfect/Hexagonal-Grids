@@ -4,10 +4,12 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef SQUARE_ASTAR_H
+#define SQUARE_ASTAR_H
+//Including the base header for different square operations.
 #include "BaseSquareOperations.h"
 
-double SquareAStar(Position npStart, Position npGoal, bool autoCompute, Position topLeft, Position bottomRight)
+double SquareAStar(Position npStart, Position npGoal, bool autoCompute, Position topLeft, Position bottomRight, const int showMap)
 {
   if (SquareIsOutside(npStart, topLeft, bottomRight))
     return -1;
@@ -64,13 +66,15 @@ double SquareAStar(Position npStart, Position npGoal, bool autoCompute, Position
     return -1;
 
   //default octile.
-  int nheuristic = 4;
+  HeuristicType nheuristic = HeuristicType::HEURISTIC_OCTILE;
+  int ntmpHeu = 4;
   bool generateInstantaneous = false;
 
   if (!autoCompute)
   {
-    printf("\nHeuristic Type (CHEBYSHEV: 1, MANHATTAN: 2, EUCLIDEAN: 3, OCTILE: 4):\n");
-    std::cin >> nheuristic;
+	  printf("\nHeuristic Type (CHEBYSHEV: 1, MANHATTAN: 2, EUCLIDEAN: 3, OCTILE: 4):\n");
+	  std::cin >> ntmpHeu;
+	  nheuristic = (HeuristicType)ntmpHeu;
 
     printf("\nCompute ASTAR Immediate!? (0 - no/1 - yes):\n");
     std::cin >> generateInstantaneous;
@@ -206,11 +210,14 @@ double SquareAStar(Position npStart, Position npGoal, bool autoCompute, Position
 
     //Re-print square grid.
     GenerateSquare(npStart, npGoal);
-    PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
-    PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
-    PrintSquareMapGeneric(MapVisualType::MAP_COST);
-    PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
-    PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
+	if (showMap == 1)
+	{
+		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
+		PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
+		PrintSquareMapGeneric(MapVisualType::MAP_COST);
+		PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
+		PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
+	}
 
     nextStep = false;
     printf("\nGet next step? (0 - no/1 - yes):\n");
@@ -262,16 +269,20 @@ double SquareAStar(Position npStart, Position npGoal, bool autoCompute, Position
   {
     //Re-print square grid.
     GenerateSquare(npStart, npGoal);
-    PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
-    PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
-    PrintSquareMapGeneric(MapVisualType::MAP_GOALPATH);
-    PrintSquareMapGeneric(MapVisualType::MAP_COST);
-    PrintSquareMapGeneric(MapVisualType::MAP_GOALCOST);
-    PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
-    PrintSquareMapGeneric(MapVisualType::MAP_GOALHEUCOST);
-    PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
-    PrintSquareMapGeneric(MapVisualType::MAP_GOALTOTALCOST);
+	if (showMap == 1)
+	{
+		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
+		PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
+		PrintSquareMapGeneric(MapVisualType::MAP_GOALPATH);
+		PrintSquareMapGeneric(MapVisualType::MAP_COST);
+		PrintSquareMapGeneric(MapVisualType::MAP_GOALCOST);
+		PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
+		PrintSquareMapGeneric(MapVisualType::MAP_GOALHEUCOST);
+		PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
+		PrintSquareMapGeneric(MapVisualType::MAP_GOALTOTALCOST);
+	}
   }
 
   return cost_so_far[npGoal.p_x][npGoal.p_y];
 }
+#endif

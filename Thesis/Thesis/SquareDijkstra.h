@@ -4,10 +4,12 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef SQUARE_DIJKSTRA_H
+#define SQUARE_DIJKSTRA_H
+//Including the base header for different square operations.
 #include "BaseSquareOperations.h"
 
-double SquareDijkstra(Position npStart, Position npGoal, bool autoCompute, Position topLeft, Position bottomRight)
+double SquareDijkstra(Position npStart, Position npGoal, bool autoCompute, Position topLeft, Position bottomRight, const int showMap)
 {
   if (SquareIsOutside(npStart, topLeft, bottomRight))
     return -1;
@@ -200,9 +202,12 @@ double SquareDijkstra(Position npStart, Position npGoal, bool autoCompute, Posit
 
     //Re-print square grid.
     GenerateSquare(npStart, npGoal);
-    PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
-    PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
-    PrintSquareMapGeneric(MapVisualType::MAP_COST);
+	if (showMap == 1)
+	{
+		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
+		PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
+		PrintSquareMapGeneric(MapVisualType::MAP_COST);
+	}
 
     nextStep = false;
     printf("\nGet next step? (0 - no/1 - yes):\n");
@@ -250,12 +255,16 @@ double SquareDijkstra(Position npStart, Position npGoal, bool autoCompute, Posit
   {
     //Re-print square grid.
     GenerateSquare(npStart, npGoal);
-    PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
-    PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
-    PrintSquareMapGeneric(MapVisualType::MAP_GOALPATH);
-    PrintSquareMapGeneric(MapVisualType::MAP_COST);
-    PrintSquareMapGeneric(MapVisualType::MAP_GOALCOST);
+	if (showMap == 1)
+	{
+		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
+		PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
+		PrintSquareMapGeneric(MapVisualType::MAP_GOALPATH);
+		PrintSquareMapGeneric(MapVisualType::MAP_COST);
+		PrintSquareMapGeneric(MapVisualType::MAP_GOALCOST);
+	}
   }
 
   return cost_so_far[npGoal.p_x][npGoal.p_y];
 }
+#endif

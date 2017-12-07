@@ -4,7 +4,9 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef POSITION_RELATIONS_H
+#define POSITION_RELATIONS_H
+//Including the position structure.
 #include "Position.h"
 
 #define MAX_RELATIONS 5
@@ -71,3 +73,4 @@ public:
     return true;
   }
 };
+#endif

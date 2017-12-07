@@ -4,6 +4,9 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef BASE_GREEDY_H
+#define BASE_GREEDY_H
+//Including the two different types of GREEDY algorithms.
 #include "SquareGreedy.h"
 #include "HexGreedy.h"
+#endif

@@ -101,5 +101,11 @@
     <ClInclude Include="PositionRelations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EgressCells.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SquareExpandBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

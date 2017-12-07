@@ -4,10 +4,12 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef HEX_GREEDY_H
+#define HEX_GREEDY_H
+//Including the base header for different hex operations.
 #include "BaseHexOperations.h"
 
-double HexGreedy(Position npStart, Position npGoal, bool autoCompute, Position center, int perimeter)
+double HexGreedy(Position npStart, Position npGoal, bool autoCompute, Position center, int perimeter, const int showMap)
 {
   if (HexIsOutside(npStart, center, perimeter))
     return -1;
@@ -53,13 +55,15 @@ double HexGreedy(Position npStart, Position npGoal, bool autoCompute, Position c
     return -1;
 
   //default octile.
-  int nheuristic = 4;
+  HeuristicType nheuristic = HeuristicType::HEURISTIC_OCTILE;
+  int ntmpHeu = 4;
   bool generateInstantaneous = false;
 
   if (!autoCompute)
   {
-    printf("\nHeuristic Type (CHEBYSHEV: 1, MANHATTAN: 2, EUCLIDEAN: 3, OCTILE: 4):\n");
-    std::cin >> nheuristic;
+	  printf("\nHeuristic Type (CHEBYSHEV: 1, MANHATTAN: 2, EUCLIDEAN: 3, OCTILE: 4):\n");
+	  std::cin >> ntmpHeu;
+	  nheuristic = (HeuristicType)ntmpHeu;
 
     printf("\nCompute Greedy Immediate!? (0 - no/1 - yes):\n");
     std::cin >> generateInstantaneous;
@@ -139,10 +143,13 @@ double HexGreedy(Position npStart, Position npGoal, bool autoCompute, Position c
 
     //Re-print hex grid.
     GenerateHex(npStart, npGoal);
-    PrintHexMapGeneric(MapVisualType::MAP_VISITED);
-    PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
-    PrintHexMapGeneric(MapVisualType::MAP_COST);
-    PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
+	if (showMap == 1)
+	{
+		PrintHexMapGeneric(MapVisualType::MAP_VISITED);
+		PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
+		PrintHexMapGeneric(MapVisualType::MAP_COST);
+		PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
+	}
 
     nextStep = false;
     printf("\nGet next step? (0 - no/1 - yes):\n");
@@ -192,14 +199,18 @@ double HexGreedy(Position npStart, Position npGoal, bool autoCompute, Position c
   {
     //Re-print hex grid.
     GenerateHex(npStart, npGoal);
-    PrintHexMapGeneric(MapVisualType::MAP_VISITED);
-    PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
-    PrintHexMapGeneric(MapVisualType::MAP_GOALPATH);
-    PrintHexMapGeneric(MapVisualType::MAP_COST);
-    PrintHexMapGeneric(MapVisualType::MAP_GOALCOST);
-    PrintHexMapGeneric(MapVisualType::MAP_HEUCOST);
-    PrintHexMapGeneric(MapVisualType::MAP_GOALHEUCOST);
+	if (showMap == 1)
+	{
+		PrintHexMapGeneric(MapVisualType::MAP_VISITED);
+		PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
+		PrintHexMapGeneric(MapVisualType::MAP_GOALPATH);
+		PrintHexMapGeneric(MapVisualType::MAP_COST);
+		PrintHexMapGeneric(MapVisualType::MAP_GOALCOST);
+		PrintHexMapGeneric(MapVisualType::MAP_HEUCOST);
+		PrintHexMapGeneric(MapVisualType::MAP_GOALHEUCOST);
+	}
   }
 
   return cost_so_far[npGoal.p_x][npGoal.p_y];
 }
+#endif

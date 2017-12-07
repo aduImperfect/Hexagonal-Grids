@@ -4,6 +4,9 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef BASE_BFS_H
+#define BASE_BFS_H
+//Including the two different types of BFS algorithms.
 #include "SquareBFS.h"
 #include "HexBFS.h"
+#endif

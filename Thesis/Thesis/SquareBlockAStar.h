@@ -4,7 +4,9 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef SQUARE_BLOCK_ASTAR_H
+#define SQUARE_BLOCK_ASTAR_H
+//Including the header for LDDB calculations.
 #include "SquareLDDBCalculator.h"
 
 double SquareBlockAStar(Position npStart, Position npGoal)
@@ -60,9 +62,13 @@ double SquareBlockAStar(Position npStart, Position npGoal)
   
   SquareLDDBCalc(npStart, npGoal);
   
-  int nheuristic;
+  //default octile.
+  HeuristicType nheuristic = HeuristicType::HEURISTIC_OCTILE;
+  int ntmpHeu = 4;
+
   printf("\nHeuristic Type (CHEBYSHEV: 1, MANHATTAN: 2, EUCLIDEAN: 3, OCTILE: 4):\n");
-  std::cin >> nheuristic;
+  std::cin >> ntmpHeu;
+  nheuristic = (HeuristicType)ntmpHeu;
 
   bool generateInstantaneous = false;
   printf("\nCompute Block ASTAR Immediate!? (0 - no/1 - yes):\n");
@@ -267,3 +273,4 @@ double SquareBlockAStar(Position npStart, Position npGoal)
 
   return npGoal.posCost;
 }
+#endif

@@ -154,7 +154,9 @@
     <ClInclude Include="BaseBlockAStar.h" />
     <ClInclude Include="BaseDijkstra.h" />
     <ClInclude Include="BaseGreedy.h" />
+    <ClInclude Include="EgressCells.h" />
     <ClInclude Include="PositionRelations.h" />
+    <ClInclude Include="SquareExpandBlock.h" />
     <ClInclude Include="SquareLDDBCalculator.h" />
     <ClInclude Include="SquareAStar.h" />
     <ClInclude Include="SquareBFS.h" />

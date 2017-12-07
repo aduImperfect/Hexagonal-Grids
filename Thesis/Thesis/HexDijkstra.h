@@ -4,10 +4,12 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef HEX_DIJKSTRA_H
+#define HEX_DIJKSTRA_H
+//Including the base header for different hex operations.
 #include "BaseHexOperations.h"
 
-double HexDijkstra(Position npStart, Position npGoal, bool autoCompute, Position center, int perimeter)
+double HexDijkstra(Position npStart, Position npGoal, bool autoCompute, Position center, int perimeter, const int showMap)
 {
   if (HexIsOutside(npStart, center, perimeter))
     return -1;
@@ -153,9 +155,12 @@ double HexDijkstra(Position npStart, Position npGoal, bool autoCompute, Position
 
     //Re-print hex grid.
     GenerateHex(npStart, npGoal);
-    PrintHexMapGeneric(MapVisualType::MAP_VISITED);
-    PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
-    PrintHexMapGeneric(MapVisualType::MAP_COST);
+	if (showMap == 1)
+	{
+		PrintHexMapGeneric(MapVisualType::MAP_VISITED);
+		PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
+		PrintHexMapGeneric(MapVisualType::MAP_COST);
+	}
 
     nextStep = false;
     printf("\nGet next step? (0 - no/1 - yes):\n");
@@ -203,12 +208,16 @@ double HexDijkstra(Position npStart, Position npGoal, bool autoCompute, Position
   {
     //Re-print hex grid.
     GenerateHex(npStart, npGoal);
-    PrintHexMapGeneric(MapVisualType::MAP_VISITED);
-    PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
-    PrintHexMapGeneric(MapVisualType::MAP_GOALPATH);
-    PrintHexMapGeneric(MapVisualType::MAP_COST);
-    PrintHexMapGeneric(MapVisualType::MAP_GOALCOST);
+	if (showMap == 1)
+	{
+		PrintHexMapGeneric(MapVisualType::MAP_VISITED);
+		PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
+		PrintHexMapGeneric(MapVisualType::MAP_GOALPATH);
+		PrintHexMapGeneric(MapVisualType::MAP_COST);
+		PrintHexMapGeneric(MapVisualType::MAP_GOALCOST);
+	}
   }
 
   return cost_so_far[npGoal.p_x][npGoal.p_y];
 }
+#endif

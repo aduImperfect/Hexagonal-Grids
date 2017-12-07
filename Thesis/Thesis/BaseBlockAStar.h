@@ -4,5 +4,9 @@
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef BASE_BLOCK_ASTAR_H
+#define BASE_BLOCK_ASTAR_H
+//Including the two different types of BLOCKASTAR algorithms.
 #include "SquareBlockAStar.h"
+//#include "HexBlockAStar.h"
+#endif
