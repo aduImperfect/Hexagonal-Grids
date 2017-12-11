@@ -22,7 +22,7 @@ This function calls the Initializer for every position on the square grid and pa
 */
 void InitializeFirstSquare(const char * strCostSpace)
 {
-	//Iterate through the square grid position (I, J) [Column, Row].
+	//Iterate through the square grid position (I, J) [Row, Column].
 	for (int i = 0; i <= SQUARE_SIZE; ++i)
 	{
 		for (int j = 0; j <= SQUARE_SIZE; ++j)
@@ -43,7 +43,7 @@ This function takes in the positions of start and goal, it sets the values of al
 */
 void GenerateSquare(const Position nposStart, const Position nposGoal)
 {
-	//Iterate through the square grid position (I, J) [Column, Row].
+	//Iterate through the square grid position (I, J) [Row, Column].
 	for (int i = 0; i <= SQUARE_SIZE; ++i)
 	{
 		for (int j = 0; j <= SQUARE_SIZE; ++j)
@@ -97,7 +97,7 @@ void PrintSquareMapGeneric(const MapVisualType mvType)
 	//Print the type of the map's visual type.
 	PrintHeader(mvType);
 
-	//Iterate through the square grid position (I, J) [Column, Row].
+	//Iterate through the square grid position (I, J) [Row, Column].
 	for (int i = 0; i <= SQUARE_SIZE; ++i)
 	{
 		for (int j = 0; j <= SQUARE_SIZE; ++j)

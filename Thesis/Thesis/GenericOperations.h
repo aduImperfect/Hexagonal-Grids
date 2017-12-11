@@ -126,4 +126,85 @@ void NextChildAssignments(const Position & current, Position & next, const char*
 	Initializer(next.p_x, next.p_y, NEXT, dir, NULL, const_cast<char*>(costInString.c_str()), NULL, const_cast<char*>(costHeuInString.c_str()), NULL, const_cast<char*>(costTotInString.c_str()), NULL);
 		
 }
+
+/*
+Retracing the goal path found from goal back to the start.
+Parameters to the function:
+algoType : const PathfindingAlgo & - the algorithm type.
+goalPath : std::vector<Position> & - the goal path vector that stores the positions from start to goal.
+npStart : const Position & - the starting position.
+npGoal : const Position & - the goal position.
+Returns from the function:
+NONE
+This function finds the path back from the goal to the start position and saves it in a vector.
+*/
+void RetraceGoalPath(const PathfindingAlgo & algoType, std::vector<Position> & goalPath, const Position & npStart, const Position & npGoal)
+{
+	//Now, traverse backwards from goal to start to save the goal path in a vector.
+	Position currentTraverse = npGoal;
+
+	//Empty the goal path vector completely!
+	goalPath.clear();
+
+	//Set the mapGoalCost(goal) = mapCost(goal).
+	mapGoalCost[npGoal.p_x][npGoal.p_y] = mapCost[npGoal.p_x][npGoal.p_y];
+
+	//The heuristic costs get updated only if the algorithm is Greedy or AStar.
+	if (algoType == PathfindingAlgo::ALGO_GREEDY || algoType == PathfindingAlgo::ALGO_ASTAR)
+	{
+		//Set the mapGoalHeuCost(goal) = mapHeuCost(goal).
+		mapGoalHeuCost[npGoal.p_x][npGoal.p_y] = mapGoalHeuCost[npGoal.p_x][npGoal.p_y];
+	}
+
+	//The total costs get updated only if the algorithm is AStar.
+	if (algoType == PathfindingAlgo::ALGO_ASTAR)
+	{
+		//Set the mapGoalTotCost(goal) = mapTotCost(goal).
+		mapGoalTotCost[npGoal.p_x][npGoal.p_y] = mapTotCost[npGoal.p_x][npGoal.p_y];
+	}
+
+	//Set the current traverse position's cost to cost_so_far's value at that position to show the gradual increase in the cost.
+	currentTraverse.posCost = cost_so_far[currentTraverse.p_x][currentTraverse.p_y];
+
+	//Add the goal position to the goal path vector.
+	goalPath.push_back(currentTraverse);
+
+	//Until, we cannot trace back to the start position, we keep repeating the process of updating the current position.
+	while (currentTraverse != npStart)
+	{
+		//mapGoalPath(currentTraverse) = mapCameFrom(currentTraverse).
+		//Basically, find the previous position from where we reached to the current position.
+		mapGoalPath[currentTraverse.p_x][currentTraverse.p_y] = mapCameFrom[currentTraverse.p_x][currentTraverse.p_y];
+
+		//mapGoalCost(currentTraverse) = mapCost(currentTraverse).
+		//Then update the map goal cost with the calculated map cost.
+		mapGoalCost[currentTraverse.p_x][currentTraverse.p_y] = mapCost[currentTraverse.p_x][currentTraverse.p_y];
+
+		//The heuristic costs get updated only if the algorithm is Greedy or AStar.
+		if (algoType == PathfindingAlgo::ALGO_GREEDY || algoType == PathfindingAlgo::ALGO_ASTAR)
+		{
+			//Set mapGoalHeuCost(currentTraverse) = mapHeuCost(currentTraverse).
+			mapGoalHeuCost[currentTraverse.p_x][currentTraverse.p_y] = mapHeuCost[currentTraverse.p_x][currentTraverse.p_y];
+		}
+
+		//The total costs get updated only if the algorithm is AStar.
+		if (algoType == PathfindingAlgo::ALGO_ASTAR)
+		{
+			//Set the mapGoalTotCost(currentTraverse) = mapTotCost(currentTraverse).
+			mapGoalTotCost[currentTraverse.p_x][currentTraverse.p_y] = mapTotCost[currentTraverse.p_x][currentTraverse.p_y];
+		}
+
+		//Update currentTraverse to point to the previous position from whence it came.
+		currentTraverse = came_from[currentTraverse.p_x][currentTraverse.p_y];
+
+		//Set the current traverse position's cost to cost_so_far's value at that position to show the gradual increase in the cost.
+		currentTraverse.posCost = cost_so_far[currentTraverse.p_x][currentTraverse.p_y];
+
+		//Add currentTraverse to the goal path vector.
+		goalPath.push_back(currentTraverse);
+	}
+
+	//Reverse the whole vector to contain the whole list.
+	std::reverse(goalPath.begin(), goalPath.end());
+}
 #endif

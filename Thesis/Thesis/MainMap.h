@@ -181,27 +181,28 @@ nposGoal : const Position - the goal position.
 topLeft : const Position - the top left most position of the square grid.
 bottomRight : const Position - the bottom right most position of the square grid.
 showMap : const int - the map should be shown (printed) or not.
+goalPath : std::vector<Position> - the goal path vector that contains the position list from where the goal came from by starting at the start position.
 Returns from the function:
 goalCost : double - the cost to reach the goal.
 This function calls the required search space algorithms for a square grid based on the algorithm type and passes in the start and goal positions along with the top left and bottom right corner positions of the square grid to give it a bound on its size.
 It then returns the cost to reach the goal.
 */
-double /*goalCost*/ RunPathfindingOnSquare(const int algoType, const Position nposStart, const Position nposGoal, const Position topLeft, const Position bottomRight, const int showMap)
+double /*goalCost*/ RunPathfindingOnSquare(const int algoType, const Position nposStart, const Position nposGoal, const Position topLeft, const Position bottomRight, const int showMap, std::vector<Position> & goalPath)
 {
 	double gCost = -1;
 	switch (algoType)
 	{
 	case PathfindingAlgo::ALGO_BFS:
-		gCost = SquareBFS(nposStart, nposGoal, false, topLeft, bottomRight, showMap);
+		gCost = SquareBFS(nposStart, nposGoal, false, topLeft, bottomRight, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_DIJKSTRA:
-		gCost = SquareDijkstra(nposStart, nposGoal, false, topLeft, bottomRight, showMap);
+		gCost = SquareDijkstra(nposStart, nposGoal, false, topLeft, bottomRight, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_GREEDY:
-		gCost = SquareGreedy(nposStart, nposGoal, false, topLeft, bottomRight, showMap);
+		gCost = SquareGreedy(nposStart, nposGoal, false, topLeft, bottomRight, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_ASTAR:
-		gCost = SquareAStar(nposStart, nposGoal, false, topLeft, bottomRight, showMap);
+		gCost = SquareAStar(nposStart, nposGoal, false, topLeft, bottomRight, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_BLOCKASTAR:
 		//*
@@ -225,27 +226,28 @@ nposGoal : const Position - the goal position.
 center : const Position - the center position of the hex grid.
 perimeter : const Position - the perimeter of the hex grid.
 showMap : const int - the map should be shown (printed) or not.
+goalPath : std::vector<Position> - the goal path vector that contains the position list from where the goal came from by starting at the start position.
 Returns from the function:
 goalCost : double - the cost to reach the goal.
 This function calls the required search space algorithms for a hex grid based on the algorithm type and passes in the start and goal positions along with the center position and the total perimeter span of the hex grid to give it a bound on its size.
 It then returns the cost to reach the goal.
 */
-double /*goalCost*/ RunPathfindingOnHex(const int algoType, const Position nposStart, const Position nposGoal, const Position center, const unsigned int perimeter, const int showMap)
+double /*goalCost*/ RunPathfindingOnHex(const int algoType, const Position nposStart, const Position nposGoal, const Position center, const unsigned int perimeter, const int showMap, std::vector<Position> & goalPath)
 {
 	double gCost = -1;
 	switch (algoType)
 	{
 	case PathfindingAlgo::ALGO_BFS:
-		gCost = HexBFS(nposStart, nposGoal, false, center, perimeter, showMap);
+		gCost = HexBFS(nposStart, nposGoal, false, center, perimeter, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_DIJKSTRA:
-		gCost = HexDijkstra(nposStart, nposGoal, false, center, perimeter, showMap);
+		gCost = HexDijkstra(nposStart, nposGoal, false, center, perimeter, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_GREEDY:
-		gCost = HexGreedy(nposStart, nposGoal, false, center, perimeter, showMap);
+		gCost = HexGreedy(nposStart, nposGoal, false, center, perimeter, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_ASTAR:
-		gCost = HexAStar(nposStart, nposGoal, false, center, perimeter, showMap);
+		gCost = HexAStar(nposStart, nposGoal, false, center, perimeter, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_BLOCKASTAR:
 		break;
@@ -265,16 +267,17 @@ algoType : const int - the algorithm type.
 nposStart : const Position - the starting position.
 nposGoal : const Position - the goal position.
 showMap : const int - the map should be shown (printed) or not.
+goalPath : std::vector<Position> - the goal path vector that contains the position list from where the goal came from by starting at the start position.
 Returns from the function:
 goalCost : double - the cost to reach the goal.
 This function calls the required grid space path-finding function based on the gridSpace type and passes in the algorithm type, the start and goal positions, and the size limiter values for the type of grids (topLeft and bottomRight for square grid, and center and perimeter for hex grid).
 It then returns the cost to reach the goal.
 */
-double /*goalCost*/ RunPathfinding(const int gridSpace, const int algoType, const Position nposStart, const Position nposGoal, const int showMap)
+double /*goalCost*/ RunPathfinding(const int gridSpace, const int algoType, const Position nposStart, const Position nposGoal, const int showMap, std::vector<Position> & goalPath)
 {
 	if (gridSpace == SQUARE_GRID)
-		return RunPathfindingOnSquare(algoType, nposStart, nposGoal, Position(0, 0), Position(SQUARE_BOTTOM_RIGHT, SQUARE_BOTTOM_RIGHT), showMap);
+		return RunPathfindingOnSquare(algoType, nposStart, nposGoal, Position(0, 0), Position(SQUARE_BOTTOM_RIGHT, SQUARE_BOTTOM_RIGHT), showMap, goalPath);
 
-	return RunPathfindingOnHex(algoType, nposStart, nposGoal, Position(HEX_CENTER, HEX_CENTER), 30, showMap);
+	return RunPathfindingOnHex(algoType, nposStart, nposGoal, Position(HEX_CENTER, HEX_CENTER), 30, showMap, goalPath);
 }
 #endif

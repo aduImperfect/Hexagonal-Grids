@@ -32,9 +32,12 @@ int /*success*/ main(int argc, char** argv)
 	do
 	{
 		int nGridSpace = 0;
-		printf("GridSpace size is %d X %d. \n\n", SIZE - 1, SIZE - 1);
+		printf("GridSpace size is %d X %d. \n\n", SIZE, SIZE);
 		printf("GridSpace (Square: 1, Hex: 2):\n");
 		std::cin >> nGridSpace;
+
+		//Converting to code index for square and hex grid.
+		nGridSpace = (nGridSpace == 1) ? SQUARE_GRID : HEX_GRID;
 
 		int nAlgoType = 0;
 		printf("Algorithm Type (BFS: 1, DIJKSTRA: 2, GREEDY: 3, ASTAR: 4, BLOCKASTAR: 5, JPS: 6):\n");
@@ -60,9 +63,22 @@ int /*success*/ main(int argc, char** argv)
 
 		//The Goal cost calculated from running the path-finding algorithm.
 		printf("\nRun Path-finding!!\n\n");
-		double goalCost = RunPathfinding(nGridSpace, nAlgoType, posStart, posGoal, showMap);
+
+		//Vector that stores the goal path from start to goal.
+		std::vector<Position> goalPath;
+
+		double goalCost = RunPathfinding(nGridSpace, nAlgoType, posStart, posGoal, showMap, goalPath);
 		
 		printf("\nGoal cost (-1 = goal not reachable or not found!):\n%f", goalCost);
+		
+		//If there was a goal path (if cost was not -1).
+		if (goalCost != -1)
+		{
+			printf("\n\nGoal path:\n");
+			//Print the goal path by parsing through the goalPath vector and outputting every position's row, column, and cost information.
+			std::for_each(goalPath.begin(), goalPath.end(), [goalPath](const Position & pos) { printf("Row: %d, Column: %d, Cost: %f\n", pos.p_x, pos.p_y, pos.posCost); });
+			printf("\n");
+		}
 
 		printf("\n\nNew Run (0 - No, 1 - Yes):\n");
 		std::cin >> newRun;

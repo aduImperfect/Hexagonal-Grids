@@ -22,7 +22,7 @@ This function calls the Initializer for every position on the hex grid and passe
 */
 void InitializeFirstHex(const char * strCostSpace)
 {
-	//Iterate through the hex grid position (I, J) [Column, Row].
+	//Iterate through the hex grid position (I, J) [Row, Column].
 	for (int i = 0; i <= HEX_SIZE; ++i)
 	{
 		for (int j = 0; j <= HEX_SIZE; ++j)
@@ -43,7 +43,7 @@ This function takes in the positions of start and goal, it sets the values of al
 */
 void GenerateHex(const Position nposStart, const Position nposGoal)
 {
-	//Iterate through the hex grid position (I, J) [Column, Row].
+	//Iterate through the hex grid position (I, J) [Row, Column].
 	for (int i = 0; i <= HEX_SIZE; ++i)
 	{
 		for (int j = 0; j <= HEX_SIZE; ++j)
@@ -97,10 +97,10 @@ void PrintHexMapGeneric(const MapVisualType mvType)
 	//Print the type of the map's visual type.
 	PrintHeader(mvType);
 
-	//Iterate through the hex grid position (I, J) [Column, Row].
+	//Iterate through the hex grid position (I, J) [Row, Column].
 	for (int i = 0; i <=HEX_SIZE; ++i)
 	{
-		//Offset space added alternating for every other column.
+		//Offset space added alternating for every other row.
 		if (i % 2 == 0)
 		{
 			printf(HEX_GRID_OFFSET);

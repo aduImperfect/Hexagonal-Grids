@@ -9,21 +9,21 @@
 /*
 Position structure that keeps track of the position's values.
 Data:
-p_x : const int - the column alignment of the 2D position.
-p_y : const int - the row alignment of the 2D position.
+p_x : const int - the row alignment of the 2D position.
+p_y : const int - the column alignment of the 2D position.
 posCost : double - keeps track of the cost to/from/(to and from) the position (depending on where it is being used).
 Functionalities:
-Position(const int _x = 0, const int _y = 0) - The constructor which takes in the column and row values and also has a default value of (0,0) for when the user does not input any for the column/row. It initializes the p_x, p_y with the arguments and the posCost is initialized to 0.
+Position(const int _x = 0, const int _y = 0) - The constructor which takes in the row and column values and also has a default value of (0,0) for when the user does not input any for the row/column. It initializes the p_x, p_y with the arguments and the posCost is initialized to 0.
 operator+(const Position &otherPos) - adds the 'this' and the 'other' position's x and y values and returns a new position.
 operator!=(const Position &otherPos) - checks to see if 'this' and the 'other' position's x or y values are not the same.
 operator==(const Position &otherPos) - checks to see if 'this' and the 'other' position's x or y values are the same.
 */
 struct Position
 {
-	//The x (column) part of the position in the grid.
+	//The x (row) part of the position in the grid.
 	int p_x;
 
-	//The y (row) part of the position in the grid.
+	//The y (column) part of the position in the grid.
 	int p_y;
 
 	//The cost at the position.
@@ -32,11 +32,11 @@ struct Position
 	/*
 	Construct a new position object.
 	Parameters to the constructor:
-	_x : const int - The column of the position.
-	_y : const int - The row of the position.
+	_x : const int - The row of the position.
+	_y : const int - The column of the position.
 	Returns from the constructor:
 	NONE
-	This constructor takes in the column,row combination of the position and assigns internally to the object's data and also sets its posCost to 0 and returns nothing.
+	This constructor takes in the row,column combination of the position and assigns internally to the object's data and also sets its posCost to 0 and returns nothing.
 	*/
 	Position(const int _x = 0, const int _y = 0)
 	{

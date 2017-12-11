@@ -182,14 +182,16 @@ void SquareLDDBCalc(Position npStart, Position npGoal)
               */
               if ((pFrom != pTo) && (((npStart == pFrom) && SquareIsBorder(pTo, pTopLeft, pBottomRight)) || ((npStart == pTo) && SquareIsBorder(pFrom, pTopLeft, pBottomRight))))
               {
-                SquareLDDB[blockI][blockJ][toM][toN][fromK][fromL] = SquareLDDB[blockI][blockJ][fromK][fromL][toM][toN] = SquareDijkstra(pFrom, pTo, true, pTopLeft, pBottomRight, 0 /*showMap*/);
+				  std::vector<Position> tempGoalPath;
+                SquareLDDB[blockI][blockJ][toM][toN][fromK][fromL] = SquareLDDB[blockI][blockJ][fromK][fromL][toM][toN] = SquareDijkstra(pFrom, pTo, true, pTopLeft, pBottomRight, 0 /*showMap*/, tempGoalPath);
               }
               /*
               Else If (absolute_from is not absolute_to) and (goal is absolute_from) and (absolute_to is a border inside absolute_top_left and absolute_bottom_right).
               */
               else if ((pFrom != pTo) && (((npGoal == pFrom) && SquareIsBorder(pTo, pTopLeft, pBottomRight)) || ((npGoal == pTo) && SquareIsBorder(pFrom, pTopLeft, pBottomRight))))
-              {
-                SquareLDDB[blockI][blockJ][toM][toN][fromK][fromL] = SquareLDDB[blockI][blockJ][fromK][fromL][toM][toN] = SquareDijkstra(pFrom, pTo, true, pTopLeft, pBottomRight, 0 /*showMap*/);
+			  {
+				  std::vector<Position> tempGoalPath;
+                SquareLDDB[blockI][blockJ][toM][toN][fromK][fromL] = SquareLDDB[blockI][blockJ][fromK][fromL][toM][toN] = SquareDijkstra(pFrom, pTo, true, pTopLeft, pBottomRight, 0 /*showMap*/, tempGoalPath);
               }
               /*
               Else
@@ -208,9 +210,10 @@ void SquareLDDBCalc(Position npStart, Position npGoal)
                 SquareLDDB[blockI][blockJ][fromK][fromL][toM][toN] = 0;
               }
               else
-              {
+			  {
+				  std::vector<Position> tempGoalPath;
                 //Otherwise, for any other case.
-                SquareLDDB[blockI][blockJ][toM][toN][fromK][fromL] = SquareLDDB[blockI][blockJ][fromK][fromL][toM][toN] = SquareDijkstra(pFrom, pTo, true, pTopLeft, pBottomRight, 0 /*showMap*/);
+                SquareLDDB[blockI][blockJ][toM][toN][fromK][fromL] = SquareLDDB[blockI][blockJ][fromK][fromL][toM][toN] = SquareDijkstra(pFrom, pTo, true, pTopLeft, pBottomRight, 0 /*showMap*/, tempGoalPath);
               }
             }
           }

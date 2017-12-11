@@ -107,5 +107,17 @@
     <ClInclude Include="SquareExpandBlock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ParseSquareNeighbors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParseHexNeighbors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchLoop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PrePostSearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

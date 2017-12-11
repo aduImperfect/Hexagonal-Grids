@@ -22,7 +22,7 @@ This function sets the values of the different kinds of the 2D array storages be
 */
 void InitializeVCC(const int extraSize, const double nCost)
 {
-	//Iterate through the square grid position (I, J) [Column, Row].
+	//Iterate through the square grid position (I, J) [Row, Column].
 	for (int i = 0; i <= SIZE + extraSize; ++i)
 	{
 		for (int j = 0; j <= SIZE + extraSize; ++j)
@@ -49,8 +49,8 @@ void InitializeVCC(const int extraSize, const double nCost)
 /*
 Initialize all the different types of square and hex printable maps (mapVisited, mapCameFrom, mapGoalPath, mapCost, mapGoalCost, mapHeuCost, mapGoalHeuCost, mapTotCost, mapGoalTotCost) with default values.
 Parameters to the function:
-i : const int - the column value of the position in the grid.
-j : const int - the row value of the position in the grid.
+i : const int - the row value of the position in the grid.
+j : const int - the column value of the position in the grid.
 mVisit : const char * - the value to be input for mapVisited(i,j) if the new value is not NULL (else the value remains the old mapVisited(i,j) value).
 mCameFrom : const char * - the value to be input for mapCameFrom(i,j) if the new value is not NULL (else the value remains the old mapCameFrom(i,j) value).
 mGoalPath : const char * - the value to be input for mapGoalPath(i,j) if the new value is not NULL (else the value remains the old mapGoalPath(i,j) value).
