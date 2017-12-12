@@ -101,11 +101,11 @@ void SquareSearchLoop(const bool & isPriorityQueue, T & queueType, const Pathfin
 			PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
 			PrintSquareMapGeneric(MapVisualType::MAP_COST);
 
-			if (algoType == PathfindingAlgo::ALGO_GREEDY || algoType == PathfindingAlgo::ALGO_ASTAR)
+			if (algoType == PathfindingAlgo::ALGO_GREEDY || algoType == PathfindingAlgo::ALGO_ASTAR || algoType == PathfindingAlgo::ALGO_BLOCKASTAR)
 			{
 				PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
 			}
-			if (algoType == PathfindingAlgo::ALGO_ASTAR)
+			if (algoType == PathfindingAlgo::ALGO_ASTAR || algoType == PathfindingAlgo::ALGO_BLOCKASTAR)
 			{
 				PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
 			}
@@ -191,11 +191,11 @@ void HexSearchLoop(const bool & isPriorityQueue, T & queueType, const Pathfindin
 			PrintHexMapGeneric(MapVisualType::MAP_CAMEFROM);
 			PrintHexMapGeneric(MapVisualType::MAP_COST);
 
-			if (algoType == PathfindingAlgo::ALGO_GREEDY || algoType == PathfindingAlgo::ALGO_ASTAR)
+			if (algoType == PathfindingAlgo::ALGO_GREEDY || algoType == PathfindingAlgo::ALGO_ASTAR || algoType == PathfindingAlgo::ALGO_BLOCKASTAR)
 			{
 				PrintHexMapGeneric(MapVisualType::MAP_HEUCOST);
 			}
-			if (algoType == PathfindingAlgo::ALGO_ASTAR)
+			if (algoType == PathfindingAlgo::ALGO_ASTAR || algoType == PathfindingAlgo::ALGO_BLOCKASTAR)
 			{
 				PrintHexMapGeneric(MapVisualType::MAP_TOTALCOST);
 			}

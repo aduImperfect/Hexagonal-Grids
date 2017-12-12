@@ -10,7 +10,7 @@
 #include "BaseHexOperations.h"
 #include "ParseHexNeighbors.h"
 #include "SearchLoop.h"
-#include "PrePostSearch.h"
+#include "HexPrePostSearch.h"
 
 /*
 Calculates the cost from start to goal using ASTAR.

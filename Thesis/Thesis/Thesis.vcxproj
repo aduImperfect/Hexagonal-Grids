@@ -155,10 +155,12 @@
     <ClInclude Include="BaseDijkstra.h" />
     <ClInclude Include="BaseGreedy.h" />
     <ClInclude Include="EgressCells.h" />
+    <ClInclude Include="HexPrePostSearch.h" />
     <ClInclude Include="ParseHexNeighbors.h" />
     <ClInclude Include="ParseSquareNeighbors.h" />
     <ClInclude Include="PositionRelations.h" />
-    <ClInclude Include="PrePostSearch.h" />
+    <ClInclude Include="SquareLDDBToFile.h" />
+    <ClInclude Include="SquarePrePostSearch.h" />
     <ClInclude Include="SearchLoop.h" />
     <ClInclude Include="SquareExpandBlock.h" />
     <ClInclude Include="SquareLDDBCalculator.h" />
@@ -182,6 +184,7 @@
     <ClInclude Include="MainMap.h" />
     <ClInclude Include="MapsVariety.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="ValidEgressCells.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

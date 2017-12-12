@@ -79,12 +79,36 @@
 #define EMPTY ""
 
 //Square LDDB defines.
-#define SQUARE_LDDB_BASE_PT_X 1
-#define SQUARE_LDDB_BASE_PT_Y 1
 
+//The maximum ROW positions (1-4) available inside a block.
 #define SQUARE_LDDB_BLOCK_SPLIT_SIZE_X 4
+
+//The maximum COLUMN positions (1-4) available inside a block.
 #define SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y 4
 
-#define SQUARE_LDDB_BLOCK_SIZE_I (SIZE - 1)/SQUARE_LDDB_BLOCK_SPLIT_SIZE_X
-#define SQUARE_LDDB_BLOCK_SIZE_J (SIZE - 1)/SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y
+//The number of Blocks in the horizontal ROW direction. Example: (20/4) = 5.
+#define SQUARE_LDDB_BLOCK_SIZE_I SIZE / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X
+
+//The number of Blocks in the vertical COLUMN direction. Example: (20/4) = 5.
+#define SQUARE_LDDB_BLOCK_SIZE_J SIZE / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y
+
+/*
+The square LDDB multi-dimensional array!
+SquareLDDB[BLOCK_ROW][BLOCK_COL][POS_FROM_ROW][POS_FROM_COL][POS_TO_ROW][POS_TO_COL].
+Example:
+A 20x20 square grid with 4x4 blocks will divide into 25 blocks (5x5).
+Each POS_FROM is inside a 4x4 block and the POS_TO is also inside the same 4x4 block.
+Hence, SquareLDDB[5][5][4][4][4][4].
+*/
+double SquareLDDB[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][SQUARE_LDDB_BLOCK_SPLIT_SIZE_X][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y][SQUARE_LDDB_BLOCK_SPLIT_SIZE_X][SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y];
+
+//Block relations defines.
+
+#define MAX_RELATIONS 5
+
+//The maximum out-corner relations. 2 in one neighboring (horizontal/vertical) block, 1 in the diagonal block, and 2 more in another neighboring (horizontal/vertical) block.
+#define MAX_OUT_CORNER_RELATIONS 5
+
+//The maximum in-corner relations. 3 in the only neighboring (horizontal/vertical) block.
+#define MAX_IN_CORNER_RELATIONS 3
 #endif

@@ -116,7 +116,16 @@
     <ClInclude Include="SearchLoop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PrePostSearch.h">
+    <ClInclude Include="SquarePrePostSearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HexPrePostSearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SquareLDDBToFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ValidEgressCells.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

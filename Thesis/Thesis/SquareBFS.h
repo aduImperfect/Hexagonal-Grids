@@ -10,7 +10,7 @@
 #include "BaseSquareOperations.h"
 #include "ParseSquareNeighbors.h"
 #include "SearchLoop.h"
-#include "PrePostSearch.h"
+#include "SquarePrePostSearch.h"
 
 /*
 Calculates the cost from start to goal using BFS.

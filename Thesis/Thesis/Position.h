@@ -6,17 +6,18 @@
 
 #ifndef POSITION_H
 #define POSITION_H
+
 /*
 Position structure that keeps track of the position's values.
 Data:
-p_x : const int - the row alignment of the 2D position.
-p_y : const int - the column alignment of the 2D position.
+p_x : int - the row alignment of the 2D position.
+p_y : int - the column alignment of the 2D position.
 posCost : double - keeps track of the cost to/from/(to and from) the position (depending on where it is being used).
 Functionalities:
 Position(const int _x = 0, const int _y = 0) - The constructor which takes in the row and column values and also has a default value of (0,0) for when the user does not input any for the row/column. It initializes the p_x, p_y with the arguments and the posCost is initialized to 0.
-operator+(const Position &otherPos) - adds the 'this' and the 'other' position's x and y values and returns a new position.
-operator!=(const Position &otherPos) - checks to see if 'this' and the 'other' position's x or y values are not the same.
-operator==(const Position &otherPos) - checks to see if 'this' and the 'other' position's x or y values are the same.
+operator+(const Position & otherPos) const - adds the 'this' and the 'other' position's x and y values and returns a new position.
+operator!=(const Position & otherPos) const - checks to see if 'this' and the 'other' position's x or y values are not the same.
+operator==(const Position & otherPos) const - checks to see if 'this' and the 'other' position's x and y values are the same.
 */
 struct Position
 {
@@ -54,7 +55,7 @@ struct Position
 	This function takes in otherPos and adds its x and y values with the current position's x and y values.
 	It returns the new position.
 	*/
-	Position /*newPos*/ operator+(const Position &otherPos)
+	Position /*newPos*/ operator+(const Position & otherPos) const
 	{
 		return Position(this->p_x + otherPos.p_x, this->p_y + otherPos.p_y);
 	}
@@ -68,7 +69,7 @@ struct Position
 	This function takes in otherPos and checks its x and y values with the current position's x and y values.
 	It returns true if both position's are not the same, else false.
 	*/
-	bool /*isNotSame*/ operator!=(const Position &otherPos)
+	bool /*isNotSame*/ operator!=(const Position & otherPos) const
 	{
 		return ((this->p_x != otherPos.p_x) || (this->p_y != otherPos.p_y));
 	}
@@ -82,7 +83,7 @@ struct Position
 	This function takes in otherPos and checks its x and y values with the current position's x and y values.
 	It returns true if both position's are the same, else false.
 	*/
-	bool /*isSame*/ operator==(const Position &otherPos)
+	bool /*isSame*/ operator==(const Position & otherPos) const
 	{
 		return ((this->p_x == otherPos.p_x) && (this->p_y == otherPos.p_y));
 	}
@@ -149,7 +150,6 @@ operator()(const Position &lhs, const Position &rhs) - checks to see if the lhs'
 */
 struct GreaterThanByCost
 {
-	//operator()(const Position &lhs, const Position &rhs) - checks to see if the lhs' posCost is greater than the rhs' position cost.
 	/*
 	Checks to see which of the two position's has a greater cost.
 	Parameters to the function:

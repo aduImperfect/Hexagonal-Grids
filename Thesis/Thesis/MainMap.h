@@ -12,6 +12,7 @@
 #include "BaseGreedy.h"
 #include "BaseAStar.h"
 #include "BaseBlockAStar.h"
+#include "SquareLDDBToFile.h"
 
 /*
 Square Map pre-computations.
@@ -68,7 +69,6 @@ void SquareMap(const int algoType, const Position nposStart, const Position npos
 		PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
 		break;
 	case PathfindingAlgo::ALGO_BLOCKASTAR:
-		//*
 		SquareLDDBInitializer();
 		InitializeFirstSquare(COST_MAX_TERM);
 		GenerateSquare(nposStart, nposGoal);
@@ -79,7 +79,19 @@ void SquareMap(const int algoType, const Position nposStart, const Position npos
 		PrintSquareMapGeneric(MapVisualType::MAP_COST);
 		PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
 		PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
-		//*/
+
+		//Pre-calculate the Local Distance Database for the square grid.
+		SquareLDDBCalc();
+
+		//A print confirming that the LDDB calculation ran without any errors/bugs by reaching this state.
+		printf("\nSquare LDDB Calculated!!\n");
+
+		//Write the calculated LDDB to two types of files.
+		WriteSquareLDDBToFile();
+		WriteSquareLDDBToFileAlternate();
+
+		//A print confirming that the writing to files ran without any errors/bugs by reaching this state.
+		printf("\nSquare LDDB written to file!!\n");
 		break;
 	case PathfindingAlgo::ALGO_JPS:
 		break;
@@ -205,9 +217,7 @@ double /*goalCost*/ RunPathfindingOnSquare(const int algoType, const Position np
 		gCost = SquareAStar(nposStart, nposGoal, false, topLeft, bottomRight, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_BLOCKASTAR:
-		//*
-		gCost = SquareBlockAStar(nposStart, nposGoal);
-		//*/
+		gCost = SquareBlockAStar(nposStart, nposGoal, false, topLeft, bottomRight, showMap, goalPath);
 		break;
 	case PathfindingAlgo::ALGO_JPS:
 		break;

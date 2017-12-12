@@ -176,7 +176,7 @@ void ParseSquareNeighbors(T & queueType, const PathfindingAlgo & algoType, Posit
 		isNorthEastNeighborValid = (((!isNorthEastWall) && (!isNorthEastOutside)) && ((!isNorthWall) && (!isEastWall)) && ((!isNorthEastVisited) || (isNorthEastCostChanged)));
 
 		//EastValid = If east is not a wall and east is not outside and east has not been visited or east's cost has changed!
-		isEastNeighborValid = (((!isEastWall) && (!isEastOutside)) && ((!isEastVisited) || (isNorthCostChanged)));
+		isEastNeighborValid = (((!isEastWall) && (!isEastOutside)) && ((!isEastVisited) || (isEastCostChanged)));
 
 		//SouthEastValid = If southeast is not a wall and southeast is not outside and south is not a wall and east is not a wall and southeast has not been visited or southeast's cost has changed!
 		isSouthEastNeighborValid = (((!isSouthEastWall) && (!isSouthEastOutside)) && ((!isSouthWall) && (!isEastWall)) && ((!isSouthEastVisited) || (isSouthEastCostChanged)));
