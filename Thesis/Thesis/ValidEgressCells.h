@@ -16,12 +16,12 @@ bool IsWallCheck(Position actual, Position offset)
 	return true;
 }
 
-void ValidateEgressCellsBorders(BlockPosition curPosInBlock, PositionRelations & posRel)
+void ValidateEgressCellsInCorners(BlockPosition curPosInBlock, PositionRelations & posRel)
 {
 
 }
 
-void ValidateEgressCellsCorners(Position curBlock, Position curPos, PositionRelations & posRel, std::initializer_list<Position> NeighBlkArr, std::initializer_list<Position> NeighBlkPosArr)
+void ValidateEgressCellsOutCorners(Position curBlock, Position curPos, PositionRelations & posRel, std::initializer_list<Position> NeighBlkArr, std::initializer_list<Position> NeighBlkPosArr)
 {
 	//If CurBlock[0, 0] : [1, 1] is not a WALL.
 	bool isNotCurBlkPosWall = IsWallCheck(curBlock, curPos);
@@ -71,7 +71,7 @@ void ValidateEgressCellsCorners(Position curBlock, Position curPos, PositionRela
 	}
 }
 
-void ValidateEgressCells(Position curBlock, Position curPos, PositionRelations posRel[], unsigned int limitSize)
+void ValidateEgressCells(const Position & curBlock, Position curPos, PositionRelations posRel[], const unsigned int & nOuterBordersSize)
 {
 	//CurBlock[0, 0]
 	Position CurentABS(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * (curBlock.p_x), SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * (curBlock.p_y));
@@ -92,22 +92,25 @@ void ValidateEgressCells(Position curBlock, Position curPos, PositionRelations p
 	//NBlk[0, -1]
 	Position WestABS(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * (curBlock.p_x), SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * (curBlock.p_y - 1));
 
-	//For a 4x4 block type example.
+	//For a 4x4 block type example. (X rows-vertical and Y columns-horizontal).
 
-	///X vertical and Y horizontal
-	unsigned int firstCorner = 0;														//First corner: 0
-	unsigned int cornerSlice = limitSize / 2;											//Third corner: 3
-	unsigned int additiveCornerBefore = cornerSlice - SQUARE_LDDB_BLOCK_SPLIT_SIZE_X;	//Second corner: 6
-	unsigned int additiveCornerAfter = cornerSlice + SQUARE_LDDB_BLOCK_SPLIT_SIZE_X;	//Fourth corner: 9
+	//The first corner (top left) of the square block. For a 4x4 block example: 0.
+	unsigned int firstCorner = 0;
 
-																						///[0]
-																						//Side of CurBlock: [1, 1]. Side of NeighborBlock: NBlk[0, -1]: [1, 4], NBlk[0, -1]: [2, 4], NBlk[-1, -1]: [4, 4], NBlk[-1, 0]: [4, 1], NBlk[-1, 0]: [4, 2].
-																						/*
-																						ValidateEgressCellsCorners(CurentABS, Position(1, 1), posRel[firstCorner], { WestABS, NorthWestABS, NorthABS }, { Position(1, 4), Position(2, 4), Position(4, 4), Position(4, 1), Position(4, 2) });
-																						*/
-	ValidateEgressCellsCorners(CurentABS, Position(1, 1), posRel[firstCorner], { WestABS, NorthWestABS, NorthABS }, { Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(2, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 2) });
+	//The third corner (bottom right) of the square block. For a 4x4 block example: 6.
+	unsigned int thirdCorner = nOuterBordersSize / 2;
 
+	//The second corner (top right) of the square block. For a 4x4 block example: 3.
+	unsigned int secondCorner = thirdCorner - (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1);
 
+	//The fourth corner (bottom left) of the square block. For a 4x4 block example: 9.
+	unsigned int fourthCorner = thirdCorner + (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1);
 
+	///[0]
+	//Side of CurBlock: [1, 1]. Side of NeighborBlock: NBlk[0, -1]: [1, 4], NBlk[0, -1]: [2, 4], NBlk[-1, -1]: [4, 4], NBlk[-1, 0]: [4, 1], NBlk[-1, 0]: [4, 2].
+	/*
+	ValidateEgressCellsCorners(CurentABS, Position(1, 1), posRel[firstCorner], { WestABS, NorthWestABS, NorthABS }, { Position(1, 4), Position(2, 4), Position(4, 4), Position(4, 1), Position(4, 2) });
+	*/
+	ValidateEgressCellsOutCorners(CurentABS, Position(1, 1), posRel[firstCorner], { WestABS, NorthWestABS, NorthABS }, { Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(2, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 2) });
 }
 #endif

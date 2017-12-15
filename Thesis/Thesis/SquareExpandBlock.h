@@ -11,52 +11,55 @@
 #include "Position.h"
 #include "PositionRelations.h"
 #include "EgressCells.h"
+#include "ValidEgressCells.h"
 
+/*
+
+*/
 void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells_curBlock)
 {
 	/*
 	Y = set of CurBlock's ingress nodes.
 	Expand(CurBlock, Y)
 	{
-	for side of CurBlock with neighbor NextBlock
-	{
-	for valid egress node x on current side
-	{
-	x' = egress neighbor of x on current side
-	x.g = min(y in Y)(y.g + LDDB(y,x), x.g)
-	x'.g = min(x'.g, x.g + cost(x,x'))
-	}
-	newheapvalue (priority) = min(updated x')(x'.g +x'.h)
-	if(newheapvalue < NextBlock.heapvalue)
-	{
-	NextBlock.heapvalue = newheapvalue
-	if(NextBlock not in OPEN)
-	{
-	insert NextBlock into OPEN
-	}
-	else
-	{
-	UpdateOPEN(NextBlock)
-	}
-	}
-	}
+		for side of CurBlock with neighbor NextBlock
+		{
+			for valid egress node x on current side
+			{
+				x' = egress neighbor of x on current side
+				x.g = min(y in Y)(y.g + LDDB(y,x), x.g)
+				x'.g = min(x'.g, x.g + cost(x,x'))
+			}
+			newheapvalue (priority) = min(updated x')(x'.g +x'.h)
+			if(newheapvalue < NextBlock.heapvalue)
+			{
+				NextBlock.heapvalue = newheapvalue
+				if(NextBlock not in OPEN)
+				{
+					insert NextBlock into OPEN
+				}
+				else
+				{
+					UpdateOPEN(NextBlock)
+				}
+			}
+		}
 	}
 	*/
 
-	unsigned int cSizeA = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
-	unsigned int cSizeB = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2);
+	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
+	unsigned int nInnerSize = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2);
 
-	const unsigned int cornerSize = cSizeA - cSizeB;
+	const unsigned int nOuterBordersSize = nTotalSize - nInnerSize;
 
 	//(Side of curblock) : [Neighborblk, side of neighbor blk].
-	PositionRelations * neigborsideNextBlock = new PositionRelations[cornerSize];
-	for (unsigned int nBlki = 0; nBlki < cornerSize; ++nBlki)
+	PositionRelations * neighborsideNextBlock = new PositionRelations[nOuterBordersSize];
+	for (unsigned int nBlki = 0; nBlki < nOuterBordersSize; ++nBlki)
 	{
-		neigborsideNextBlock[nBlki];
+		neighborsideNextBlock[nBlki];
 	}
 
-	unsigned int rot_count = 0;
-	EgressCells(curBlock, neigborsideNextBlock, cornerSize);
+	EgressCells(curBlock, neighborsideNextBlock, nOuterBordersSize);
 
 
 	/*
@@ -94,11 +97,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 	//NBlk[0, -1]
 	Position WestABS(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * (curBlock.p_x), SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y * (curBlock.p_y - 1));
 
+	unsigned int rot_count = 0;
+
 	///rot_count
 	//If CurBlock[0, 0] : [1, 1], and NBlk[0, -1] : [1, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 1][WestABS.p_y + 4] != WALL))
 	{
-		neigborsideNextBlock[rot_count].bValidRelation[0] = true;
+		neighborsideNextBlock[rot_count].bValidRelation[0] = true;
 	}
 	//If CurBlock[0, 0] : [1, 1], and NBlk[0, -1]: [2, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 2][WestABS.p_y + 4] != WALL))
@@ -106,7 +111,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [2, 1], and NBlk[0, -1] : [1, 4] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 2][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 1][WestABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count].bValidRelation[1] = true;
+			neighborsideNextBlock[rot_count].bValidRelation[1] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [1, 1], and NBlk[-1, -1] : [4, 4] are not WALLS! check.
@@ -115,13 +120,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If NBlk[0, -1] : [1, 4], and NBlk[-1, 0] : [4, 1] are not WALLS! check.
 		if ((mapVisited[WestABS.p_x + 1][WestABS.p_y + 4] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count].bValidRelation[2] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [1, 1], and NBlk[-1, 0]: [4, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 1] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 1] != WALL))
 	{
-		neigborsideNextBlock[rot_count].bValidRelation[3] = true;
+		neighborsideNextBlock[rot_count].bValidRelation[3] = true;
 	}
 	//If CurBlock[0, 0] : [1, 1], and NBlk[-1, 0]: [4, 2] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 1] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 2] != WALL))
@@ -129,7 +134,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0] : [4, 1] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 2] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count].bValidRelation[4] = true;
+			neighborsideNextBlock[rot_count].bValidRelation[4] = true;
 		}
 	}
 
@@ -140,13 +145,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [1, 1], and NBlk[-1, 0] : [4, 2] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 1] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 2] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 1].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 1].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0]: [4, 2] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 2] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 2] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 1].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 1].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0]: [4, 3] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 2] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 3] != WALL))
@@ -154,7 +159,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0] : [4, 2] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 3] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 2] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 1].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 1].bValidRelation[2] = true;
 		}
 	}
 
@@ -165,13 +170,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [1, 2], and NBlk[-1, 0] : [4, 3] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 2] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 3] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 2].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 2].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0]: [4, 3] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 3] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 3] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 2].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 2].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0]: [4, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 3] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 4] != WALL))
@@ -179,7 +184,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [1, 4], and NBlk[-1, 0] : [4, 3] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 4] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 3] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 2].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 2].bValidRelation[2] = true;
 		}
 	}
 
@@ -190,13 +195,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [1, 3], and NBlk[-1, 0] : [4, 4] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 3] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 3].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 3].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [1, 4], and NBlk[-1, 0]: [4, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 4] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 4] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 3].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 3].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [1, 4], and NBlk[-1, 1] : [4, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 4] != WALL) && (mapVisited[NorthEastABS.p_x + 4][NorthEastABS.p_y + 1] != WALL))
@@ -204,13 +209,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If NBlk[0, 1] : [1, 1], and NBlk[-1, 0] : [4, 4] are not WALLS! check.
 		if ((mapVisited[EastABS.p_x + 1][EastABS.p_y + 1] != WALL) && (mapVisited[NorthABS.p_x + 4][NorthABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 3].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 3].bValidRelation[2] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [1, 4], and NBlk[0, 1]: [1, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 1][EastABS.p_y + 1] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 3].bValidRelation[3] = true;
+		neighborsideNextBlock[rot_count + 3].bValidRelation[3] = true;
 	}
 	//If CurBlock[0, 0] : [1, 4], and NBlk[0, 1]: [2, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 2][EastABS.p_y + 1] != WALL))
@@ -218,7 +223,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [2, 4], and NBlk[0, 1] : [1, 1] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 2][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 1][EastABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 3].bValidRelation[4] = true;
+			neighborsideNextBlock[rot_count + 3].bValidRelation[4] = true;
 		}
 	}
 
@@ -229,13 +234,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [1, 4], and NBlk[0, 1] : [2, 1] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 2][EastABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 4].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 4].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [2, 4], and NBlk[0, 1]: [2, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 2][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 2][EastABS.p_y + 1] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 4].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 4].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [2, 4], and NBlk[0, 1]: [3, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 2][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 3][EastABS.p_y + 1] != WALL))
@@ -243,7 +248,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [3, 4], and NBlk[0, 1] : [2, 1] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 3][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 2][EastABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 4].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 4].bValidRelation[2] = true;
 		}
 	}
 
@@ -254,13 +259,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [2, 4], and NBlk[0, 1] : [3, 1] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 2][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 3][EastABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 5].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 5].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [3, 4], and NBlk[0, 1]: [3, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 3][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 3][EastABS.p_y + 1] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 5].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 5].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [3, 4], and NBlk[0, 1]: [4, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 3][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 4][EastABS.p_y + 1] != WALL))
@@ -268,7 +273,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [4, 4], and NBlk[0, 1] : [3, 1] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 3][EastABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 5].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 5].bValidRelation[2] = true;
 		}
 	}
 
@@ -279,13 +284,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [3, 4], and NBlk[0, 1] : [4, 1] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 3][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 4][EastABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 6].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 6].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [4, 4], and NBlk[0, 1] : [4, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 4] != WALL) && (mapVisited[EastABS.p_x + 4][EastABS.p_y + 1] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 6].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 6].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [4, 4], and NBlk[1, 1] : [1, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 4] != WALL) && (mapVisited[SouthEastABS.p_x + 1][SouthEastABS.p_y + 1] != WALL))
@@ -293,7 +298,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If NBlk[0, 1] : [4, 1], and NBlk[1, 0] : [1, 4] are not WALLS! check.
 		if ((mapVisited[EastABS.p_x + 4][EastABS.p_y + 1] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 6].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 6].bValidRelation[2] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [4, 4], and NBlk[1, 0]: [1, 3] are not WALLS! check.
@@ -302,13 +307,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [4, 3], and NBlk[1, 0] : [1, 4] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 3] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 6].bValidRelation[3] = true;
+			neighborsideNextBlock[rot_count + 6].bValidRelation[3] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [4, 4], and NBlk[1, 0]: [1, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 4] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 4] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 6].bValidRelation[4] = true;
+		neighborsideNextBlock[rot_count + 6].bValidRelation[4] = true;
 	}
 
 	///rot_count + 7
@@ -318,13 +323,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [4, 2], and NBlk[1, 0] : [1, 3] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 2] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 3] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 7].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 7].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [4, 3], and NBlk[1, 0]: [1, 3] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 3] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 3] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 7].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 7].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [4, 3], and NBlk[1, 0]: [1, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 3] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 4] != WALL))
@@ -332,7 +337,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [4, 4], and NBlk[1, 0] : [1, 3] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 4] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 3] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 7].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 7].bValidRelation[2] = true;
 		}
 	}
 
@@ -343,13 +348,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [4, 1], and NBlk[1, 0] : [1, 2] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 1] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 2] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 8].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 8].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [4, 2], and NBlk[1, 0]: [1, 2] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 2] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 2] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 8].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 8].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [4, 2], and NBlk[1, 0]: [1, 3] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 2] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 3] != WALL))
@@ -357,7 +362,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [4, 3], and NBlk[1, 0] : [1, 2] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 3] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 2] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 8].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 8].bValidRelation[2] = true;
 		}
 	}
 
@@ -365,7 +370,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 	//If CurBlock[0, 0] : [4, 1], and NBlk[1, 0]: [1, 1] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 1] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 1] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 9].bValidRelation[0] = true;
+		neighborsideNextBlock[rot_count + 9].bValidRelation[0] = true;
 	}
 	//If CurBlock[0, 0] : [4, 1], and NBlk[1, 0]: [1, 2] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 1] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 2] != WALL))
@@ -373,7 +378,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [4, 2], and NBlk[1, 0] : [1, 1] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 2] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 9].bValidRelation[1] = true;
+			neighborsideNextBlock[rot_count + 9].bValidRelation[1] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [4, 1], and NBlk[1, -1] : [1, 4] are not WALLS! check.
@@ -382,7 +387,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If NBlk[0, -1] : [4, 4], and NBlk[1, 0] : [1, 1] are not WALLS! check.
 		if ((mapVisited[WestABS.p_x + 4][WestABS.p_y + 4] != WALL) && (mapVisited[SouthABS.p_x + 1][SouthABS.p_y + 1] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 9].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 9].bValidRelation[2] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [4, 1], and NBlk[0, -1]: [3, 4] are not WALLS! check.
@@ -391,13 +396,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [3, 1], and NBlk[0, -1] : [4, 4] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 3][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 4][WestABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 9].bValidRelation[3] = true;
+			neighborsideNextBlock[rot_count + 9].bValidRelation[3] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [4, 1], and NBlk[0, -1]: [4, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 4][WestABS.p_y + 4] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 9].bValidRelation[4] = true;
+		neighborsideNextBlock[rot_count + 9].bValidRelation[4] = true;
 	}
 
 	///rot_count + 10
@@ -407,13 +412,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [2, 1], and NBlk[0, -1] : [3, 4] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 2][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 3][WestABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 10].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 10].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [3, 1], and NBlk[0, -1]: [3, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 3][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 3][WestABS.p_y + 4] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 10].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 10].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [3, 1], and NBlk[0, -1]: [4, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 3][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 4][WestABS.p_y + 4] != WALL))
@@ -421,7 +426,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [4, 1], and NBlk[0, -1] : [3, 4] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 4][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 3][WestABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 10].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 10].bValidRelation[2] = true;
 		}
 	}
 
@@ -432,13 +437,13 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [1, 1], and NBlk[0, -1] : [2, 4] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 1][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 2][WestABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 11].bValidRelation[0] = true;
+			neighborsideNextBlock[rot_count + 11].bValidRelation[0] = true;
 		}
 	}
 	//If CurBlock[0, 0] : [2, 1], and NBlk[0, -1]: [2, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 2][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 2][WestABS.p_y + 4] != WALL))
 	{
-		neigborsideNextBlock[rot_count + 11].bValidRelation[1] = true;
+		neighborsideNextBlock[rot_count + 11].bValidRelation[1] = true;
 	}
 	//If CurBlock[0, 0] : [2, 1], and NBlk[0, -1]: [3, 4] are not WALLS! check.
 	if ((mapVisited[CurentABS.p_x + 2][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 3][WestABS.p_y + 4] != WALL))
@@ -446,7 +451,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		//If CurBlock[0, 0] : [3, 1], and NBlk[0, -1] : [2, 4] are not WALLS! check.
 		if ((mapVisited[CurentABS.p_x + 3][CurentABS.p_y + 1] != WALL) && (mapVisited[WestABS.p_x + 2][WestABS.p_y + 4] != WALL))
 		{
-			neigborsideNextBlock[rot_count + 11].bValidRelation[2] = true;
+			neighborsideNextBlock[rot_count + 11].bValidRelation[2] = true;
 		}
 	}
 
