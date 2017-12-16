@@ -207,4 +207,23 @@ void RetraceGoalPath(const PathfindingAlgo & algoType, std::vector<Position> & g
 	//Reverse the whole vector to contain the whole list.
 	std::reverse(goalPath.begin(), goalPath.end());
 }
+
+/*
+Check if a position is a wall.
+Parameters to the function:
+actual : const Position & - The origin value.
+offset : const Position & - The offset to be added.
+Returns from the function:
+isWall : bool - The check for if it is a wall.
+This function takes in an origin and an offset, joins them together to find the position for which it finds if the position is a wall. Then it returns true, if wall, and false, otherwise.
+*/
+bool /*isWall*/ IsWallCheck(const Position & origin, const Position & offset)
+{
+	//If not a wall, return false.
+	if (mapVisited[origin.p_x + offset.p_x][origin.p_y + offset.p_y] != WALL)
+		return false;
+
+	//If wall, return true.
+	return true;
+}
 #endif

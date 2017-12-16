@@ -6,9 +6,7 @@
 
 #ifndef EGRESS_CELLS_H
 #define EGRESS_CELLS_H
-//Including the standard libraries for file operations and headers for the base square operations and the position relations structures.
-#include <iostream>
-#include <fstream>
+//Including the base headers for the base square operations and the position relations structures.
 #include "BaseSquareOperations.h"
 #include "PositionRelations.h"
 
@@ -120,11 +118,11 @@ void EgressCells(const Position & curBlock, PositionRelations posRel[], const un
 	For a 4x4 block example: position[0]: (1, 1) of the outer border positions of the block.
 	Side of CurBlock: [1, 1]. Side of NeighborBlock: NBlk[0, -1]: [1, 4], NBlk[0, -1]: [2, 4], NBlk[-1, -1]: [4, 4], NBlk[-1, 0]: [4, 1], NBlk[-1, 0]: [4, 2].
 	Position(1, 1) of currentBlock has neighbors in the three blocks adjacent to the currentBlock: WestBlk, NorthWestBlk, and NorthBlk.
-	WestBlk, we have positions: Position(1, Y), and Position(2, Y).
+	WestBlk, we have positions: Position(2, Y) and Position(1, Y).
 	NorthWestBlk, we have positions: Position(X, Y).
 	NorthBlk, we have positions: Position(X, 1), and Position(X, 2).
 	*/
-	EgressCellsOutCorners(BlockPosition(curBlock, Position(1, 1)), posRel[firstCorner], { WestBlk, NorthWestBlk, NorthBlk }, { Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(2, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 2) });
+	EgressCellsOutCorners(BlockPosition(curBlock, Position(1, 1)), posRel[firstCorner], { WestBlk, NorthWestBlk, NorthBlk }, { Position(2, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 2) });
 
 	for (unsigned int yIncrement = 2; yIncrement < SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y; ++yIncrement)
 	{
@@ -168,9 +166,9 @@ void EgressCells(const Position & curBlock, PositionRelations posRel[], const un
 	Position(X, Y) of currentBlock has neighbors in the three blocks adjacent to the currentBlock: EastBlk, SouthEastBlk, and SouthBlk.
 	EastBlk, we have positions: Position(X - 1, 1), and Position(X, 1).
 	SouthEastBlk, we have positions: Position(1, 1).
-	SouthBlk, we have positions: Position(1, Y - 1), and Position(1, Y).
+	SouthBlk, we have positions: Position(1, Y), and Position(1, Y - 1).
 	*/
-	EgressCellsOutCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y)), posRel[thirdCorner], { EastBlk, SouthEastBlk, SouthBlk }, { Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(1, 1), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) });
+	EgressCellsOutCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y)), posRel[thirdCorner], { EastBlk, SouthEastBlk, SouthBlk }, { Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(1, 1), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1) });
 
 	for (unsigned int yIncrement = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1); yIncrement > 1; --yIncrement)
 	{
@@ -189,11 +187,11 @@ void EgressCells(const Position & curBlock, PositionRelations posRel[], const un
 	For a 4x4 block example: position[9]: (4, 1) of the outer border positions of the block.
 	Side of CurBlock: [4, 1]. Side of NeighborBlock: NBlk[1, 0]: [1, 1], NBlk[1, 0]: [1, 2], NBlk[1, -1]: [1, 4], NBlk[0, -1]: [3, 4], NBlk[0, -1]: [4, 4].
 	Position(X, 1) of currentBlock has neighbors in the three blocks adjacent to the currentBlock: SouthBlk, SouthWestBlk, and WestBlk.
-	SouthBlk, we have positions: Position(1, 1), and Position(1, 2).
+	SouthBlk, we have positions: Position(1, 2), and Position(1, 1).
 	SouthWestBlk, we have positions: Position(1, Y).
-	WestBlk, we have positions: Position(X - 1, Y), and Position(X, Y).
+	WestBlk, we have positions: Position(X, Y), and Position(X - 1, Y).
 	*/
-	EgressCellsOutCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1)), posRel[fourthCorner], { SouthBlk, SouthWestBlk, WestBlk }, { Position(1, 1), Position(1, 2), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) });
+	EgressCellsOutCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1)), posRel[fourthCorner], { SouthBlk, SouthWestBlk, WestBlk }, { Position(1, 2), Position(1, 1), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) });
 
 	for (unsigned int xIncrement = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1); xIncrement > 1; --xIncrement)
 	{
