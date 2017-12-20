@@ -155,6 +155,8 @@
     <ClInclude Include="BaseDijkstra.h" />
     <ClInclude Include="BaseGreedy.h" />
     <ClInclude Include="EgressCells.h" />
+    <ClInclude Include="EgressCellsInitializer.h" />
+    <ClInclude Include="EgressCellsToFile.h" />
     <ClInclude Include="HexPrePostSearch.h" />
     <ClInclude Include="ParseHexNeighbors.h" />
     <ClInclude Include="ParseSquareNeighbors.h" />

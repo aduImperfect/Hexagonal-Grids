@@ -104,6 +104,9 @@ public:
 	//The array of valid relations that tells us which pos_To[] element is a valid relation to pos_From.
 	bool bValidRelation[MAX_RELATIONS];
 
+	//The number of maximum relations stored.
+	unsigned int max_rel;
+
 	/*
 	Construct a new block position object.
 	Parameters to the constructor:
@@ -115,6 +118,7 @@ public:
 	PositionRelations(const BlockPosition pos_F = Block_Invalid)
 	{
 		pos_From = pos_F;
+		max_rel = 0;
 		for (unsigned int i = 0; i < MAX_RELATIONS; ++i)
 		{
 			pos_To[i] = Block_Invalid;
@@ -123,23 +127,35 @@ public:
 	}
 
 	/*
+	Sets the maximum number of relations that can be possible.
+	Parameters to the function:
+	maxRel : const unsigned int & - The maximum number of relations that can be set.
+	Returns from the function:
+	NONE
+	This function takes in and sets the maximum number of position relations.
+	*/
+	void SetNumberMaxRelations(const unsigned int & maxRel)
+	{
+		max_rel = maxRel;
+	}
+
+	/*
 	Sets the values of the block position from and its block position to relations.
 	Parameters to the function:
 	pos_F : const BlockPosition - The block position to which all the relations will be set.
 	pos_T : const BlockPosition - The block position that is set as related to the pos_From (pos_F) block position based on what its relation number is.
 	nRelNo : const int - The relation number for the pos_To relational block position with respect to the pos_From block position.
-	nMaxRel : const int - The maximum number of relations the pos_From block position can have.
 	Returns from the function:
 	isSet : bool - Return value which tells us if the pos_From block position gets set the pos_T block position at relation no: nRelNo.
 	This function takes in the from block position and the to block position which gets set at nRelNo if the nRelNo is within bounds of the nMaxRel. It returns true if the relational block position gets set for pos_From, otherwise false.
 	*/
-	bool /*isSet*/ Set(const BlockPosition pos_F, const BlockPosition pos_T, const int nRelNo, const int nMaxRel)
+	bool /*isSet*/ Set(const BlockPosition pos_F, const BlockPosition pos_T, const int nRelNo)
 	{
 		//Set the pos_From to pos_F.
 		pos_From = pos_F;
 
-		//If nRelNo is greater than the nMaxRel then early exit with returning false, as we could not set the relation.
-		if (nRelNo >= nMaxRel)
+		//If nRelNo is greater than the max_rel then early exit with returning false, as we could not set the relation.
+		if (nRelNo >= max_rel)
 			return false;
 
 		//If within the relation number, set the valid relation value to false, and set the pos_To[nRelNo] to pos_T.

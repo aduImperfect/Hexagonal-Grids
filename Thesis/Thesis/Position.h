@@ -165,4 +165,7 @@ struct GreaterThanByCost
 		return lhs.posCost > rhs.posCost;
 	}
 };
+
+//Egress cells positions.
+Position SquareEGCellPos[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][OUTER_BORDERS_SIZE];
 #endif

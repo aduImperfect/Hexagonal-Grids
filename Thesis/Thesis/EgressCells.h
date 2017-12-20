@@ -23,14 +23,16 @@ This function takes in the position relations (posRel) that is set with the curr
 */
 void EgressCellsInCorners(const BlockPosition & curPosInBlock, PositionRelations & posRel, const Position & NeighBlkArr, const std::initializer_list<Position> & NeighBlkPosArr)
 {
+	posRel.SetNumberMaxRelations(MAX_IN_CORNER_RELATIONS);
+
 	//posRel.posFrom = curPosInBlock, posRel.posTo[0] = BlockPosition(NeighBlkArr, NeighBlkPosArr[0]).
-	posRel.Set(curPosInBlock, BlockPosition(NeighBlkArr, *(NeighBlkPosArr.begin() + 0)), 0, MAX_IN_CORNER_RELATIONS);
+	posRel.Set(curPosInBlock, BlockPosition(NeighBlkArr, *(NeighBlkPosArr.begin() + 0)), 0);
 
 	//posRel.posFrom = curPosInBlock, posRel.posTo[1] = BlockPosition(NeighBlkArr, NeighBlkPosArr[1]).
-	posRel.Set(curPosInBlock, BlockPosition(NeighBlkArr, *(NeighBlkPosArr.begin() + 1)), 1, MAX_IN_CORNER_RELATIONS);
+	posRel.Set(curPosInBlock, BlockPosition(NeighBlkArr, *(NeighBlkPosArr.begin() + 1)), 1);
 
 	//posRel.posFrom = curPosInBlock, posRel.posTo[2] = BlockPosition(NeighBlkArr, NeighBlkPosArr[2]).
-	posRel.Set(curPosInBlock, BlockPosition(NeighBlkArr, *(NeighBlkPosArr.begin() + 2)), 2, MAX_IN_CORNER_RELATIONS);
+	posRel.Set(curPosInBlock, BlockPosition(NeighBlkArr, *(NeighBlkPosArr.begin() + 2)), 2);
 }
 
 /*
@@ -46,20 +48,22 @@ This function takes in the position relations (posRel) that is set with the curr
 */
 void EgressCellsOutCorners(const BlockPosition & curPosInBlock, PositionRelations & posRel, const std::initializer_list<Position> & NeighBlkArr, const std::initializer_list<Position> & NeighBlkPosArr)
 {
+	posRel.SetNumberMaxRelations(MAX_OUT_CORNER_RELATIONS);
+
 	//posRel.posFrom = curPosInBlock, posRel.posTo[0] = BlockPosition(NeighBlkArr[0], NeighBlkPosArr[0]).
-	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 0), *(NeighBlkPosArr.begin() + 0)), 0, MAX_OUT_CORNER_RELATIONS);
+	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 0), *(NeighBlkPosArr.begin() + 0)), 0);
 
 	//posRel.posFrom = curPosInBlock, posRel.posTo[1] = BlockPosition(NeighBlkArr[0], NeighBlkPosArr[1]).
-	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 0), *(NeighBlkPosArr.begin() + 1)), 1, MAX_OUT_CORNER_RELATIONS);
+	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 0), *(NeighBlkPosArr.begin() + 1)), 1);
 
 	//posRel.posFrom = curPosInBlock, posRel.posTo[2] = BlockPosition(NeighBlkArr[1], NeighBlkPosArr[2]).
-	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 1), *(NeighBlkPosArr.begin() + 2)), 2, MAX_OUT_CORNER_RELATIONS);
+	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 1), *(NeighBlkPosArr.begin() + 2)), 2);
 
 	//posRel.posFrom = curPosInBlock, posRel.posTo[3] = BlockPosition(NeighBlkArr[2], NeighBlkPosArr[3]).
-	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 2), *(NeighBlkPosArr.begin() + 3)), 3, MAX_OUT_CORNER_RELATIONS);
+	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 2), *(NeighBlkPosArr.begin() + 3)), 3);
 
 	//posRel.posFrom = curPosInBlock, posRel.posTo[4] = BlockPosition(NeighBlkArr[2], NeighBlkPosArr[4]).
-	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 2), *(NeighBlkPosArr.begin() + 4)), 4, MAX_OUT_CORNER_RELATIONS);
+	posRel.Set(curPosInBlock, BlockPosition(*(NeighBlkArr.begin() + 2), *(NeighBlkPosArr.begin() + 4)), 4);
 }
 
 /*

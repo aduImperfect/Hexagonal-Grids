@@ -13,6 +13,8 @@
 #include "BaseAStar.h"
 #include "BaseBlockAStar.h"
 #include "SquareLDDBToFile.h"
+#include "EgressCellsInitializer.h"
+#include "EgressCellsToFile.h"
 
 /*
 Square Map pre-computations.
@@ -32,6 +34,7 @@ void SquareMap(const int algoType, const Position nposStart, const Position npos
 	case PathfindingAlgo::ALGO_BFS:
 		InitializeFirstSquare(EMPTY_COST_SPACE);
 		GenerateSquare(nposStart, nposGoal);
+		
 		if (showMap == 0)
 			break;
 		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
@@ -41,6 +44,7 @@ void SquareMap(const int algoType, const Position nposStart, const Position npos
 	case PathfindingAlgo::ALGO_DIJKSTRA:
 		InitializeFirstSquare(COST_MAX_TERM);
 		GenerateSquare(nposStart, nposGoal);
+		
 		if (showMap == 0)
 			break;
 		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
@@ -50,6 +54,7 @@ void SquareMap(const int algoType, const Position nposStart, const Position npos
 	case PathfindingAlgo::ALGO_GREEDY:
 		InitializeFirstSquare(COST_MAX_TERM);
 		GenerateSquare(nposStart, nposGoal);
+		
 		if (showMap == 0)
 			break;
 		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
@@ -60,6 +65,7 @@ void SquareMap(const int algoType, const Position nposStart, const Position npos
 	case PathfindingAlgo::ALGO_ASTAR:
 		InitializeFirstSquare(COST_MAX_TERM);
 		GenerateSquare(nposStart, nposGoal);
+
 		if (showMap == 0)
 			break;
 		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
@@ -69,18 +75,19 @@ void SquareMap(const int algoType, const Position nposStart, const Position npos
 		PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
 		break;
 	case PathfindingAlgo::ALGO_BLOCKASTAR:
-		SquareLDDBInitializer();
 		InitializeFirstSquare(COST_MAX_TERM);
 		GenerateSquare(nposStart, nposGoal);
-		if (showMap == 0)
-			break;
-		PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
-		PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
-		PrintSquareMapGeneric(MapVisualType::MAP_COST);
-		PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
-		PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
 
-		//Pre-calculate the Local Distance Database for the square grid.
+		if (showMap == 1)
+		{
+			PrintSquareMapGeneric(MapVisualType::MAP_VISITED);
+			PrintSquareMapGeneric(MapVisualType::MAP_CAMEFROM);
+			PrintSquareMapGeneric(MapVisualType::MAP_COST);
+			PrintSquareMapGeneric(MapVisualType::MAP_HEUCOST);
+			PrintSquareMapGeneric(MapVisualType::MAP_TOTALCOST);
+		}
+
+		SquareLDDBInitializer();
 		SquareLDDBCalc();
 
 		//A print confirming that the LDDB calculation ran without any errors/bugs by reaching this state.
@@ -92,6 +99,16 @@ void SquareMap(const int algoType, const Position nposStart, const Position npos
 
 		//A print confirming that the writing to files ran without any errors/bugs by reaching this state.
 		printf("\nSquare LDDB written to file!!\n");
+
+		EgressCellsInitialize();
+
+		//A print confirming that the Egress cells Initializations ran without any errors/bugs by reaching this state.
+		printf("\nEgress cells Calculated!!\n");
+
+		WriteEgressCellsToFile();
+
+		//A print confirming that the writing to files ran without any errors/bugs by reaching this state.
+		printf("\nEgress cells written to file!!\n");
 		break;
 	case PathfindingAlgo::ALGO_JPS:
 		break;
@@ -116,6 +133,7 @@ void HexMap(const int algoType, const Position nposStart, const Position nposGoa
 	case PathfindingAlgo::ALGO_BFS:
 		InitializeFirstHex(EMPTY_COST_SPACE);
 		GenerateHex(nposStart, nposGoal);
+		
 		if (showMap == 0)
 			break;
 		PrintHexMapGeneric(MapVisualType::MAP_VISITED);
@@ -125,6 +143,7 @@ void HexMap(const int algoType, const Position nposStart, const Position nposGoa
 	case PathfindingAlgo::ALGO_DIJKSTRA:
 		InitializeFirstHex(COST_MAX_TERM);
 		GenerateHex(nposStart, nposGoal);
+		
 		if (showMap == 0)
 			break;
 		PrintHexMapGeneric(MapVisualType::MAP_VISITED);
@@ -134,6 +153,7 @@ void HexMap(const int algoType, const Position nposStart, const Position nposGoa
 	case PathfindingAlgo::ALGO_GREEDY:
 		InitializeFirstHex(COST_MAX_TERM);
 		GenerateHex(nposStart, nposGoal);
+		
 		if (showMap == 0)
 			break;
 		PrintHexMapGeneric(MapVisualType::MAP_VISITED);
@@ -144,6 +164,7 @@ void HexMap(const int algoType, const Position nposStart, const Position nposGoa
 	case PathfindingAlgo::ALGO_ASTAR:
 		InitializeFirstHex(COST_MAX_TERM);
 		GenerateHex(nposStart, nposGoal);
+		
 		if (showMap == 0)
 			break;
 		PrintHexMapGeneric(MapVisualType::MAP_VISITED);

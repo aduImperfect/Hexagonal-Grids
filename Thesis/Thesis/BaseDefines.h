@@ -6,13 +6,14 @@
 
 #ifndef BASE_DEFINES_H
 #define BASE_DEFINES_H
+
 //The size of the grid + 1 (0 - 20).
 #define SIZE 20
 
 //Additive for square and hex grids.
-#define SQUARE_GRID 2
-#define HEX_GRID 3
-#define GRID_EXTRA 5
+#define SQUARE_GRID 1
+#define HEX_GRID 2
+#define GRID_EXTRA 4
 
 //The Square grid's total size (including the corner walls)!
 #define SQUARE_BOTTOM_RIGHT SIZE + SQUARE_GRID
@@ -111,4 +112,12 @@ double SquareLDDB[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][SQUARE_LDD
 
 //The maximum in-corner relations. 3 in the only neighboring (horizontal/vertical) block.
 #define MAX_IN_CORNER_RELATIONS 3
+
+//Egress cells defines.
+
+#define OUTER_BORDERS_SIZE (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) - (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2)
+
+unsigned int SquareEGCellNumCorners[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][OUTER_BORDERS_SIZE];
+bool SquareEgressCells[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][OUTER_BORDERS_SIZE][MAX_RELATIONS];
+
 #endif

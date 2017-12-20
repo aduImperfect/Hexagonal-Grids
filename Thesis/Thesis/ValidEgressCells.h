@@ -26,34 +26,34 @@ void ValidateEgressCellsInCorners(const Position & curBlock, const Position & cu
 {
 	Position gridPos = (curBlock.p_x + curPos.p_x, curBlock.p_y + curPos.p_y);
 
-	//If CurBlock[0, 0] : curPos is not a WALL.
-	if (!IsWallCheck(curBlock, curPos))
+	//If CurBlock[0, 0] : curPos is a WALL.
+	if (IsWallCheck(curBlock, curPos))
 	{
 		posRel.bValidRelation[0] = posRel.bValidRelation[1] = posRel.bValidRelation[2] = false;
 		return;
 	}
 
 	//If NBlk[0] : Position[0] is not WALL! check.
-	if (IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 0)))
+	if (!IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 0)))
 	{
 		//If CurBlock[0, 0] : (curPos + dirOffset), and NBlk[0] : Position[0] are not WALLS! check.
-		if (IsWallCheck(gridPos, *(dirOffset.begin() + 0)) && IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 1)))
+		if (!IsWallCheck(gridPos, *(dirOffset.begin() + 0)) && !IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 1)))
 		{
 			posRel.bValidRelation[1] = true;
 		}
 	}
 
 	//If NBlk[0] : Position[1] is not WALL! check.
-	if (IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 1)))
+	if (!IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 1)))
 	{
 		posRel.bValidRelation[1] = true;
 	}
 
 	//If NBlk[0] : Position[2] is not WALL! check.
-	if (IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 2)))
+	if (!IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 2)))
 	{
 		//If CurBlock[0, 0] : (curPos + dirOffset), and NBlk[2] : Position[2] are not WALLS! check.
-		if (IsWallCheck(gridPos, *(dirOffset.begin() + 1)) && IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 1)))
+		if (!IsWallCheck(gridPos, *(dirOffset.begin() + 1)) && !IsWallCheck(NeighBlkArr, *(NeighBlkPosArr.begin() + 1)))
 		{
 			posRel.bValidRelation[2] = true;
 		}
@@ -76,8 +76,8 @@ void ValidateEgressCellsOutCorners(Position curBlock, Position curPos, std::init
 {
 	Position gridPos = (curBlock.p_x + curPos.p_x, curBlock.p_y + curPos.p_y);
 
-	//If CurBlock[0, 0] : curPos is not a WALL.
-	if (!IsWallCheck(curBlock, curPos))
+	//If CurBlock[0, 0] : curPos is a WALL.
+	if (IsWallCheck(curBlock, curPos))
 	{
 		posRel.bValidRelation[0] = posRel.bValidRelation[1] = posRel.bValidRelation[2] = posRel.bValidRelation[3] = posRel.bValidRelation[4] = false;
 		return;

@@ -128,5 +128,11 @@
     <ClInclude Include="ValidEgressCells.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EgressCellsToFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EgressCellsInitializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

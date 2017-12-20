@@ -18,14 +18,28 @@ Thesis:
 - Implement Wall/Border/Outside calculations for Square Grids,
 - Implement LDDB for Square Grids,
 - Fix any LDDB computation bugs!!,
+- Re-form all of the code and add comments to files,
+- Implement Egress Cells (on current block) usage in current block expansion,
+- Implement BlockA* expansion of current block algorithm?
+- AM CURRENTLY AT THE ABOVE POINT IN THE LIST.
 
-- Implement BlockA* expansion of current block algrotihm?
-- Implement ingress/egress cells usage in current block expansion?
+- Port the egress cells implementations to log files (if necessary),
+- Implement ingress cells in the BlockA* main algorithm run,
+- Port the ingress cells implementations to log files (if necessary),
 - Implement BlockA* for Square Grids?,
 - Implement Wall/Border/Outside calculations for Hex Grids?,
 - Implement LDDB for Hex Grids?,
 - Implement BlockA* for Hex Grids?,
 - Implement grids to be of dynamic sizes (instead of a constant),
-- Integrating the official square grid maps for testing purposes (https://pdfs.semanticscholar.org/82ca/e9f97b7dfa0c244452065916cbc0348438a7.pdf, http://movingai.com/benchmarks/)?,
-- Converting the official square grid maps to hex grid maps for testing purposes (https://pdfs.semanticscholar.org/82ca/e9f97b7dfa0c244452065916cbc0348438a7.pdf, http://movingai.com/benchmarks/)?,
+- Integrate the official square grid maps for testing purposes (https://pdfs.semanticscholar.org/82ca/e9f97b7dfa0c244452065916cbc0348438a7.pdf, http://movingai.com/benchmarks/)?,
+- Convert the official square grid maps to hex grid maps for testing purposes (https://pdfs.semanticscholar.org/82ca/e9f97b7dfa0c244452065916cbc0348438a7.pdf, http://movingai.com/benchmarks/)?,
 - Implement distance, time, and open list memory space calculations for the algorithms?
+
+Things to finish by next week:
+- Implement BlockA* expansion of current block algorithm?
+- Implement ingress cells in the BlockA* main algorithm run,
+- Implement BlockA* for Square Grids?,
+- Port ingress/egress cells to log files (if necessary),
+- Implement Wall/Border/Outside calculations for Hex Grids (if possible to reach this point!),
+
+Git Link: https://github.com/aduImperfect/Hexagonal-Grids.
