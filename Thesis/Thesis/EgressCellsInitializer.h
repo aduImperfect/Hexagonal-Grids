@@ -63,6 +63,7 @@ void EgressCellsInitialize()
 
 				//Store the current block's grid position to a printable array.
 				SquareEGCellPos[blockI][blockJ][outerAxis] = Position(blkPos.pos_BlockNo.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + blkPos.pos_RelPos.p_x, blkPos.pos_BlockNo.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + blkPos.pos_RelPos.p_y);
+				SquareEGCellPos[blockI][blockJ][outerAxis].posCost = COST_MAX;
 
 				//Parse through all the neighbor blocks' nodes' relations with the current node.
 				for (unsigned int maxRel = 0; maxRel < egressCellsArray[outerAxis].max_rel; ++maxRel)
@@ -71,6 +72,7 @@ void EgressCellsInitialize()
 
 					//Store the neighbor block's position's grid position to a printable array.
 					SquareEGCellNeighborPos[blockI][blockJ][outerAxis][maxRel] = Position(neighBlkPos.pos_BlockNo.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + neighBlkPos.pos_RelPos.p_x, neighBlkPos.pos_BlockNo.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + neighBlkPos.pos_RelPos.p_y);
+					SquareEGCellNeighborPos[blockI][blockJ][outerAxis][maxRel].posCost = COST_MAX;
 
 					//Store the validity of the current block's position to the neighbor block's positions to a printable array.
 					SquareEgressCells[blockI][blockJ][outerAxis][maxRel] = egressCellsArray[outerAxis].bValidRelation[maxRel];
