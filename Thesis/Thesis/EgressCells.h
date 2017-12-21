@@ -76,7 +76,7 @@ Returns from the function:
 NONE
 This function takes in the current block and the position relations array that needs to be filled in with the egress cells information (valid or invalid!!) of the current block's outer positions. (No validity check of egress cells done here!!). It returns nothing.
 */
-void EgressCells(const Position & curBlock, PositionRelations posRel[], const unsigned int & nOuterBordersSize)
+void EgressCells(const Position & curBlock, PositionRelations * posRel, const unsigned int & nOuterBordersSize)
 {
 	//Adjacent blocks' positions.
 
@@ -120,13 +120,13 @@ void EgressCells(const Position & curBlock, PositionRelations posRel[], const un
 
 	/*
 	For a 4x4 block example: position[0]: (1, 1) of the outer border positions of the block.
-	Side of CurBlock: [1, 1]. Side of NeighborBlock: NBlk[0, -1]: [1, 4], NBlk[0, -1]: [2, 4], NBlk[-1, -1]: [4, 4], NBlk[-1, 0]: [4, 1], NBlk[-1, 0]: [4, 2].
+	Side of CurBlock: [1, 1]. Side of NeighborBlock: NBlk[0, -1]: [2, 4], NBlk[0, -1]: [1, 4], NBlk[-1, -1]: [4, 4], NBlk[-1, 0]: [4, 1], NBlk[-1, 0]: [4, 2].
 	Position(1, 1) of currentBlock has neighbors in the three blocks adjacent to the currentBlock: WestBlk, NorthWestBlk, and NorthBlk.
 	WestBlk, we have positions: Position(2, Y) and Position(1, Y).
 	NorthWestBlk, we have positions: Position(X, Y).
 	NorthBlk, we have positions: Position(X, 1), and Position(X, 2).
 	*/
-	EgressCellsOutCorners(BlockPosition(curBlock, Position(1, 1)), posRel[firstCorner], { WestBlk, NorthWestBlk, NorthBlk }, { Position(2, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 2) });
+	EgressCellsOutCorners(BlockPosition(curBlock, Position(1, 1)), *(posRel + firstCorner), { WestBlk, NorthWestBlk, NorthBlk }, { Position(2, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 2) });
 
 	for (unsigned int yIncrement = 2; yIncrement < SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y; ++yIncrement)
 	{
@@ -138,7 +138,7 @@ void EgressCells(const Position & curBlock, PositionRelations posRel[], const un
 		Position(1, 2), Position(1, 3),.. Position(1, K),.. Position(1, Y - 1) of currentBlock has neighbors in one block adjacent to the currentBlock: NorthBlk.
 		NorthBlk, we have positions: Position(X, K - 1), Position(X, K), and Position(X, K + 1).
 		*/
-		EgressCellsInCorners(BlockPosition(curBlock, Position(1, yIncrement)), posRel[firstCorner + (yIncrement - 1)], { NorthBlk }, { Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (yIncrement - 1)), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, yIncrement), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (yIncrement + 1)) });
+		EgressCellsInCorners(BlockPosition(curBlock, Position(1, yIncrement)), *(posRel + firstCorner + (yIncrement - 1)), { NorthBlk }, { Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (yIncrement - 1)), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, yIncrement), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (yIncrement + 1)) });
 	}
 
 	/*
@@ -149,7 +149,7 @@ void EgressCells(const Position & curBlock, PositionRelations posRel[], const un
 	NorthEastBlk, we have positions: Position(X, 1).
 	EastBlk, we have positions: Position(1, 1), and Position(2, 1).
 	*/
-	EgressCellsOutCorners(BlockPosition(curBlock, Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y)), posRel[secondCorner], { NorthBlk, NorthEastBlk, EastBlk }, { Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(1, 1), Position(2, 1) });
+	EgressCellsOutCorners(BlockPosition(curBlock, Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y)), *(posRel + secondCorner), { NorthBlk, NorthEastBlk, EastBlk }, { Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(1, 1), Position(2, 1) });
 
 	for (unsigned int xIncrement = 2; xIncrement < SQUARE_LDDB_BLOCK_SPLIT_SIZE_X; ++xIncrement)
 	{
@@ -161,53 +161,53 @@ void EgressCells(const Position & curBlock, PositionRelations posRel[], const un
 		Position(2, 1), Position(3, 1),.. Position(K, 1),.. Position(X - 1, 1) of currentBlock has neighbors in one block adjacent to the currentBlock: EastBlk.
 		EastBlk, we have positions: Position(K - 1, 1), Position(K, 1), and Position(K + 1, 1).
 		*/
-		EgressCellsInCorners(BlockPosition(curBlock, Position(xIncrement, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y)), posRel[secondCorner + (xIncrement - 1)], { EastBlk }, { Position((xIncrement - 1), 1), Position(xIncrement, 1), Position((xIncrement + 1), 1) });
+		EgressCellsInCorners(BlockPosition(curBlock, Position(xIncrement, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y)), *(posRel + secondCorner + (xIncrement - 1)), { EastBlk }, { Position((xIncrement - 1), 1), Position(xIncrement, 1), Position((xIncrement + 1), 1) });
 	}
 
 	/*
 	For a 4x4 block example: position[6]: (4, 4) of the outer border positions of the block.
-	Side of CurBlock: [4, 4]. Side of NeighborBlock: NBlk[0, 1]: [3, 1], NBlk[0, 1]: [4, 1], NBlk[1, 1]: [1, 1], NBlk[1, 0]: [1, 3], NBlk[1, 0]: [1, 4].
+	Side of CurBlock: [4, 4]. Side of NeighborBlock: NBlk[0, 1]: [3, 1], NBlk[0, 1]: [4, 1], NBlk[1, 1]: [1, 1], NBlk[1, 0]: [1, 4], NBlk[1, 0]: [1, 3].
 	Position(X, Y) of currentBlock has neighbors in the three blocks adjacent to the currentBlock: EastBlk, SouthEastBlk, and SouthBlk.
 	EastBlk, we have positions: Position(X - 1, 1), and Position(X, 1).
 	SouthEastBlk, we have positions: Position(1, 1).
 	SouthBlk, we have positions: Position(1, Y), and Position(1, Y - 1).
 	*/
-	EgressCellsOutCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y)), posRel[thirdCorner], { EastBlk, SouthEastBlk, SouthBlk }, { Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(1, 1), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1) });
+	EgressCellsOutCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y)), *(posRel + thirdCorner), { EastBlk, SouthEastBlk, SouthBlk }, { Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1, 1), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1), Position(1, 1), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1) });
 
 	for (unsigned int yIncrement = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1); yIncrement > 1; --yIncrement)
 	{
 		/*
 		For a 4x4 block example: position[7]: (4, 3) of the outer border positions of the block.
 		For a 4x4 block example: position[8]: (4, 2) of the outer border positions of the block.
-		Side of CurBlock: [4, 3]. Side of NeighborBlock: NBlk[1, 0]: [1, 2], NBlk[1, 0]: [1, 3], NBlk[1, 0]: [1, 4].
-		Side of CurBlock: [4, 2]. Side of NeighborBlock: NBlk[1, 0]: [1, 1], NBlk[1, 0]: [1, 2], NBlk[1, 0]: [1, 3].
+		Side of CurBlock: [4, 3]. Side of NeighborBlock: NBlk[1, 0]: [1, 4], NBlk[1, 0]: [1, 3], NBlk[1, 0]: [1, 2].
+		Side of CurBlock: [4, 2]. Side of NeighborBlock: NBlk[1, 0]: [1, 3], NBlk[1, 0]: [1, 2], NBlk[1, 0]: [1, 1].
 		Position(X, Y - 1), Position(X, Y - 2),.. Position(X, K),.. Position(X, 2) of currentBlock has neighbors in one block adjacent to the currentBlock: SouthBlk.
-		SouthBlk, we have positions: Position(1, K - 1), Position(1, K), and Position(1, K + 1).
+		SouthBlk, we have positions: Position(1, K + 1), Position(1, K), and Position(1, K - 1).
 		*/
-		EgressCellsInCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, yIncrement)), posRel[thirdCorner + (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - yIncrement)], { SouthBlk }, { Position(1, (yIncrement - 1)), Position(1, yIncrement), Position(1, (yIncrement + 1)) });
+		EgressCellsInCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, yIncrement)), *(posRel + thirdCorner + (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - yIncrement)), { SouthBlk }, { Position(1, (yIncrement + 1)), Position(1, yIncrement), Position(1, (yIncrement - 1)) });
 	}
 
 	/*
 	For a 4x4 block example: position[9]: (4, 1) of the outer border positions of the block.
-	Side of CurBlock: [4, 1]. Side of NeighborBlock: NBlk[1, 0]: [1, 1], NBlk[1, 0]: [1, 2], NBlk[1, -1]: [1, 4], NBlk[0, -1]: [3, 4], NBlk[0, -1]: [4, 4].
+	Side of CurBlock: [4, 1]. Side of NeighborBlock: NBlk[1, 0]: [1, 2], NBlk[1, 0]: [1, 1], NBlk[1, -1]: [1, 4], NBlk[0, -1]: [4, 4], NBlk[0, -1]: [3, 4].
 	Position(X, 1) of currentBlock has neighbors in the three blocks adjacent to the currentBlock: SouthBlk, SouthWestBlk, and WestBlk.
 	SouthBlk, we have positions: Position(1, 2), and Position(1, 1).
 	SouthWestBlk, we have positions: Position(1, Y).
 	WestBlk, we have positions: Position(X, Y), and Position(X - 1, Y).
 	*/
-	EgressCellsOutCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1)), posRel[fourthCorner], { SouthBlk, SouthWestBlk, WestBlk }, { Position(1, 2), Position(1, 1), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) });
+	EgressCellsOutCorners(BlockPosition(curBlock, Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, 1)), *(posRel + fourthCorner), { SouthBlk, SouthWestBlk, WestBlk }, { Position(1, 2), Position(1, 1), Position(1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) });
 
 	for (unsigned int xIncrement = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1); xIncrement > 1; --xIncrement)
 	{
 		/*
 		For a 4x4 block example: position[10]: (3, 1) of the outer border positions of the block.
 		For a 4x4 block example: position[11]: (2, 1) of the outer border positions of the block.
-		Side of CurBlock: [3, 1]. Side of NeighborBlock: NBlk[0, -1]: [2, 4], NBlk[0, -1]: [3, 4], NBlk[0, -1]: [4, 4].
-		Side of CurBlock: [2, 1]. Side of NeighborBlock: NBlk[0, -1]: [1, 4], NBlk[0, -1]: [2, 4], NBlk[0, -1]: [3, 4].
+		Side of CurBlock: [3, 1]. Side of NeighborBlock: NBlk[0, -1]: [4, 4], NBlk[0, -1]: [3, 4], NBlk[0, -1]: [2, 4].
+		Side of CurBlock: [2, 1]. Side of NeighborBlock: NBlk[0, -1]: [3, 4], NBlk[0, -1]: [2, 4], NBlk[0, -1]: [1, 4].
 		Position(X - 1, 1), Position(X - 2, 1),.. Position(K, 1),.. Position(2, 1) of currentBlock has neighbors in one block adjacent to the currentBlock: WestBlk.
-		WestBlk, we have positions: Position(K - 1, Y), Position(K, Y), and Position(K + 1, Y).
+		WestBlk, we have positions: Position(K + 1, Y), Position(K, Y), and Position(K - 1, Y).
 		*/
-		EgressCellsInCorners(BlockPosition(curBlock, Position(xIncrement, 1)), posRel[fourthCorner + (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - xIncrement)], { WestBlk }, { Position((xIncrement - 1), SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(xIncrement, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position((xIncrement + 1), SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) });
+		EgressCellsInCorners(BlockPosition(curBlock, Position(xIncrement, 1)), *(posRel + fourthCorner + (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - xIncrement)), { WestBlk }, { Position((xIncrement + 1), SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position(xIncrement, SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y), Position((xIncrement - 1), SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) });
 	}
 }
 #endif

@@ -1,376 +1,676 @@
 
 
 Block[0][0]:
-MAX RELATIONS [5] for POS[1][1]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][2]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][3]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[1][4]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[2][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[4][4]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][2]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][1]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[3][1]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[2][1]: 	_FALSE_	_FALSE_	_FALSE_
+MAX RELATIONS [5] for POS[1][1]: 	NP[2][0]	NP[1][0]	NP[0][0]	NP[0][1]	NP[0][2]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][2]: 	NP[0][1]	NP[0][2]	NP[0][3]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][3]: 	NP[0][2]	NP[0][3]	NP[0][4]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[1][4]: 	NP[0][3]	NP[0][4]	NP[0][5]	NP[1][5]	NP[2][5]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[2][4]: 	NP[1][5]	NP[2][5]	NP[3][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[3][4]: 	NP[2][5]	NP[3][5]	NP[4][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][4]: 	NP[3][5]	NP[4][5]	NP[5][5]	NP[5][4]	NP[5][3]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][3]: 	NP[5][4]	NP[5][3]	NP[5][2]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][2]: 	NP[5][3]	NP[5][2]	NP[5][1]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][1]: 	NP[5][2]	NP[5][1]	NP[5][0]	NP[4][0]	NP[3][0]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[3][1]: 	NP[4][0]	NP[3][0]	NP[2][0]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[2][1]: 	NP[3][0]	NP[2][0]	NP[1][0]
+									_FALSE_		_FALSE_		_FALSE_
 
 
 Block[0][1]:
-MAX RELATIONS [5] for POS[1][2]: 	_FALSE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][3]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[1][5]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[2][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[4][5]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][2]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][2]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[2][2]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[1][5]: 	NP[2][4]	NP[1][4]	NP[0][4]	NP[0][5]	NP[0][6]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][6]: 	NP[0][5]	NP[0][6]	NP[0][7]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][7]: 	NP[0][6]	NP[0][7]	NP[0][8]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[1][8]: 	NP[0][7]	NP[0][8]	NP[0][9]	NP[1][9]	NP[2][9]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[2][8]: 	NP[1][9]	NP[2][9]	NP[3][9]
+									_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[3][8]: 	NP[2][9]	NP[3][9]	NP[4][9]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][8]: 	NP[3][9]	NP[4][9]	NP[5][9]	NP[5][8]	NP[5][7]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][7]: 	NP[5][8]	NP[5][7]	NP[5][6]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][6]: 	NP[5][7]	NP[5][6]	NP[5][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][5]: 	NP[5][6]	NP[5][5]	NP[5][4]	NP[4][4]	NP[3][4]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[3][5]: 	NP[4][4]	NP[3][4]	NP[2][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[2][5]: 	NP[3][4]	NP[2][4]	NP[1][4]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[0][2]:
-MAX RELATIONS [5] for POS[1][3]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][5]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[1][6]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[2][6]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][6]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[4][6]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][3]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][3]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[2][3]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[1][9]: 	NP[2][8]	NP[1][8]	NP[0][8]	NP[0][9]	NP[0][10]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][10]: 	NP[0][9]	NP[0][10]	NP[0][11]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][11]: 	NP[0][10]	NP[0][11]	NP[0][12]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[1][12]: 	NP[0][11]	NP[0][12]	NP[0][13]	NP[1][13]	NP[2][13]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[2][12]: 	NP[1][13]	NP[2][13]	NP[3][13]
+									_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[3][12]: 	NP[2][13]	NP[3][13]	NP[4][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][12]: 	NP[3][13]	NP[4][13]	NP[5][13]	NP[5][12]	NP[5][11]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][11]: 	NP[5][12]	NP[5][11]	NP[5][10]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][10]: 	NP[5][11]	NP[5][10]	NP[5][9]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][9]: 	NP[5][10]	NP[5][9]	NP[5][8]	NP[4][8]	NP[3][8]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[3][9]: 	NP[4][8]	NP[3][8]	NP[2][8]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[2][9]: 	NP[3][8]	NP[2][8]	NP[1][8]
+									_TRUE_		_TRUE_		_FALSE_
 
 
 Block[0][3]:
-MAX RELATIONS [5] for POS[1][4]: 	_FALSE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][5]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][6]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[1][7]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[2][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[4][7]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][4]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[2][4]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[1][13]: 	NP[2][12]	NP[1][12]	NP[0][12]	NP[0][13]	NP[0][14]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][14]: 	NP[0][13]	NP[0][14]	NP[0][15]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][15]: 	NP[0][14]	NP[0][15]	NP[0][16]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[1][16]: 	NP[0][15]	NP[0][16]	NP[0][17]	NP[1][17]	NP[2][17]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[2][16]: 	NP[1][17]	NP[2][17]	NP[3][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[3][16]: 	NP[2][17]	NP[3][17]	NP[4][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][16]: 	NP[3][17]	NP[4][17]	NP[5][17]	NP[5][16]	NP[5][15]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][15]: 	NP[5][16]	NP[5][15]	NP[5][14]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][14]: 	NP[5][15]	NP[5][14]	NP[5][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][13]: 	NP[5][14]	NP[5][13]	NP[5][12]	NP[4][12]	NP[3][12]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[3][13]: 	NP[4][12]	NP[3][12]	NP[2][12]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[2][13]: 	NP[3][12]	NP[2][12]	NP[1][12]
+									_TRUE_		_TRUE_		_FALSE_
 
 
 Block[0][4]:
-MAX RELATIONS [5] for POS[1][5]: 	_FALSE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][6]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[1][7]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[1][8]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[2][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[3][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[4][8]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][7]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][5]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[2][5]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[1][17]: 	NP[2][16]	NP[1][16]	NP[0][16]	NP[0][17]	NP[0][18]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][18]: 	NP[0][17]	NP[0][18]	NP[0][19]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[1][19]: 	NP[0][18]	NP[0][19]	NP[0][20]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[1][20]: 	NP[0][19]	NP[0][20]	NP[0][21]	NP[1][21]	NP[2][21]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[2][20]: 	NP[1][21]	NP[2][21]	NP[3][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[3][20]: 	NP[2][21]	NP[3][21]	NP[4][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[4][20]: 	NP[3][21]	NP[4][21]	NP[5][21]	NP[5][20]	NP[5][19]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][19]: 	NP[5][20]	NP[5][19]	NP[5][18]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[4][18]: 	NP[5][19]	NP[5][18]	NP[5][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[4][17]: 	NP[5][18]	NP[5][17]	NP[5][16]	NP[4][16]	NP[3][16]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[3][17]: 	NP[4][16]	NP[3][16]	NP[2][16]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[2][17]: 	NP[3][16]	NP[2][16]	NP[1][16]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[1][0]:
-MAX RELATIONS [5] for POS[2][1]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][2]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[2][4]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[5][4]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][2]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][1]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[4][1]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[3][1]: 	_FALSE_	_FALSE_	_FALSE_
+MAX RELATIONS [5] for POS[5][1]: 	NP[6][0]	NP[5][0]	NP[4][0]	NP[4][1]	NP[4][2]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][2]: 	NP[4][1]	NP[4][2]	NP[4][3]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][3]: 	NP[4][2]	NP[4][3]	NP[4][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[5][4]: 	NP[4][3]	NP[4][4]	NP[4][5]	NP[5][5]	NP[6][5]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[6][4]: 	NP[5][5]	NP[6][5]	NP[7][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[7][4]: 	NP[6][5]	NP[7][5]	NP[8][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][4]: 	NP[7][5]	NP[8][5]	NP[9][5]	NP[9][4]	NP[9][3]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][3]: 	NP[9][4]	NP[9][3]	NP[9][2]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][2]: 	NP[9][3]	NP[9][2]	NP[9][1]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][1]: 	NP[9][2]	NP[9][1]	NP[9][0]	NP[8][0]	NP[7][0]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[7][1]: 	NP[8][0]	NP[7][0]	NP[6][0]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[6][1]: 	NP[7][0]	NP[6][0]	NP[5][0]
+									_FALSE_		_FALSE_		_FALSE_
 
 
 Block[1][1]:
-MAX RELATIONS [5] for POS[2][2]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[2][5]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[5][5]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][2]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][2]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][2]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[5][5]: 	NP[6][4]	NP[5][4]	NP[4][4]	NP[4][5]	NP[4][6]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][6]: 	NP[4][5]	NP[4][6]	NP[4][7]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][7]: 	NP[4][6]	NP[4][7]	NP[4][8]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[5][8]: 	NP[4][7]	NP[4][8]	NP[4][9]	NP[5][9]	NP[6][9]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[6][8]: 	NP[5][9]	NP[6][9]	NP[7][9]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[7][8]: 	NP[6][9]	NP[7][9]	NP[8][9]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][8]: 	NP[7][9]	NP[8][9]	NP[9][9]	NP[9][8]	NP[9][7]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][7]: 	NP[9][8]	NP[9][7]	NP[9][6]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][6]: 	NP[9][7]	NP[9][6]	NP[9][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][5]: 	NP[9][6]	NP[9][5]	NP[9][4]	NP[8][4]	NP[7][4]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[7][5]: 	NP[8][4]	NP[7][4]	NP[6][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[6][5]: 	NP[7][4]	NP[6][4]	NP[5][4]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[1][2]:
-MAX RELATIONS [5] for POS[2][3]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[2][6]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][6]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][6]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[5][6]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][3]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][3]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][3]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[5][9]: 	NP[6][8]	NP[5][8]	NP[4][8]	NP[4][9]	NP[4][10]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][10]: 	NP[4][9]	NP[4][10]	NP[4][11]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][11]: 	NP[4][10]	NP[4][11]	NP[4][12]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[5][12]: 	NP[4][11]	NP[4][12]	NP[4][13]	NP[5][13]	NP[6][13]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[6][12]: 	NP[5][13]	NP[6][13]	NP[7][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[7][12]: 	NP[6][13]	NP[7][13]	NP[8][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][12]: 	NP[7][13]	NP[8][13]	NP[9][13]	NP[9][12]	NP[9][11]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][11]: 	NP[9][12]	NP[9][11]	NP[9][10]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][10]: 	NP[9][11]	NP[9][10]	NP[9][9]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][9]: 	NP[9][10]	NP[9][9]	NP[9][8]	NP[8][8]	NP[7][8]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[7][9]: 	NP[8][8]	NP[7][8]	NP[6][8]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[6][9]: 	NP[7][8]	NP[6][8]	NP[5][8]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[1][3]:
-MAX RELATIONS [5] for POS[2][4]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[2][7]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[5][7]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][4]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][4]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[5][13]: 	NP[6][12]	NP[5][12]	NP[4][12]	NP[4][13]	NP[4][14]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][14]: 	NP[4][13]	NP[4][14]	NP[4][15]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][15]: 	NP[4][14]	NP[4][15]	NP[4][16]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[5][16]: 	NP[4][15]	NP[4][16]	NP[4][17]	NP[5][17]	NP[6][17]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[6][16]: 	NP[5][17]	NP[6][17]	NP[7][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[7][16]: 	NP[6][17]	NP[7][17]	NP[8][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][16]: 	NP[7][17]	NP[8][17]	NP[9][17]	NP[9][16]	NP[9][15]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][15]: 	NP[9][16]	NP[9][15]	NP[9][14]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][14]: 	NP[9][15]	NP[9][14]	NP[9][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][13]: 	NP[9][14]	NP[9][13]	NP[9][12]	NP[8][12]	NP[7][12]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[7][13]: 	NP[8][12]	NP[7][12]	NP[6][12]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[6][13]: 	NP[7][12]	NP[6][12]	NP[5][12]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[1][4]:
-MAX RELATIONS [5] for POS[2][5]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[2][7]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[2][8]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[3][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[4][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[5][8]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][7]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][5]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[3][5]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[5][17]: 	NP[6][16]	NP[5][16]	NP[4][16]	NP[4][17]	NP[4][18]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][18]: 	NP[4][17]	NP[4][18]	NP[4][19]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[5][19]: 	NP[4][18]	NP[4][19]	NP[4][20]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[5][20]: 	NP[4][19]	NP[4][20]	NP[4][21]	NP[5][21]	NP[6][21]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[6][20]: 	NP[5][21]	NP[6][21]	NP[7][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[7][20]: 	NP[6][21]	NP[7][21]	NP[8][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[8][20]: 	NP[7][21]	NP[8][21]	NP[9][21]	NP[9][20]	NP[9][19]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][19]: 	NP[9][20]	NP[9][19]	NP[9][18]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[8][18]: 	NP[9][19]	NP[9][18]	NP[9][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[8][17]: 	NP[9][18]	NP[9][17]	NP[9][16]	NP[8][16]	NP[7][16]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[7][17]: 	NP[8][16]	NP[7][16]	NP[6][16]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[6][17]: 	NP[7][16]	NP[6][16]	NP[5][16]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[2][0]:
-MAX RELATIONS [5] for POS[3][1]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][2]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[3][4]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[6][4]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][2]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[6][1]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][1]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[4][1]: 	_FALSE_	_FALSE_	_FALSE_
+MAX RELATIONS [5] for POS[9][1]: 	NP[10][0]	NP[9][0]	NP[8][0]	NP[8][1]	NP[8][2]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][2]: 	NP[8][1]	NP[8][2]	NP[8][3]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][3]: 	NP[8][2]	NP[8][3]	NP[8][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[9][4]: 	NP[8][3]	NP[8][4]	NP[8][5]	NP[9][5]	NP[10][5]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[10][4]: 	NP[9][5]	NP[10][5]	NP[11][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[11][4]: 	NP[10][5]	NP[11][5]	NP[12][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[12][4]: 	NP[11][5]	NP[12][5]	NP[13][5]	NP[13][4]	NP[13][3]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][3]: 	NP[13][4]	NP[13][3]	NP[13][2]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][2]: 	NP[13][3]	NP[13][2]	NP[13][1]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[12][1]: 	NP[13][2]	NP[13][1]	NP[13][0]	NP[12][0]	NP[11][0]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[11][1]: 	NP[12][0]	NP[11][0]	NP[10][0]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[10][1]: 	NP[11][0]	NP[10][0]	NP[9][0]
+									_FALSE_		_FALSE_		_FALSE_
 
 
 Block[2][1]:
-MAX RELATIONS [5] for POS[3][2]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[3][5]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][5]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][5]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[6][5]: 	_FALSE_	_TRUE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[6][2]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][2]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][2]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[9][5]: 	NP[10][4]	NP[9][4]	NP[8][4]	NP[8][5]	NP[8][6]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][6]: 	NP[8][5]	NP[8][6]	NP[8][7]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][7]: 	NP[8][6]	NP[8][7]	NP[8][8]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[9][8]: 	NP[8][7]	NP[8][8]	NP[8][9]	NP[9][9]	NP[10][9]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[10][8]: 	NP[9][9]	NP[10][9]	NP[11][9]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[11][8]: 	NP[10][9]	NP[11][9]	NP[12][9]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[12][8]: 	NP[11][9]	NP[12][9]	NP[13][9]	NP[13][8]	NP[13][7]
+									_FALSE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][7]: 	NP[13][8]	NP[13][7]	NP[13][6]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][6]: 	NP[13][7]	NP[13][6]	NP[13][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[12][5]: 	NP[13][6]	NP[13][5]	NP[13][4]	NP[12][4]	NP[11][4]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[11][5]: 	NP[12][4]	NP[11][4]	NP[10][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[10][5]: 	NP[11][4]	NP[10][4]	NP[9][4]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[2][2]:
-MAX RELATIONS [5] for POS[3][3]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[3][6]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][6]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][6]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[6][6]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[6][3]: 	_FALSE_	_FALSE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][3]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[4][3]: 	_FALSE_	_FALSE_	_FALSE_
+MAX RELATIONS [5] for POS[9][9]: 	NP[10][8]	NP[9][8]	NP[8][8]	NP[8][9]	NP[8][10]
+									_FALSE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][10]: 	NP[8][9]	NP[8][10]	NP[8][11]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][11]: 	NP[8][10]	NP[8][11]	NP[8][12]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[9][12]: 	NP[8][11]	NP[8][12]	NP[8][13]	NP[9][13]	NP[10][13]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[10][12]: 	NP[9][13]	NP[10][13]	NP[11][13]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[11][12]: 	NP[10][13]	NP[11][13]	NP[12][13]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[12][12]: 	NP[11][13]	NP[12][13]	NP[13][13]	NP[13][12]	NP[13][11]
+									_FALSE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][11]: 	NP[13][12]	NP[13][11]	NP[13][10]
+									_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[12][10]: 	NP[13][11]	NP[13][10]	NP[13][9]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[12][9]: 	NP[13][10]	NP[13][9]	NP[13][8]	NP[12][8]	NP[11][8]
+									_FALSE_		_TRUE_		_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[11][9]: 	NP[12][8]	NP[11][8]	NP[10][8]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[10][9]: 	NP[11][8]	NP[10][8]	NP[9][8]
+									_FALSE_		_FALSE_		_FALSE_
 
 
 Block[2][3]:
-MAX RELATIONS [5] for POS[3][4]: 	_FALSE_	_FALSE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[3][7]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][7]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[6][7]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[6][4]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[4][4]: 	_FALSE_	_FALSE_	_FALSE_
+MAX RELATIONS [5] for POS[9][13]: 	NP[10][12]	NP[9][12]	NP[8][12]	NP[8][13]	NP[8][14]
+									_FALSE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][14]: 	NP[8][13]	NP[8][14]	NP[8][15]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][15]: 	NP[8][14]	NP[8][15]	NP[8][16]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[9][16]: 	NP[8][15]	NP[8][16]	NP[8][17]	NP[9][17]	NP[10][17]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[10][16]: 	NP[9][17]	NP[10][17]	NP[11][17]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[11][16]: 	NP[10][17]	NP[11][17]	NP[12][17]
+									_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[12][16]: 	NP[11][17]	NP[12][17]	NP[13][17]	NP[13][16]	NP[13][15]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][15]: 	NP[13][16]	NP[13][15]	NP[13][14]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][14]: 	NP[13][15]	NP[13][14]	NP[13][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[12][13]: 	NP[13][14]	NP[13][13]	NP[13][12]	NP[12][12]	NP[11][12]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[11][13]: 	NP[12][12]	NP[11][12]	NP[10][12]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[10][13]: 	NP[11][12]	NP[10][12]	NP[9][12]
+									_FALSE_		_FALSE_		_FALSE_
 
 
 Block[2][4]:
-MAX RELATIONS [5] for POS[3][5]: 	_FALSE_	_FALSE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[3][7]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[3][8]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[4][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[6][8]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][7]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[6][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[6][5]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][5]: 	_FALSE_	_FALSE_	_FALSE_
+MAX RELATIONS [5] for POS[9][17]: 	NP[10][16]	NP[9][16]	NP[8][16]	NP[8][17]	NP[8][18]
+									_FALSE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][18]: 	NP[8][17]	NP[8][18]	NP[8][19]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[9][19]: 	NP[8][18]	NP[8][19]	NP[8][20]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[9][20]: 	NP[8][19]	NP[8][20]	NP[8][21]	NP[9][21]	NP[10][21]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[10][20]: 	NP[9][21]	NP[10][21]	NP[11][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[11][20]: 	NP[10][21]	NP[11][21]	NP[12][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[12][20]: 	NP[11][21]	NP[12][21]	NP[13][21]	NP[13][20]	NP[13][19]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][19]: 	NP[13][20]	NP[13][19]	NP[13][18]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[12][18]: 	NP[13][19]	NP[13][18]	NP[13][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[12][17]: 	NP[13][18]	NP[13][17]	NP[13][16]	NP[12][16]	NP[11][16]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[11][17]: 	NP[12][16]	NP[11][16]	NP[10][16]
+									_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[10][17]: 	NP[11][16]	NP[10][16]	NP[9][16]
+									_FALSE_		_FALSE_		_FALSE_
 
 
 Block[3][0]:
-MAX RELATIONS [5] for POS[4][1]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][2]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][4]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[7][4]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][2]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[7][1]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[6][1]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][1]: 	_FALSE_	_FALSE_	_FALSE_
+MAX RELATIONS [5] for POS[13][1]: 	NP[14][0]	NP[13][0]	NP[12][0]	NP[12][1]	NP[12][2]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[13][2]: 	NP[12][1]	NP[12][2]	NP[12][3]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[13][3]: 	NP[12][2]	NP[12][3]	NP[12][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[13][4]: 	NP[12][3]	NP[12][4]	NP[12][5]	NP[13][5]	NP[14][5]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[14][4]: 	NP[13][5]	NP[14][5]	NP[15][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[15][4]: 	NP[14][5]	NP[15][5]	NP[16][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[16][4]: 	NP[15][5]	NP[16][5]	NP[17][5]	NP[17][4]	NP[17][3]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][3]: 	NP[17][4]	NP[17][3]	NP[17][2]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][2]: 	NP[17][3]	NP[17][2]	NP[17][1]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[16][1]: 	NP[17][2]	NP[17][1]	NP[17][0]	NP[16][0]	NP[15][0]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[15][1]: 	NP[16][0]	NP[15][0]	NP[14][0]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[14][1]: 	NP[15][0]	NP[14][0]	NP[13][0]
+									_FALSE_		_FALSE_		_FALSE_
 
 
 Block[3][1]:
-MAX RELATIONS [5] for POS[4][2]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][5]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[7][5]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[7][2]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][2]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][2]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[13][5]: 	NP[14][4]	NP[13][4]	NP[12][4]	NP[12][5]	NP[12][6]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[13][6]: 	NP[12][5]	NP[12][6]	NP[12][7]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[13][7]: 	NP[12][6]	NP[12][7]	NP[12][8]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[13][8]: 	NP[12][7]	NP[12][8]	NP[12][9]	NP[13][9]	NP[14][9]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[14][8]: 	NP[13][9]	NP[14][9]	NP[15][9]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[15][8]: 	NP[14][9]	NP[15][9]	NP[16][9]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[16][8]: 	NP[15][9]	NP[16][9]	NP[17][9]	NP[17][8]	NP[17][7]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][7]: 	NP[17][8]	NP[17][7]	NP[17][6]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][6]: 	NP[17][7]	NP[17][6]	NP[17][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[16][5]: 	NP[17][6]	NP[17][5]	NP[17][4]	NP[16][4]	NP[15][4]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[15][5]: 	NP[16][4]	NP[15][4]	NP[14][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[14][5]: 	NP[15][4]	NP[14][4]	NP[13][4]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[3][2]:
-MAX RELATIONS [5] for POS[4][3]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[4][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[4][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][6]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][6]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][6]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[7][6]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[7][3]: 	_FALSE_	_FALSE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][3]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][3]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[13][9]: 	NP[14][8]	NP[13][8]	NP[12][8]	NP[12][9]	NP[12][10]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[13][10]: 	NP[12][9]	NP[12][10]	NP[12][11]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[13][11]: 	NP[12][10]	NP[12][11]	NP[12][12]
+									_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[13][12]: 	NP[12][11]	NP[12][12]	NP[12][13]	NP[13][13]	NP[14][13]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[14][12]: 	NP[13][13]	NP[14][13]	NP[15][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[15][12]: 	NP[14][13]	NP[15][13]	NP[16][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[16][12]: 	NP[15][13]	NP[16][13]	NP[17][13]	NP[17][12]	NP[17][11]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][11]: 	NP[17][12]	NP[17][11]	NP[17][10]
+									_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[16][10]: 	NP[17][11]	NP[17][10]	NP[17][9]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[16][9]: 	NP[17][10]	NP[17][9]	NP[17][8]	NP[16][8]	NP[15][8]
+									_FALSE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[15][9]: 	NP[16][8]	NP[15][8]	NP[14][8]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[14][9]: 	NP[15][8]	NP[14][8]	NP[13][8]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[3][3]:
-MAX RELATIONS [5] for POS[4][4]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][7]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[7][7]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[7][4]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][4]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[13][13]: 	NP[14][12]	NP[13][12]	NP[12][12]	NP[12][13]	NP[12][14]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[13][14]: 	NP[12][13]	NP[12][14]	NP[12][15]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[13][15]: 	NP[12][14]	NP[12][15]	NP[12][16]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[13][16]: 	NP[12][15]	NP[12][16]	NP[12][17]	NP[13][17]	NP[14][17]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[14][16]: 	NP[13][17]	NP[14][17]	NP[15][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[15][16]: 	NP[14][17]	NP[15][17]	NP[16][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[16][16]: 	NP[15][17]	NP[16][17]	NP[17][17]	NP[17][16]	NP[17][15]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][15]: 	NP[17][16]	NP[17][15]	NP[17][14]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][14]: 	NP[17][15]	NP[17][14]	NP[17][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[16][13]: 	NP[17][14]	NP[17][13]	NP[17][12]	NP[16][12]	NP[15][12]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[15][13]: 	NP[16][12]	NP[15][12]	NP[14][12]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[14][13]: 	NP[15][12]	NP[14][12]	NP[13][12]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[3][4]:
-MAX RELATIONS [5] for POS[4][5]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[4][7]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[4][8]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[6][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[7][8]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][7]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[7][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[7][5]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][5]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[13][17]: 	NP[14][16]	NP[13][16]	NP[12][16]	NP[12][17]	NP[12][18]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[13][18]: 	NP[12][17]	NP[12][18]	NP[12][19]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[13][19]: 	NP[12][18]	NP[12][19]	NP[12][20]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[13][20]: 	NP[12][19]	NP[12][20]	NP[12][21]	NP[13][21]	NP[14][21]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[14][20]: 	NP[13][21]	NP[14][21]	NP[15][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[15][20]: 	NP[14][21]	NP[15][21]	NP[16][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[16][20]: 	NP[15][21]	NP[16][21]	NP[17][21]	NP[17][20]	NP[17][19]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][19]: 	NP[17][20]	NP[17][19]	NP[17][18]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[16][18]: 	NP[17][19]	NP[17][18]	NP[17][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[16][17]: 	NP[17][18]	NP[17][17]	NP[17][16]	NP[16][16]	NP[15][16]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[15][17]: 	NP[16][16]	NP[15][16]	NP[14][16]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[14][17]: 	NP[15][16]	NP[14][16]	NP[13][16]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[4][0]:
-MAX RELATIONS [5] for POS[5][1]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][2]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][4]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[7][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[8][4]: 	_FALSE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][3]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][2]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[8][1]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[7][1]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[6][1]: 	_FALSE_	_FALSE_	_FALSE_
+MAX RELATIONS [5] for POS[17][1]: 	NP[18][0]	NP[17][0]	NP[16][0]	NP[16][1]	NP[16][2]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[17][2]: 	NP[16][1]	NP[16][2]	NP[16][3]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[17][3]: 	NP[16][2]	NP[16][3]	NP[16][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[17][4]: 	NP[16][3]	NP[16][4]	NP[16][5]	NP[17][5]	NP[18][5]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[18][4]: 	NP[17][5]	NP[18][5]	NP[19][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[19][4]: 	NP[18][5]	NP[19][5]	NP[20][5]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[20][4]: 	NP[19][5]	NP[20][5]	NP[21][5]	NP[21][4]	NP[21][3]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][3]: 	NP[21][4]	NP[21][3]	NP[21][2]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][2]: 	NP[21][3]	NP[21][2]	NP[21][1]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[20][1]: 	NP[21][2]	NP[21][1]	NP[21][0]	NP[20][0]	NP[19][0]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[19][1]: 	NP[20][0]	NP[19][0]	NP[18][0]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[18][1]: 	NP[19][0]	NP[18][0]	NP[17][0]
+									_FALSE_		_FALSE_		_FALSE_
 
 
 Block[4][1]:
-MAX RELATIONS [5] for POS[5][2]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][3]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][4]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][5]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[7][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[8][5]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][3]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[8][2]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[7][2]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][2]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[17][5]: 	NP[18][4]	NP[17][4]	NP[16][4]	NP[16][5]	NP[16][6]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[17][6]: 	NP[16][5]	NP[16][6]	NP[16][7]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[17][7]: 	NP[16][6]	NP[16][7]	NP[16][8]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[17][8]: 	NP[16][7]	NP[16][8]	NP[16][9]	NP[17][9]	NP[18][9]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[18][8]: 	NP[17][9]	NP[18][9]	NP[19][9]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[19][8]: 	NP[18][9]	NP[19][9]	NP[20][9]
+									_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [5] for POS[20][8]: 	NP[19][9]	NP[20][9]	NP[21][9]	NP[21][8]	NP[21][7]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][7]: 	NP[21][8]	NP[21][7]	NP[21][6]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][6]: 	NP[21][7]	NP[21][6]	NP[21][5]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[20][5]: 	NP[21][6]	NP[21][5]	NP[21][4]	NP[20][4]	NP[19][4]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[19][5]: 	NP[20][4]	NP[19][4]	NP[18][4]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[18][5]: 	NP[19][4]	NP[18][4]	NP[17][4]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[4][2]:
-MAX RELATIONS [5] for POS[5][3]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[5][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[5][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][6]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][6]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[7][6]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[8][6]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][5]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][4]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[8][3]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[7][3]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][3]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[17][9]: 	NP[18][8]	NP[17][8]	NP[16][8]	NP[16][9]	NP[16][10]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [3] for POS[17][10]: 	NP[16][9]	NP[16][10]	NP[16][11]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[17][11]: 	NP[16][10]	NP[16][11]	NP[16][12]
+									_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[17][12]: 	NP[16][11]	NP[16][12]	NP[16][13]	NP[17][13]	NP[18][13]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[18][12]: 	NP[17][13]	NP[18][13]	NP[19][13]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[19][12]: 	NP[18][13]	NP[19][13]	NP[20][13]
+									_TRUE_		_TRUE_		_FALSE_
+MAX RELATIONS [5] for POS[20][12]: 	NP[19][13]	NP[20][13]	NP[21][13]	NP[21][12]	NP[21][11]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][11]: 	NP[21][12]	NP[21][11]	NP[21][10]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][10]: 	NP[21][11]	NP[21][10]	NP[21][9]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[20][9]: 	NP[21][10]	NP[21][9]	NP[21][8]	NP[20][8]	NP[19][8]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[19][9]: 	NP[20][8]	NP[19][8]	NP[18][8]
+									_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[18][9]: 	NP[19][8]	NP[18][8]	NP[17][8]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[4][3]:
-MAX RELATIONS [5] for POS[5][4]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][5]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][7]: 	_TRUE_	_TRUE_	_TRUE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[7][7]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [5] for POS[8][7]: 	_FALSE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][6]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][5]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[8][4]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[7][4]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][4]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[17][13]: 	NP[18][12]	NP[17][12]	NP[16][12]	NP[16][13]	NP[16][14]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[17][14]: 	NP[16][13]	NP[16][14]	NP[16][15]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[17][15]: 	NP[16][14]	NP[16][15]	NP[16][16]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[17][16]: 	NP[16][15]	NP[16][16]	NP[16][17]	NP[17][17]	NP[18][17]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[18][16]: 	NP[17][17]	NP[18][17]	NP[19][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[19][16]: 	NP[18][17]	NP[19][17]	NP[20][17]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[20][16]: 	NP[19][17]	NP[20][17]	NP[21][17]	NP[21][16]	NP[21][15]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][15]: 	NP[21][16]	NP[21][15]	NP[21][14]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][14]: 	NP[21][15]	NP[21][14]	NP[21][13]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[20][13]: 	NP[21][14]	NP[21][13]	NP[21][12]	NP[20][12]	NP[19][12]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[19][13]: 	NP[20][12]	NP[19][12]	NP[18][12]
+									_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[18][13]: 	NP[19][12]	NP[18][12]	NP[17][12]
+									_TRUE_		_TRUE_		_TRUE_
 
 
 Block[4][4]:
-MAX RELATIONS [5] for POS[5][5]: 	_FALSE_	_TRUE_	_TRUE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][6]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [3] for POS[5][7]: 	_FALSE_	_TRUE_	_TRUE_
-MAX RELATIONS [5] for POS[5][8]: 	_TRUE_	_TRUE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[6][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[7][8]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[8][8]: 	_FALSE_	_FALSE_	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][7]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [3] for POS[8][6]: 	_FALSE_	_FALSE_	_FALSE_
-MAX RELATIONS [5] for POS[8][5]: 	_FALSE_	_FALSE_	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[7][5]: 	_FALSE_	_TRUE_	_FALSE_
-MAX RELATIONS [3] for POS[6][5]: 	_FALSE_	_TRUE_	_FALSE_
+MAX RELATIONS [5] for POS[17][17]: 	NP[18][16]	NP[17][16]	NP[16][16]	NP[16][17]	NP[16][18]
+									_TRUE_		_TRUE_		_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[17][18]: 	NP[16][17]	NP[16][18]	NP[16][19]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[17][19]: 	NP[16][18]	NP[16][19]	NP[16][20]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [5] for POS[17][20]: 	NP[16][19]	NP[16][20]	NP[16][21]	NP[17][21]	NP[18][21]
+									_TRUE_		_TRUE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[18][20]: 	NP[17][21]	NP[18][21]	NP[19][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[19][20]: 	NP[18][21]	NP[19][21]	NP[20][21]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[20][20]: 	NP[19][21]	NP[20][21]	NP[21][21]	NP[21][20]	NP[21][19]
+									_FALSE_		_FALSE_		_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][19]: 	NP[21][20]	NP[21][19]	NP[21][18]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [3] for POS[20][18]: 	NP[21][19]	NP[21][18]	NP[21][17]
+									_FALSE_		_FALSE_		_FALSE_
+MAX RELATIONS [5] for POS[20][17]: 	NP[21][18]	NP[21][17]	NP[21][16]	NP[20][16]	NP[19][16]
+									_FALSE_		_FALSE_		_FALSE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[19][17]: 	NP[20][16]	NP[19][16]	NP[18][16]
+									_TRUE_		_TRUE_		_TRUE_
+MAX RELATIONS [3] for POS[18][17]: 	NP[19][16]	NP[18][16]	NP[17][16]
+									_TRUE_		_TRUE_		_TRUE_
 

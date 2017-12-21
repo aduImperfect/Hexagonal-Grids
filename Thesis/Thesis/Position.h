@@ -168,4 +168,8 @@ struct GreaterThanByCost
 
 //Egress cells positions.
 Position SquareEGCellPos[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][OUTER_BORDERS_SIZE];
+
+//Egress cells neighbor block positions.
+Position SquareEGCellNeighborPos[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][OUTER_BORDERS_SIZE][MAX_RELATIONS];
+
 #endif
