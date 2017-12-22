@@ -6,8 +6,9 @@
 
 #ifndef BASE_OPERATORS_H
 #define BASE_OPERATORS_H
-//Including the different required standard library for queues and base headers which contain the base defines and the position structure.
+//Including the different required standard library for queues, and lists and base headers which contain the base defines and the position structure.
 #include <queue>
+#include <list>
 #include "BaseDefines.h"
 #include "Position.h"
 
