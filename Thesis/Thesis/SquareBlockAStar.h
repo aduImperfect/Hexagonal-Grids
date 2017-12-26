@@ -129,13 +129,6 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	Position goalBlock((npGoal.p_x - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (npGoal.p_y - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 	goalBlock.posCost = -1.0f;
 
-	//If start and goal are in the same block!!
-	if (startBlock == goalBlock)
-	{
-		//Calculate the cost using dijkstra and early exit.
-		return SquareDijkstra(npStart, npGoal, true, topLeft, bottomRight, showMap, goalPath);
-	}
-
 	//Init(Start).
 	InitNodes(startBlock, startPosInBlock, npStart);
 
