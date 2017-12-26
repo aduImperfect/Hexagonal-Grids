@@ -75,7 +75,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 	{
 		for (unsigned int neighborJ = 0; neighborJ < 3; ++neighborJ)
 		{
-			neighborBlocksHeapCost[neighborI][neighborJ] = COST_MAX;
+			neighborBlocksHeapCost[neighborI][neighborJ] = HUGE_VAL;
 		}
 	}
 
@@ -98,7 +98,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		Position positionInCurBlockGridAbs = SquareEGCellPos[curBlock.p_x][curBlock.p_y][outerAxis];
 		
 		//Convert and find the current position with respect to the current block.
-		Position positionInCurBlock = Position(positionInCurBlockGridAbs.p_x % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, positionInCurBlockGridAbs.p_y % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+		Position positionInCurBlock(positionInCurBlockGridAbs.p_x % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, positionInCurBlockGridAbs.p_y % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 		
 		//Transfer the cost.
 		positionInCurBlock.posCost = positionInCurBlockGridAbs.posCost;

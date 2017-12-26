@@ -1,4 +1,5 @@
-﻿  {{xgSpeculativeTaskID=00000005}}
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'd:\aditya pc\study\thesis\thesis\x64\debug\thesis.pdb' because it is being used by another process.
+  {{xgSpeculativeTaskID=00000005}}
   {{xgSpeculativeTaskID=00000006}}
   Thesis.vcxproj -> D:\Aditya PC\Study\Thesis\Thesis\x64\Debug\Thesis.exe
   Thesis.vcxproj -> D:\Aditya PC\Study\Thesis\Thesis\x64\Debug\Thesis.pdb (Full PDB)
