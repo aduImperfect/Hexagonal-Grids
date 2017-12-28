@@ -75,7 +75,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 	{
 		for (unsigned int neighborJ = 0; neighborJ < 3; ++neighborJ)
 		{
-			neighborBlocksHeapCost[neighborI][neighborJ] = HUGE_VAL;
+			neighborBlocksHeapCost[neighborI][neighborJ] = COST_MAX;
 		}
 	}
 
@@ -98,7 +98,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		Position positionInCurBlockGridAbs = SquareEGCellPos[curBlock.p_x][curBlock.p_y][outerAxis];
 		
 		//Convert and find the current position with respect to the current block.
-		Position positionInCurBlock(positionInCurBlockGridAbs.p_x % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, positionInCurBlockGridAbs.p_y % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+		Position positionInCurBlock((positionInCurBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (positionInCurBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 		
 		//Transfer the cost.
 		positionInCurBlock.posCost = positionInCurBlockGridAbs.posCost;
@@ -110,7 +110,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 			Position neighborPositionInNeighborBlockGridAbs = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel];
 
 			//neighbor position in neighbor block.
-			Position neighborPositionInNeighborBlock(neighborPositionInNeighborBlockGridAbs.p_x % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, neighborPositionInNeighborBlockGridAbs.p_y % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+			Position neighborPositionInNeighborBlock((neighborPositionInNeighborBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neighborPositionInNeighborBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 
 			//neighbor position's cost info.
 			neighborPositionInNeighborBlock.posCost = neighborPositionInNeighborBlockGridAbs.posCost;
@@ -158,7 +158,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 				SquareEGCellPos[curBlock.p_x][curBlock.p_y][outerAxis].posCost = positionInCurBlock.posCost;
 
 				//x'.g = neighborposCost [min(x'.g, x.g + cost(x,x'))].
-				SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost = neighborPositionInNeighborBlock.posCost;
+				SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost = cost_so_far[neighborPositionInNeighborBlockGridAbs.p_x][neighborPositionInNeighborBlockGridAbs.p_y] = neighborPositionInNeighborBlock.posCost;
 			}
 
 			//x'.h.
@@ -187,6 +187,9 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 	{
 		for (unsigned int neighborJ = 0; neighborJ < 3; ++neighborJ)
 		{
+			if ((neighborI == 1) && (neighborJ == 1))
+				continue;
+
 			//NextBlock.heapValue = newHeapValue.
 			Position NeighBlock(curBlock.p_x - (neighborI - 1), curBlock.p_y - (neighborJ - 1));
 			NeighBlock.posCost = neighborBlocksHeapCost[neighborI][neighborJ];
@@ -205,7 +208,7 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 				priorityFrontier.pop();
 
 				//If that element was the neighbor block, then early exit.
-				if ((topOfQueue.p_x == NeighBlock.p_x) || (topOfQueue.p_y == NeighBlock.p_y))
+				if ((topOfQueue.p_x == NeighBlock.p_x) && (topOfQueue.p_y == NeighBlock.p_y))
 				{
 					break;
 				}

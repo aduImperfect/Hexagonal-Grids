@@ -18,7 +18,7 @@ Parameters to the function:
 NONE
 Returns from the function:
 NONE
-This function takes in nothing, sets all the elements of the SquareLDDB[BLOCK_ROW][BLOCK_COL][POS_FROM_ROW][POS_FROM_COL][POS_TO_ROW][POS_TO_COL] to COST_MAX (100.0f) and returns nothing.
+This function takes in nothing, sets all the elements of the SquareLDDB[BLOCK_ROW][BLOCK_COL][POS_FROM_ROW][POS_FROM_COL][POS_TO_ROW][POS_TO_COL] to COST_MAX (HUGE_VAL) and returns nothing.
 */
 void SquareLDDBInitializer()
 {

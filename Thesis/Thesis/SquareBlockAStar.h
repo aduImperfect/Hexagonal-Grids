@@ -15,7 +15,14 @@
 #include "SquareExpandBlock.h"
 
 /*
-
+Initialize the node.
+Parameters to the function:
+blockIJ : const Position & - The block which needs to be initialized.
+fromKL : const Position & - The position (in the block) from which the LDDB is calculated (It is either the start or goal position here!).
+pFrom : const Position & - The position (in the square grid) based on which the Dijkstra is calculated.
+Returns from the function:
+NONE.
+This function initializes the different border values of the (start and/or goal) block with their distance from the (start/goal) position into the LDDB 6D array.
 */
 void InitNodes(const Position & blockIJ, const Position & fromKL, const Position & pFrom)
 {
@@ -72,12 +79,40 @@ void InitNodes(const Position & blockIJ, const Position & fromKL, const Position
 /*
 
 */
-void CalculateBlockIngressNodes(std::vector<Position> & ingress_Cells_curBlock)
+void CalculateBlockIngressNodes(Position & curBlock, std::vector<Position> & ingress_Cells_curBlock, const Position & startPosInBlock, const bool & isStartBlock)
 {
-	//Ingress cells (Y) = Boundary cells that have a different g-value now than what they had the current block had been previously expanded.
+	//Ingress cells (Y) = Boundary cells that have a different g-value now than what they had when the current block had been previously expanded.
 	//If the block is being expanded for the first time, all the boundary cells with a finite g-value are ingress cells.
 
+	//The ingress cell values stored are as positions local to the block.
 
+	for (unsigned int rowI = 0; rowI < SQUARE_LDDB_BLOCK_SPLIT_SIZE_X; ++rowI)
+	{
+		for (unsigned int rowJ = 0; rowJ < SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y; ++rowJ)
+		{
+			Position posInCurBlock(rowI, rowJ);
+			Position curPos(curBlock.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + rowI + 1, curBlock.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + rowJ + 1);
+
+			if (isStartBlock)
+			{
+				double tmpCost = (SquareLDDB[curBlock.p_x][curBlock.p_y][startPosInBlock.p_x][startPosInBlock.p_y][rowI][rowJ] < 0) ? COST_MAX: SquareLDDB[curBlock.p_x][curBlock.p_y][startPosInBlock.p_x][startPosInBlock.p_y][rowI][rowJ];
+
+				//Use LDDB for the start block ingress cells info.
+				posInCurBlock.posCost = tmpCost;
+				cost_so_far[curPos.p_x][curPos.p_x] = posInCurBlock.posCost;
+			}
+			else
+			{
+				//TODO!!.
+				posInCurBlock.posCost = cost_so_far[curPos.p_x][curPos.p_x];
+			}
+
+			if (posInCurBlock.posCost != COST_MAX)
+			{
+				ingress_Cells_curBlock.push_back(posInCurBlock);
+			}
+		}
+	}
 }
 
 /*
@@ -96,6 +131,34 @@ This function takes in the start and goal positions input by the user (or by oth
 */
 double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, bool autoCompute, Position topLeft, Position bottomRight, const int showMap, std::vector<Position> & goalPath)
 {
+	//If the start node is outside of the range of the square grid (topLeft, bottomRight) then no goal found.
+	if (SquareIsOutside(npStart, topLeft, bottomRight))
+		return -1;
+
+	//If the goal node is outside of the range of the square grid (topLeft, bottomRight) then no goal found.
+	if (SquareIsOutside(npGoal, topLeft, bottomRight))
+		return -1;
+
+	//Set the 2D array storages with default values having the initial costs of the cost_so_far, cost_heuristic, and cost_total set.
+	InitializeVCC(SQUARE_GRID, COST_MAX);
+
+	//Set the position cost of the starting position to be equal to the cost_so_far at the starting position which is set.
+	npStart.posCost = cost_so_far[npStart.p_x][npStart.p_y] = 0.00f;
+
+	//Set the visited(start) to true. Stating that start has been visited already.
+	visited[npStart.p_x][npStart.p_y] = true;
+
+	//As there is no other position existing before start from where the algo started, we set the came_from(start) = start.
+	came_from[npStart.p_x][npStart.p_y] = npStart;
+
+	//We check to see if the map of the visited nodes has a WALL in the starting position, then no goal found.
+	if (mapVisited[npStart.p_x][npStart.p_y] == WALL)
+		return -1;
+
+	//We check to see if the map of the visited nodes has a WALL in the goal position, then no goal found.
+	if (mapVisited[npGoal.p_x][npGoal.p_y] == WALL)
+		return -1;
+
 	//Default heuristic here is set to OCTILE.
 	HeuristicType nheuristic = HeuristicType::HEURISTIC_OCTILE;
 	int ntmpHeu = 4;
@@ -116,10 +179,10 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	//INIT START AND INIT GOAL BLOCKS.
 
 	//The start position inside its relative block.
-	Position startPosInBlock(npStart.p_x % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, npStart.p_y % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+	Position startPosInBlock((npStart.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (npStart.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 
 	//The goal position inside its relative block.
-	Position goalPosInBlock(npGoal.p_x % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, npGoal.p_y % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+	Position goalPosInBlock((npGoal.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (npGoal.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 
 	//Find the start block.
 	Position startBlock((npStart.p_x - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (npStart.p_y - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
@@ -136,7 +199,13 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	InitNodes(goalBlock, goalPosInBlock, npGoal);
 
 	//The length to be calculated.
-	double startToGoalCost = HUGE_VAL;
+	double startToGoalCost = COST_MAX;
+
+	//Popping out all the previous elements from the queue to clear the whole queue for a new algo run.
+	while (!priorityFrontier.empty())
+	{
+		priorityFrontier.pop();
+	}
 
 	priorityFrontier.push(startBlock);
 
@@ -147,7 +216,14 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 
 		//Ingress cells in current block (Y).
 		std::vector<Position> ingress_Cells_curBlock;
-		CalculateBlockIngressNodes(ingress_Cells_curBlock);
+
+		bool isStartBlock = false;
+		if (curBlock == startBlock)
+		{
+			isStartBlock = true;
+		}
+
+		CalculateBlockIngressNodes(curBlock, ingress_Cells_curBlock, startPosInBlock, isStartBlock);
 
 		if (curBlock == goalBlock)
 		{
@@ -197,7 +273,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	}
 
 	//If goal is found.
-	if (startToGoalCost != HUGE_VAL)
+	if (startToGoalCost != COST_MAX)
 	{
 		//TODO: Reconstruct goal path.
 

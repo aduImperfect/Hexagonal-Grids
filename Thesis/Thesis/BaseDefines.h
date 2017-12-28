@@ -31,8 +31,7 @@
 #define GOAL_COST "GOAL"
 #define COST_AXIS 1.00f
 #define COST_DIAGONAL 1.41f
-#define COST_TERMINATOR 99.0f
-#define COST_MAX 100.0f
+#define COST_MAX HUGE_VAL
 #define COST_MAX_TERM "CMAX"
 
 //Different direction in string form (useful for printing).
