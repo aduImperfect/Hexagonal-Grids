@@ -99,12 +99,12 @@ void CalculateBlockIngressNodes(Position & curBlock, std::vector<Position> & ing
 
 				//Use LDDB for the start block ingress cells info.
 				posInCurBlock.posCost = tmpCost;
-				cost_so_far[curPos.p_x][curPos.p_x] = posInCurBlock.posCost;
+				cost_so_far[curPos.p_x][curPos.p_y] = posInCurBlock.posCost;
 			}
 			else
 			{
 				//TODO!!.
-				posInCurBlock.posCost = cost_so_far[curPos.p_x][curPos.p_x];
+				posInCurBlock.posCost = cost_so_far[curPos.p_x][curPos.p_y];
 			}
 
 			if (posInCurBlock.posCost != COST_MAX)
@@ -112,6 +112,19 @@ void CalculateBlockIngressNodes(Position & curBlock, std::vector<Position> & ing
 				ingress_Cells_curBlock.push_back(posInCurBlock);
 			}
 		}
+	}
+}
+
+/*
+
+*/
+void PrintIngressNodes(Position & curBlock, std::vector<Position> & ingress_Cells_curBlock)
+{
+	std::cout << "\nIngress Cells of Current Block[" << curBlock.p_x << "][" << curBlock.p_y << "]:\n";
+
+	for (unsigned int ingressIndex = 0; ingressIndex < ingress_Cells_curBlock.size(); ++ingressIndex)
+	{
+		std::cout << "Ingress Cell[" << ingress_Cells_curBlock[ingressIndex].p_x << "][" << ingress_Cells_curBlock[ingressIndex].p_y << "]'s cost: " << ingress_Cells_curBlock[ingressIndex].posCost << "\n";
 	}
 }
 
@@ -224,6 +237,8 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 		}
 
 		CalculateBlockIngressNodes(curBlock, ingress_Cells_curBlock, startPosInBlock, isStartBlock);
+
+		PrintIngressNodes(curBlock, ingress_Cells_curBlock);
 
 		if (curBlock == goalBlock)
 		{
