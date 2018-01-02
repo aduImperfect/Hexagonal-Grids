@@ -129,6 +129,39 @@ void PrintIngressNodes(Position & curBlock, std::vector<Position> & ingress_Cell
 }
 
 /*
+
+*/
+void CalculateStartHeapCost(const Position & curBlock, const Position & startPos, const HeuristicType & heuType, const Position & goalPos)
+{
+	//Parse through the outer nodes of the current block.
+	for (unsigned int outerAxis = 0; outerAxis < OUTER_BORDERS_SIZE; ++outerAxis)
+	{
+		//Get the grid absolute value of the current position in the block.
+		Position positionInCurBlockGridAbs = SquareEGCellPos[curBlock.p_x][curBlock.p_y][outerAxis];
+
+		//Convert and find the current position with respect to the current block.
+		Position positionInCurBlock((positionInCurBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (positionInCurBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+
+		//Transfer the cost.
+		positionInCurBlock.posCost = positionInCurBlockGridAbs.posCost;
+
+		//x.h.
+		double posToGoalHeuristic = Heuristic(heuType, goalPos.p_x - positionInCurBlockGridAbs.p_x, goalPos.p_y - positionInCurBlockGridAbs.p_y);
+
+		//tempHeapValue = x.g + x.h.
+		double tempHeapValue = SquareLDDB[curBlock.p_x][curBlock.p_y][startPos.p_x][startPos.p_y][positionInCurBlock.p_x][positionInCurBlock.p_y] + posToGoalHeuristic;
+
+		//tempHeapValue < neighborHeapCost.
+		if (((curBlock.p_x >= 0) && (curBlock.p_y >= 0) && (curBlock.p_x < SQUARE_LDDB_BLOCK_SIZE_I) && (curBlock.p_y < SQUARE_LDDB_BLOCK_SIZE_J)) && (tempHeapValue < BlockHeapCosts[curBlock.p_x][curBlock.p_y]))
+		{
+			//min(updated x')(tempHeapValue).
+			//Update the temporary neighbor heap cost storage.
+			BlockHeapCosts[curBlock.p_x][curBlock.p_y] = tempHeapValue;
+		}
+	}
+}
+
+/*
 Calculates the cost from start to goal using BLOCKASTAR.
 Parameters to the function:
 npStart : Position - the starting position.
@@ -199,7 +232,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 
 	//Find the start block.
 	Position startBlock((npStart.p_x - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (npStart.p_y - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
-	startBlock.posCost = 0.0f;
+	startBlock.posCost = COST_MAX;
 
 	//Find the goal block.
 	Position goalBlock((npGoal.p_x - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (npGoal.p_y - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
@@ -219,6 +252,19 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	{
 		priorityFrontier.pop();
 	}
+
+	for (unsigned int neighborI = 0; neighborI < SQUARE_LDDB_BLOCK_SIZE_I; ++neighborI)
+	{
+		for (unsigned int neighborJ = 0; neighborJ < SQUARE_LDDB_BLOCK_SIZE_J; ++neighborJ)
+		{
+			BlockHeapCosts[neighborI][neighborJ] = COST_MAX;
+		}
+	}
+
+	CalculateStartHeapCost(startBlock, npStart, nheuristic, npGoal);
+	startBlock.posCost = BlockHeapCosts[startBlock.p_x][startBlock.p_y];
+
+	BlockHeapCosts[goalBlock.p_x][goalBlock.p_y] = -1.0f;
 
 	priorityFrontier.push(startBlock);
 

@@ -15,17 +15,25 @@
 #include "EgressCellsToFile.h"
 
 /*
+
+*/
+unsigned int FindOuterAxis(const Position & curBlock, const unsigned int & curOuterAxis, const unsigned int & curMaxRel)
+{
+
+}
+
+/*
 The expansion of the current block.
 Parameters to the function:
-curBlock : Position - The current block position.
+curBlock : const Position & - The current block position.
 ingress_Cells_curBlock : std::vector<Position> - The ingress cells of the current block.
 goalPos : Position - The goal position.
 heuType : HeuristicType - The type of heuristic.
 Returns from the function:
 NONE
-This function takes in the current block, the ingress cells associated with the current block, the goal position, and the heuristic type being used to find and add the valid neighboring blocks to the open list.
+This function takes in the neighboring block's heap costs, the current block, the ingress cells associated with the current block, the goal position, and the heuristic type being used to find and add the valid neighboring blocks to the open list.
 */
-void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells_curBlock, Position goalPos, HeuristicType heuType)
+void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position> ingress_Cells_curBlock, const Position & goalPos, const HeuristicType & heuType)
 {
 	/*
 	Y = set of CurBlock's ingress nodes.
@@ -55,29 +63,6 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 		}
 	}
 	*/
-
-	//The 8 directions heap cost stored.
-	double neighborBlocksHeapCost[3][3];
-
-	/*
-	Parse through [I,J] for neighbor blocks from (0,0) to (2,2).
-	(0,0) - NW.
-	(0,1) - N.
-	(0,2) - NE.
-	(1,0) - W.
-	(1,1) - CURRENT.
-	(1,2) - E.
-	(2,0) - SW.
-	(2,1) - S.
-	(2,2) - SE.
-	*/
-	for (unsigned int neighborI = 0; neighborI < 3; ++neighborI)
-	{
-		for (unsigned int neighborJ = 0; neighborJ < 3; ++neighborJ)
-		{
-			neighborBlocksHeapCost[neighborI][neighborJ] = COST_MAX;
-		}
-	}
 
 	//Parse through the outer nodes of the current block.
 	for (unsigned int outerAxis = 0; outerAxis < OUTER_BORDERS_SIZE; ++outerAxis)
@@ -176,17 +161,12 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 			//tempHeapValue = x'.g + x'.h.
 			double tempHeapValue = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost + neighborPosToGoalHeuristic;
 
-			//One of the 8 directions.
-			//Offset addition to remove negativity and change range from (-1 to 1) to (0 to 2).
-			//(1,1) will be the current block itself!!
-			Position directionBlock((neighborBlock.p_x - curBlock.p_x) + 1, (neighborBlock.p_y - curBlock.p_y) + 1);
-
 			//tempHeapValue < neighborHeapCost.
-			if (tempHeapValue < neighborBlocksHeapCost[directionBlock.p_x][directionBlock.p_y])
+			if (((neighborBlock.p_x >= 0) && (neighborBlock.p_y >= 0) && (neighborBlock.p_x < SQUARE_LDDB_BLOCK_SIZE_I) && (neighborBlock.p_y < SQUARE_LDDB_BLOCK_SIZE_J)) && (tempHeapValue < BlockHeapCosts[neighborBlock.p_x][neighborBlock.p_y]))
 			{
 				//min(updated x')(tempHeapValue).
 				//Update the temporary neighbor heap cost storage.
-				neighborBlocksHeapCost[directionBlock.p_x][directionBlock.p_y] = tempHeapValue;
+				BlockHeapCosts[neighborBlock.p_x][neighborBlock.p_y] = tempHeapValue;
 			}
 		}
 	}
@@ -201,11 +181,26 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 
 			//NextBlock.heapValue = newHeapValue.
 			Position NeighBlock(curBlock.p_x + (neighborI - 1), curBlock.p_y + (neighborJ - 1));
-			NeighBlock.posCost = neighborBlocksHeapCost[neighborI][neighborJ];
+			
+			if ((NeighBlock.p_x < 0) || (NeighBlock.p_y < 0) || (NeighBlock.p_x >= SQUARE_LDDB_BLOCK_SIZE_I) || (NeighBlock.p_y >= SQUARE_LDDB_BLOCK_SIZE_J))
+			{
+				continue;
+			}
+			else
+			{
+				NeighBlock.posCost = BlockHeapCosts[NeighBlock.p_x][NeighBlock.p_y];
+			}
+
+			//if (NeighBlock.posCost == COST_MAX)
+			//{
+				//continue;
+			//}
 
 			std::list<Position> tempList;
 			//Make and clear the temporary list.
 			tempList.clear();
+
+			bool isFound = false;
 
 			//Parse through the priority queue until it is empty.
 			while (!priorityFrontier.empty())
@@ -219,11 +214,22 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 				//If that element was the neighbor block, then early exit.
 				if ((topOfQueue.p_x == NeighBlock.p_x) && (topOfQueue.p_y == NeighBlock.p_y))
 				{
-					break;
+					isFound = true;
+					if (NeighBlock.posCost < topOfQueue.posCost)
+					{
+						//Push it to the back of the tempList.
+						tempList.push_back(NeighBlock);
+						break;
+					}
 				}
-
+				
 				//Push it to the back of the tempList.
 				tempList.push_back(topOfQueue);
+			}
+
+			if (!isFound)
+			{
+				tempList.push_back(NeighBlock);
 			}
 
 			//Parse through the temporary list's elements until it is empty.
@@ -235,11 +241,6 @@ void SquareExpandCurBlock(Position curBlock, std::vector<Position> ingress_Cells
 				//Pop out the front element of the tempList.
 				tempList.pop_front();
 			}
-
-			//Push the Neighbor block into the priority queue (updated!).
-			//If it was there before, it was removed from the queue!
-			//If it was not there before, it is added into the priority queue normally.
-			priorityFrontier.push(NeighBlock);
 		}
 	}
 }
