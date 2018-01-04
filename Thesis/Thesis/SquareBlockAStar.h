@@ -379,6 +379,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 					startToGoalCost = ingressPos.posCost + distYG;
 				}
 			}
+			break;
 		}
 
 		SquareExpandCurBlock(curBlock, ingress_Cells_curBlock, npGoal, nheuristic);

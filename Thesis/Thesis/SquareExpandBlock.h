@@ -33,6 +33,212 @@ void RegisterNeighborToCur(const Position & curBlock, const unsigned int & curOu
 }
 
 /*
+
+*/
+void EgressCellsUpdation(const Position & curBlock)
+{
+	//The total number of elements in each block.
+	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
+
+	//The total number of non-corner elements in each block.
+	unsigned int nInnerSize = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2);
+
+	//The total number of (in and out)corner elements in each block.
+	const unsigned int nOuterBordersSize = nTotalSize - nInnerSize;
+
+	//Parse through the outer nodes of the current block.
+	for (unsigned int outerAxis = 0; outerAxis < nOuterBordersSize; ++outerAxis)
+	{
+		//Parse through the neighbor relations, in the neighboring blocks, of the current position.
+		for (unsigned int maxRel = 0; maxRel < SquareEGCellNumCorners[curBlock.p_x][curBlock.p_y][outerAxis]; ++maxRel)
+		{
+			//neighbor position in square grid.
+			Position neighborPositionInNeighborBlockGridAbs = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel];
+
+			//neighbor position in neighbor block.
+			Position neighborPositionInNeighborBlock((neighborPositionInNeighborBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neighborPositionInNeighborBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+
+			if (neighborPositionInNeighborBlock.p_x < 0)
+			{
+				neighborPositionInNeighborBlock.p_x = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + neighborPositionInNeighborBlock.p_x;
+			}
+			if (neighborPositionInNeighborBlock.p_y < 0)
+			{
+				neighborPositionInNeighborBlock.p_y = SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + neighborPositionInNeighborBlock.p_y;
+			}
+
+			//neighbor position's cost info.
+			neighborPositionInNeighborBlock.posCost = neighborPositionInNeighborBlockGridAbs.posCost;
+
+			Position tmpBlk(neighborPositionInNeighborBlockGridAbs.p_x - 1, neighborPositionInNeighborBlockGridAbs.p_y - 1);
+
+			//neighbor block.
+			Position neighborBlock((tmpBlk.p_x < 0) ? (tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X) - 1 : tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (tmpBlk.p_y < 0) ? (tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) - 1 : tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+
+			RegisterNeighborToCur(curBlock, outerAxis, maxRel, neighborBlock, neighborPositionInNeighborBlock);
+		}
+	}
+}
+
+/*
+
+*/
+void PrintEgressCellsValuesToFile()
+{
+	//Find the Egress cells file SquareEGCellPos.txt and open it.
+	std::ofstream egressCellsPosFile;
+	egressCellsPosFile.open("SquareEGCellPos.txt");
+
+	egressCellsPosFile << "\n";
+
+	//Parse through the outer nodes of the current block.
+	for (unsigned int blockI = 0; blockI < SQUARE_LDDB_BLOCK_SIZE_I; ++blockI)
+	{
+		for (unsigned int blockJ = 0; blockJ < SQUARE_LDDB_BLOCK_SIZE_J; ++blockJ)
+		{
+#pragma region BLOCK_NO
+			//Append (print) Block[I][J].
+			egressCellsPosFile << "\nBlock[" << blockI << "][" << blockJ << "]:\n";
+#pragma endregion
+
+
+#pragma region COL_FIRST_HEADER
+			//Append all the TO[n] subscripts as the first row header.
+			egressCellsPosFile << "\t\t\t";
+			for (int axisCol = 0; axisCol < SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y; ++axisCol)
+			{
+				egressCellsPosFile << "[" << axisCol << "]\t\t\t";
+			}
+			egressCellsPosFile << "\n";
+#pragma endregion
+
+			for (unsigned int axisRow = 0; axisRow < SQUARE_LDDB_BLOCK_SPLIT_SIZE_X; ++axisRow)
+			{
+				egressCellsPosFile << "[" << axisRow << "]:\t\t";
+				for (unsigned int axisCol = 0; axisCol < SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y; ++axisCol)
+				{
+					bool isInf = false;
+					if ((AxisArray[axisRow][axisCol] == -1) || (SquareEGCellPos[blockI][blockJ][AxisArray[axisRow][axisCol]].posCost == COST_MAX))
+					{
+						isInf = true;
+						egressCellsPosFile << "infi";
+					}
+					else
+					{
+						egressCellsPosFile << SquareEGCellPos[blockI][blockJ][AxisArray[axisRow][axisCol]].posCost;
+					}
+
+					//Calculate the number of \t (tabs) to be appended (printed) to the file based on the value.
+					int tempVal = static_cast<int>(SquareEGCellPos[blockI][blockJ][AxisArray[axisRow][axisCol]].posCost * 100);
+					if ((tempVal % 100) != 0)
+					{
+						egressCellsPosFile << "\t\t";
+					}
+					else
+					{
+						if (isInf)
+						{
+							egressCellsPosFile << "\t\t";
+						}
+						else
+						{
+							egressCellsPosFile << "\t\t\t";
+						}
+					}
+				}
+				egressCellsPosFile << "\n";
+			}
+			egressCellsPosFile << "\n";
+		}
+	}
+}
+
+/*
+
+*/
+void UpdateOpenClosedLists(const Position & curBlock)
+{
+	//Parse through the neighbor blocks.
+	for (unsigned int neighborI = 0; neighborI < 3; ++neighborI)
+	{
+		for (unsigned int neighborJ = 0; neighborJ < 3; ++neighborJ)
+		{
+			if ((neighborI == 1) && (neighborJ == 1))
+				continue;
+
+			//NextBlock.heapValue = newHeapValue.
+			Position NeighBlock(curBlock.p_x + (neighborI - 1), curBlock.p_y + (neighborJ - 1));
+
+			if ((NeighBlock.p_x < 0) || (NeighBlock.p_y < 0) || (NeighBlock.p_x >= SQUARE_LDDB_BLOCK_SIZE_I) || (NeighBlock.p_y >= SQUARE_LDDB_BLOCK_SIZE_J))
+			{
+				continue;
+			}
+			else
+			{
+				NeighBlock.posCost = BlockHeapCosts[NeighBlock.p_x][NeighBlock.p_y];
+			}
+
+			if (NeighBlock.posCost == COST_MAX)
+			{
+				continue;
+			}
+
+			std::list<Position> tempList;
+			//Make and clear the temporary list.
+			tempList.clear();
+
+			bool isFound = false;
+
+			//Parse through the priority queue until it is empty.
+			while (!priorityFrontier.empty())
+			{
+				//Get the topmost element of the queue.
+				Position topOfQueue = priorityFrontier.top();
+
+				//Remove the top element of the priority queue.
+				priorityFrontier.pop();
+
+				//If that element was the neighbor block, then early exit.
+				if ((topOfQueue.p_x == NeighBlock.p_x) && (topOfQueue.p_y == NeighBlock.p_y))
+				{
+					isFound = true;
+					if (NeighBlock.posCost < topOfQueue.posCost)
+					{
+						//Push it to the back of the tempList.
+						tempList.push_back(NeighBlock);
+						break;
+					}
+				}
+
+				//Push it to the back of the tempList.
+				tempList.push_back(topOfQueue);
+			}
+
+			if (!isFound)
+			{
+				if (!ClosedList[NeighBlock.p_x][NeighBlock.p_y])
+				{
+					tempList.push_back(NeighBlock);
+				}
+			}
+
+			//Parse through the temporary list's elements until it is empty.
+			while (!tempList.empty())
+			{
+				//Add the temporary list's front element to the priority queue.
+				priorityFrontier.push(tempList.front());
+
+				//Pop out the front element of the tempList.
+				tempList.pop_front();
+			}
+		}
+	}
+
+	ClosedList[curBlock.p_x][curBlock.p_y] = true;
+}
+
+
+/*
 The expansion of the current block.
 Parameters to the function:
 curBlock : const Position & - The current block position.
@@ -194,115 +400,10 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 		}
 	}
 
-	//Parse through the outer nodes of the current block.
-	for (unsigned int outerAxis = 0; outerAxis < nOuterBordersSize; ++outerAxis)
-	{
-		//Parse through the neighbor relations, in the neighboring blocks, of the current position.
-		for (unsigned int maxRel = 0; maxRel < SquareEGCellNumCorners[curBlock.p_x][curBlock.p_y][outerAxis]; ++maxRel)
-		{
-			//neighbor position in square grid.
-			Position neighborPositionInNeighborBlockGridAbs = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel];
+	EgressCellsUpdation(curBlock);
 
-			//neighbor position in neighbor block.
-			Position neighborPositionInNeighborBlock((neighborPositionInNeighborBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neighborPositionInNeighborBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+	PrintEgressCellsValuesToFile();
 
-			if (neighborPositionInNeighborBlock.p_x < 0)
-			{
-				neighborPositionInNeighborBlock.p_x = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + neighborPositionInNeighborBlock.p_x;
-			}
-			if (neighborPositionInNeighborBlock.p_y < 0)
-			{
-				neighborPositionInNeighborBlock.p_y = SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + neighborPositionInNeighborBlock.p_y;
-			}
-
-			//neighbor position's cost info.
-			neighborPositionInNeighborBlock.posCost = neighborPositionInNeighborBlockGridAbs.posCost;
-
-			Position tmpBlk(neighborPositionInNeighborBlockGridAbs.p_x - 1, neighborPositionInNeighborBlockGridAbs.p_y - 1);
-
-			//neighbor block.
-			Position neighborBlock((tmpBlk.p_x < 0) ? (tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X) - 1 : tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (tmpBlk.p_y < 0) ? (tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) - 1 : tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
-
-			RegisterNeighborToCur(curBlock, outerAxis, maxRel, neighborBlock, neighborPositionInNeighborBlock);
-		}
-	}
-
-	//Parse through the neighbor blocks.
-	for (unsigned int neighborI = 0; neighborI < 3; ++neighborI)
-	{
-		for (unsigned int neighborJ = 0; neighborJ < 3; ++neighborJ)
-		{
-			if ((neighborI == 1) && (neighborJ == 1))
-				continue;
-
-			//NextBlock.heapValue = newHeapValue.
-			Position NeighBlock(curBlock.p_x + (neighborI - 1), curBlock.p_y + (neighborJ - 1));
-			
-			if ((NeighBlock.p_x < 0) || (NeighBlock.p_y < 0) || (NeighBlock.p_x >= SQUARE_LDDB_BLOCK_SIZE_I) || (NeighBlock.p_y >= SQUARE_LDDB_BLOCK_SIZE_J))
-			{
-				continue;
-			}
-			else
-			{
-				NeighBlock.posCost = BlockHeapCosts[NeighBlock.p_x][NeighBlock.p_y];
-			}
-
-			if (NeighBlock.posCost == COST_MAX)
-			{
-				continue;
-			}
-
-			std::list<Position> tempList;
-			//Make and clear the temporary list.
-			tempList.clear();
-
-			bool isFound = false;
-
-			//Parse through the priority queue until it is empty.
-			while (!priorityFrontier.empty())
-			{
-				//Get the topmost element of the queue.
-				Position topOfQueue = priorityFrontier.top();
-
-				//Remove the top element of the priority queue.
-				priorityFrontier.pop();
-
-				//If that element was the neighbor block, then early exit.
-				if ((topOfQueue.p_x == NeighBlock.p_x) && (topOfQueue.p_y == NeighBlock.p_y))
-				{
-					isFound = true;
-					if (NeighBlock.posCost < topOfQueue.posCost)
-					{
-						//Push it to the back of the tempList.
-						tempList.push_back(NeighBlock);
-						break;
-					}
-				}
-				
-				//Push it to the back of the tempList.
-				tempList.push_back(topOfQueue);
-			}
-
-			if (!isFound)
-			{
-				if (!ClosedList[NeighBlock.p_x][NeighBlock.p_y])
-				{
-					tempList.push_back(NeighBlock);
-				}
-			}
-
-			//Parse through the temporary list's elements until it is empty.
-			while (!tempList.empty())
-			{
-				//Add the temporary list's front element to the priority queue.
-				priorityFrontier.push(tempList.front());
-				
-				//Pop out the front element of the tempList.
-				tempList.pop_front();
-			}
-		}
-	}
-
-	ClosedList[curBlock.p_x][curBlock.p_y] = true;
+	UpdateOpenClosedLists(curBlock);
 }
 #endif
