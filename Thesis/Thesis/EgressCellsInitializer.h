@@ -62,7 +62,8 @@ void EgressCellsInitialize()
 				BlockPosition blkPos = egressCellsArray[outerAxis].pos_From;
 
 				//Store the current block's grid position to a printable array.
-				SquareEGCellPos[blockI][blockJ][outerAxis] = Position(blkPos.pos_BlockNo.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + blkPos.pos_RelPos.p_x, blkPos.pos_BlockNo.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + blkPos.pos_RelPos.p_y);
+				SquareEGCellPos[blockI][blockJ][outerAxis].p_x = blkPos.pos_BlockNo.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + blkPos.pos_RelPos.p_x;
+				SquareEGCellPos[blockI][blockJ][outerAxis].p_y = blkPos.pos_BlockNo.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + blkPos.pos_RelPos.p_y;
 				SquareEGCellPos[blockI][blockJ][outerAxis].posCost = COST_MAX;
 
 				//Parse through all the neighbor blocks' nodes' relations with the current node.

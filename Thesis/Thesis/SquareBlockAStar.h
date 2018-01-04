@@ -91,6 +91,12 @@ void CalculateBlockIngressNodes(Position & curBlock, std::vector<Position> & ing
 		for (unsigned int rowJ = 0; rowJ < SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y; ++rowJ)
 		{
 			Position posInCurBlock(rowI, rowJ);
+			
+			if ((posInCurBlock.p_x > 0) && (posInCurBlock.p_y > 0) && (posInCurBlock.p_x < (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1)) && (posInCurBlock.p_y < (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1)))
+			{
+				continue;
+			}
+
 			Position curPos(curBlock.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + rowI + 1, curBlock.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + rowJ + 1);
 
 			if (isStartBlock)
@@ -133,8 +139,17 @@ void PrintIngressNodes(Position & curBlock, std::vector<Position> & ingress_Cell
 */
 void CalculateStartHeapCost(const Position & curBlock, const Position & startPos, const HeuristicType & heuType, const Position & goalPos)
 {
+	//The total number of elements in each block.
+	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
+
+	//The total number of non-corner elements in each block.
+	unsigned int nInnerSize = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2);
+
+	//The total number of (in and out)corner elements in each block.
+	const unsigned int nOuterBordersSize = nTotalSize - nInnerSize;
+
 	//Parse through the outer nodes of the current block.
-	for (unsigned int outerAxis = 0; outerAxis < OUTER_BORDERS_SIZE; ++outerAxis)
+	for (unsigned int outerAxis = 0; outerAxis < nOuterBordersSize; ++outerAxis)
 	{
 		//Get the grid absolute value of the current position in the block.
 		Position positionInCurBlockGridAbs = SquareEGCellPos[curBlock.p_x][curBlock.p_y][outerAxis];
@@ -157,6 +172,65 @@ void CalculateStartHeapCost(const Position & curBlock, const Position & startPos
 			//min(updated x')(tempHeapValue).
 			//Update the temporary neighbor heap cost storage.
 			BlockHeapCosts[curBlock.p_x][curBlock.p_y] = tempHeapValue;
+		}
+	}
+}
+
+/*
+
+*/
+void CalculateAxisArray()
+{
+	unsigned int x = 0;
+	unsigned int y = 0;
+
+	//The total number of elements in each block.
+	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
+
+	//The total number of non-corner elements in each block.
+	unsigned int nInnerSize = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2);
+
+	//The total number of (in and out)corner elements in each block.
+	const unsigned int nOuterBordersSize = nTotalSize - nInnerSize;
+
+	//The first corner (top left) of the square block. For a 4x4 block example: 0.
+	unsigned int firstCorner = 0;
+
+	//The third corner (bottom right) of the square block. For a 4x4 block example: 6.
+	unsigned int thirdCorner = (nOuterBordersSize / 2);
+
+	//The second corner (top right) of the square block. For a 4x4 block example: 3.
+	unsigned int secondCorner = thirdCorner - (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 1);
+
+	//The fourth corner (bottom left) of the square block. For a 4x4 block example: 9.
+	unsigned int fourthCorner = thirdCorner + (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 1);
+
+	for (unsigned int i = 0; i < SQUARE_LDDB_BLOCK_SPLIT_SIZE_X; ++i)
+	{
+		for (unsigned int j = 0; j < SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y; ++j)
+		{
+			AxisArray[i][j] = -1;
+		}
+	}
+
+	for (unsigned int i = 0; i < nOuterBordersSize; ++i)
+	{
+		AxisArray[x][y] = i;
+		if (i < secondCorner)
+		{
+			++y;
+		}
+		else if (i < thirdCorner)
+		{
+			++x;
+		}
+		else if (i < fourthCorner)
+		{
+			--y;
+		}
+		else
+		{
+			--x;
 		}
 	}
 }
@@ -236,7 +310,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 
 	//Find the goal block.
 	Position goalBlock((npGoal.p_x - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (npGoal.p_y - 1) / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
-	goalBlock.posCost = -1.0f;
+	goalBlock.posCost = COST_MAX;
 
 	//Init(Start).
 	InitNodes(startBlock, startPosInBlock, npStart);
@@ -261,10 +335,12 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 		}
 	}
 
+	CalculateAxisArray();
+
 	CalculateStartHeapCost(startBlock, npStart, nheuristic, npGoal);
 	startBlock.posCost = BlockHeapCosts[startBlock.p_x][startBlock.p_y];
 
-	BlockHeapCosts[goalBlock.p_x][goalBlock.p_y] = -1.0f;
+	//BlockHeapCosts[goalBlock.p_x][goalBlock.p_y] = -1.0f;
 
 	priorityFrontier.push(startBlock);
 
@@ -303,8 +379,6 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 					startToGoalCost = ingressPos.posCost + distYG;
 				}
 			}
-
-			break;
 		}
 
 		SquareExpandCurBlock(curBlock, ingress_Cells_curBlock, npGoal, nheuristic);

@@ -22,6 +22,15 @@ This function takes in nothing, transfers all the calculated Egress cells values
 */
 void WriteEgressCellsToFile()
 {
+	//The total number of elements in each block.
+	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
+
+	//The total number of non-corner elements in each block.
+	unsigned int nInnerSize = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2);
+
+	//The total number of (in and out)corner elements in each block.
+	const unsigned int nOuterBordersSize = nTotalSize - nInnerSize;
+
 	//Find the Egress cells file egressCells.txt and open it.
 	std::ofstream egressCellsFile;
 	egressCellsFile.open("egressCells.txt");
@@ -38,7 +47,7 @@ void WriteEgressCellsToFile()
 #pragma endregion
 
 			//Parse through all the corner nodes of the block.
-			for (unsigned int outerAxis = 0; outerAxis < OUTER_BORDERS_SIZE; ++outerAxis)
+			for (unsigned int outerAxis = 0; outerAxis < nOuterBordersSize; ++outerAxis)
 			{
 				//Print the number of relations the node contains along with its actual grid position.
 				egressCellsFile << "MAX RELATIONS [" << SquareEGCellNumCorners[blockI][blockJ][outerAxis] << "] for POS[" << SquareEGCellPos[blockI][blockJ][outerAxis].p_x << "][" << SquareEGCellPos[blockI][blockJ][outerAxis].p_y << "]: ";

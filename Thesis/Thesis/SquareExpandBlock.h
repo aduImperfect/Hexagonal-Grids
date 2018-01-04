@@ -17,9 +17,19 @@
 /*
 
 */
-unsigned int FindOuterAxis(const Position & curBlock, const unsigned int & curOuterAxis, const unsigned int & curMaxRel)
+void RegisterNeighborToCur(const Position & curBlock, const unsigned int & curOuterAxis, const unsigned int & curMaxRel, const Position & neighBlock, const Position & neighPosInBlock)
 {
+	if (AxisArray[neighPosInBlock.p_x][neighPosInBlock.p_y] == -1)
+	{
+		return;
+	}
 
+	unsigned int neiOuterAxis = AxisArray[neighPosInBlock.p_x][neighPosInBlock.p_y];
+
+	if (SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][curOuterAxis][curMaxRel].posCost < SquareEGCellPos[neighBlock.p_x][neighBlock.p_y][neiOuterAxis].posCost)
+	{
+		SquareEGCellPos[neighBlock.p_x][neighBlock.p_y][neiOuterAxis] = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][curOuterAxis][curMaxRel];
+	}
 }
 
 /*
@@ -64,8 +74,17 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 	}
 	*/
 
+	//The total number of elements in each block.
+	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
+
+	//The total number of non-corner elements in each block.
+	unsigned int nInnerSize = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2);
+
+	//The total number of (in and out)corner elements in each block.
+	const unsigned int nOuterBordersSize = nTotalSize - nInnerSize;
+
 	//Parse through the outer nodes of the current block.
-	for (unsigned int outerAxis = 0; outerAxis < OUTER_BORDERS_SIZE; ++outerAxis)
+	for (unsigned int outerAxis = 0; outerAxis < nOuterBordersSize; ++outerAxis)
 	{
 		//Get the grid absolute value of the current position in the block.
 		Position positionInCurBlockGridAbs = SquareEGCellPos[curBlock.p_x][curBlock.p_y][outerAxis];
@@ -90,8 +109,11 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 
 			double LDDBCost = SquareLDDB[curBlock.p_x][curBlock.p_y][ingressPos.p_x][ingressPos.p_y][positionInCurBlock.p_x][positionInCurBlock.p_y];
 
+			int LDDBInt = (int)(LDDBCost * 1000.00000f);
+			LDDBInt = ((LDDBInt >= -1) && (LDDBInt <= 1)) ? 0 : LDDBInt;
+
 			//newCost = y.g + LDDB(y,x).
-			double newCost = ingressPos.posCost + (LDDBCost < 0) ? COST_MAX : LDDBCost;
+			double newCost = ingressPos.posCost + ((LDDBInt < 0) ? COST_MAX : LDDBCost);
 
 			//min[y in Y](newCost, x.g).
 			if (newCost < tempCost)
@@ -153,6 +175,7 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 
 				//x'.g = neighborposCost [min(x'.g, x.g + cost(x,x'))].
 				SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost = cost_so_far[neighborPositionInNeighborBlockGridAbs.p_x][neighborPositionInNeighborBlockGridAbs.p_y] = neighborPositionInNeighborBlock.posCost;
+
 			}
 
 			//x'.h.
@@ -168,6 +191,39 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 				//Update the temporary neighbor heap cost storage.
 				BlockHeapCosts[neighborBlock.p_x][neighborBlock.p_y] = tempHeapValue;
 			}
+		}
+	}
+
+	//Parse through the outer nodes of the current block.
+	for (unsigned int outerAxis = 0; outerAxis < nOuterBordersSize; ++outerAxis)
+	{
+		//Parse through the neighbor relations, in the neighboring blocks, of the current position.
+		for (unsigned int maxRel = 0; maxRel < SquareEGCellNumCorners[curBlock.p_x][curBlock.p_y][outerAxis]; ++maxRel)
+		{
+			//neighbor position in square grid.
+			Position neighborPositionInNeighborBlockGridAbs = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel];
+
+			//neighbor position in neighbor block.
+			Position neighborPositionInNeighborBlock((neighborPositionInNeighborBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neighborPositionInNeighborBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+
+			if (neighborPositionInNeighborBlock.p_x < 0)
+			{
+				neighborPositionInNeighborBlock.p_x = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + neighborPositionInNeighborBlock.p_x;
+			}
+			if (neighborPositionInNeighborBlock.p_y < 0)
+			{
+				neighborPositionInNeighborBlock.p_y = SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + neighborPositionInNeighborBlock.p_y;
+			}
+
+			//neighbor position's cost info.
+			neighborPositionInNeighborBlock.posCost = neighborPositionInNeighborBlockGridAbs.posCost;
+
+			Position tmpBlk(neighborPositionInNeighborBlockGridAbs.p_x - 1, neighborPositionInNeighborBlockGridAbs.p_y - 1);
+
+			//neighbor block.
+			Position neighborBlock((tmpBlk.p_x < 0) ? (tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X) - 1 : tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (tmpBlk.p_y < 0) ? (tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) - 1 : tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+
+			RegisterNeighborToCur(curBlock, outerAxis, maxRel, neighborBlock, neighborPositionInNeighborBlock);
 		}
 	}
 
@@ -191,10 +247,10 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 				NeighBlock.posCost = BlockHeapCosts[NeighBlock.p_x][NeighBlock.p_y];
 			}
 
-			//if (NeighBlock.posCost == COST_MAX)
-			//{
-				//continue;
-			//}
+			if (NeighBlock.posCost == COST_MAX)
+			{
+				continue;
+			}
 
 			std::list<Position> tempList;
 			//Make and clear the temporary list.
@@ -229,7 +285,10 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 
 			if (!isFound)
 			{
-				tempList.push_back(NeighBlock);
+				if (!ClosedList[NeighBlock.p_x][NeighBlock.p_y])
+				{
+					tempList.push_back(NeighBlock);
+				}
 			}
 
 			//Parse through the temporary list's elements until it is empty.
@@ -237,11 +296,13 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 			{
 				//Add the temporary list's front element to the priority queue.
 				priorityFrontier.push(tempList.front());
-
+				
 				//Pop out the front element of the tempList.
 				tempList.pop_front();
 			}
 		}
 	}
+
+	ClosedList[curBlock.p_x][curBlock.p_y] = true;
 }
 #endif

@@ -144,12 +144,12 @@ public:
 	Parameters to the function:
 	pos_F : const BlockPosition - The block position to which all the relations will be set.
 	pos_T : const BlockPosition - The block position that is set as related to the pos_From (pos_F) block position based on what its relation number is.
-	nRelNo : const int - The relation number for the pos_To relational block position with respect to the pos_From block position.
+	nRelNo : const unsigned int - The relation number for the pos_To relational block position with respect to the pos_From block position.
 	Returns from the function:
 	isSet : bool - Return value which tells us if the pos_From block position gets set the pos_T block position at relation no: nRelNo.
 	This function takes in the from block position and the to block position which gets set at nRelNo if the nRelNo is within bounds of the nMaxRel. It returns true if the relational block position gets set for pos_From, otherwise false.
 	*/
-	bool /*isSet*/ Set(const BlockPosition pos_F, const BlockPosition pos_T, const int nRelNo)
+	bool /*isSet*/ Set(const BlockPosition pos_F, const BlockPosition pos_T, const unsigned int nRelNo)
 	{
 		//Set the pos_From to pos_F.
 		pos_From = pos_F;
