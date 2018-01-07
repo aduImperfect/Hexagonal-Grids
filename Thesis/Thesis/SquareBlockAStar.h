@@ -176,6 +176,69 @@ void CalculateStartHeapCost(const Position & curBlock, const Position & startPos
 	}
 }
 
+void PrintCostSoFar()
+{
+	//Find the Egress cells file SquareEGCellPos.txt and open it.
+	std::ofstream costSoFarFile;
+	costSoFarFile.open("CostSoFar.txt");
+
+	costSoFarFile << "\n";
+
+#pragma region COL_FIRST_HEADER
+	//Append all the TO[n] subscripts as the first row header.
+	costSoFarFile << "\t\t";
+	for (int icol = 0; icol < SIZE + GRID_EXTRA; ++icol)
+	{
+		if (icol > 9)
+		{
+			costSoFarFile << "[" << icol << "]\t";
+		}
+		else
+		{
+			costSoFarFile << "[" << icol << "]\t\t";
+		}
+	}
+	costSoFarFile << "\n";
+#pragma endregion
+
+	for (unsigned int irow = 0; irow < SIZE + GRID_EXTRA; ++irow)
+	{
+		costSoFarFile << "[" << irow << "]:\t";
+		for (unsigned int icol = 0; icol < SIZE + GRID_EXTRA; ++icol)
+		{
+			bool isInf = false;
+			if (cost_so_far[irow][icol] == COST_MAX)
+			{
+				isInf = true;
+				costSoFarFile << "infi";
+			}
+			else
+			{
+				costSoFarFile << cost_so_far[irow][icol];
+			}
+
+			int tempVal = static_cast<int>(cost_so_far[irow][icol] * 100);
+			if ((tempVal % 100) != 0)
+			{
+				costSoFarFile << "\t";
+			}
+			else
+			{
+				if (isInf)
+				{
+					costSoFarFile << "\t";
+				}
+				else
+				{
+					costSoFarFile << "\t\t";
+				}
+			}
+		}
+		costSoFarFile << "\n";
+	}
+	costSoFarFile << "\n";
+}
+
 /*
 
 */
@@ -385,27 +448,26 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 		SquareExpandCurBlock(curBlock, ingress_Cells_curBlock, npGoal, nheuristic);
 
 		//If autoCompute or generateInstantaneous is set to true we just keep going through the while loop without asking the user for the next step or printing out the map.
-		if (generateInstantaneous || autoCompute)
-			continue;
+		//if (generateInstantaneous || autoCompute)
+			//continue;
 
 		//If we are going to show the various maps.
-		if (showMap == 1)
-		{
-			//Re-generate the square grid.
-			GenerateSquare(npStart, npGoal);
-		}
+		//if (showMap == 1)
+		//{
+			PrintCostSoFar();
+		//}
 
 		//If step by step algorithm is being expanded then we use nextStep's value to know if we want to get the next step.
 		//If this is set to false by the user, we change the mode to computing automatically.
-		bool nextStep = false;
-		printf("\nGet next step? (0 - no/1 - yes):\n");
-		std::cin >> nextStep;
+		//bool nextStep = false;
+		//printf("\nGet next step? (0 - no/1 - yes):\n");
+		//std::cin >> nextStep;
 
 		//If the user does not want to get the next step, we set it to calculating the next steps automatically.
-		if (!nextStep)
-		{
-			generateInstantaneous = true;
-		}
+		//if (!nextStep)
+		//{
+			//generateInstantaneous = true;
+		//}
 	}
 
 	//If goal is found.
