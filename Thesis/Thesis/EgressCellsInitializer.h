@@ -78,6 +78,12 @@ void EgressCellsInitialize()
 					//Store the validity of the current block's position to the neighbor block's positions to a printable array.
 					SquareEgressCells[blockI][blockJ][outerAxis][maxRel] = egressCellsArray[outerAxis].bValidRelation[maxRel];
 				}
+
+				for (unsigned int maxRel = egressCellsArray[outerAxis].max_rel; maxRel < MAX_RELATIONS; ++maxRel)
+				{
+					SquareEGCellNeighborPos[blockI][blockJ][outerAxis][maxRel] = Position(-1, -1);
+					SquareEGCellNeighborPos[blockI][blockJ][outerAxis][maxRel].posCost = -1;
+				}
 			}
 
 			//Delete the temporary array.

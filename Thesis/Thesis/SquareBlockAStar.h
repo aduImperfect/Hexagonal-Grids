@@ -326,7 +326,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	InitializeVCC(SQUARE_GRID, COST_MAX);
 
 	//Set the position cost of the starting position to be equal to the cost_so_far at the starting position which is set.
-	npStart.posCost = cost_so_far[npStart.p_x][npStart.p_y] = 0.00f;
+	npStart.posCost = 0.00f;
 
 	//Set the visited(start) to true. Stating that start has been visited already.
 	visited[npStart.p_x][npStart.p_y] = true;
@@ -398,6 +398,14 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 		}
 	}
 
+	for (unsigned int ir = 0; ir < SIZE + GRID_EXTRA; ++ir)
+	{
+		for (unsigned int ic = 0; ic < SIZE + GRID_EXTRA; ++ic)
+		{
+			cost_so_far[ir][ic] = COST_MAX;
+		}
+	}
+
 	CalculateAxisArray();
 
 	CalculateStartHeapCost(startBlock, npStart, nheuristic, npGoal);
@@ -406,6 +414,10 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	//BlockHeapCosts[goalBlock.p_x][goalBlock.p_y] = -1.0f;
 
 	priorityFrontier.push(startBlock);
+
+	PrintEgressCellsValuesToFile();
+	PrintEgressCellsNeighborValuesToFile();
+	PrintCostSoFar();
 
 	while ((!priorityFrontier.empty()) && (priorityFrontier.top().posCost < startToGoalCost))
 	{
@@ -428,6 +440,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 		if (curBlock == goalBlock)
 		{
 			//length = min (y in Y) (y.g + dist(y, goal), length).
+			/*
 			for (unsigned int y = 0; y < ingress_Cells_curBlock.size(); ++y)
 			{
 				Position ingressPos(ingress_Cells_curBlock[y].p_x, ingress_Cells_curBlock[y].p_y);
@@ -442,6 +455,33 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 					startToGoalCost = ingressPos.posCost + distYG;
 				}
 			}
+			*/
+
+			//Using SquareEGCellPos!? - Temp solution?
+			for (unsigned int posK = 0; posK < SQUARE_LDDB_BLOCK_SPLIT_SIZE_X; ++posK)
+			{
+				for (unsigned int posL = 0; posL < SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y; ++posL)
+				{
+					if (AxisArray[posK][posL] == -1)
+					{
+						continue;
+					}
+
+					if (SquareEGCellPos[curBlock.p_x][curBlock.p_y][AxisArray[posK][posL]].posCost != COST_MAX)
+					{
+						//dist(y, goal) = SquareLDDB[CurrentBlock][ingress(Y)][GoalPosInBlock].
+						double distYG = SquareLDDB[curBlock.p_x][curBlock.p_y][posK][posL][goalPosInBlock.p_x][goalPosInBlock.p_y];
+
+						if ((SquareEGCellPos[curBlock.p_x][curBlock.p_y][AxisArray[posK][posL]].posCost + distYG) < startToGoalCost)
+						{
+							//length = y.g + dist(y, goal).
+							startToGoalCost = SquareEGCellPos[curBlock.p_x][curBlock.p_y][AxisArray[posK][posL]].posCost + distYG;
+						}
+					}
+				}
+			}
+
+
 			break;
 		}
 

@@ -151,6 +151,109 @@ void PrintEgressCellsValuesToFile()
 			egressCellsPosFile << "\n";
 		}
 	}
+
+	egressCellsPosFile.close();
+}
+
+/*
+
+*/
+void PrintEgressCellsNeighborValuesToFile()
+{
+	//Find the Egress cells file SquareEGCellPos.txt and open it.
+	std::ofstream egressCellsNeigborPosFile;
+	egressCellsNeigborPosFile.open("SquareEGCellNeighborPos.txt");
+
+	egressCellsNeigborPosFile << "\n";
+
+	//The total number of elements in each block.
+	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
+
+	//The total number of non-corner elements in each block.
+	unsigned int nInnerSize = (SQUARE_LDDB_BLOCK_SPLIT_SIZE_X - 2) * (SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y - 2);
+
+	//The total number of (in and out)corner elements in each block.
+	const unsigned int nOuterBordersSize = nTotalSize - nInnerSize;
+
+	//Parse through the outer nodes of the current block.
+	for (unsigned int blockI = 0; blockI < SQUARE_LDDB_BLOCK_SIZE_I; ++blockI)
+	{
+		for (unsigned int blockJ = 0; blockJ < SQUARE_LDDB_BLOCK_SIZE_J; ++blockJ)
+		{
+#pragma region BLOCK_NO
+			//Append (print) Block[I][J].
+			egressCellsNeigborPosFile << "\nBlock[" << blockI << "][" << blockJ << "]:\n";
+#pragma endregion
+
+			for (unsigned int outerK = 0; outerK < nOuterBordersSize; ++outerK)
+			{
+				egressCellsNeigborPosFile << "\t\t\t";
+				for (unsigned int relL = 0; relL < SquareEGCellNumCorners[blockI][blockJ][outerK]; ++relL)
+				{
+					if ((SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_x > 9) && (SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_y > 9))
+					{
+						egressCellsNeigborPosFile << "[" << SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_x << "][" << SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_y << "]\t";
+					}
+					else if ((SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_x < 0) && (SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_y < 0))
+					{
+						egressCellsNeigborPosFile << "[" << SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_x << "][" << SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_y << "]\t";
+					}
+					else
+					{
+						egressCellsNeigborPosFile << "[" << SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_x << "][" << SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].p_y << "]\t\t";
+					}
+				}
+				egressCellsNeigborPosFile << "\n";
+
+				if ((SquareEGCellPos[blockI][blockJ][outerK].p_x > 9) || (SquareEGCellPos[blockI][blockJ][outerK].p_y > 9))
+				{
+					egressCellsNeigborPosFile << "[" << SquareEGCellPos[blockI][blockJ][outerK].p_x << "][" << SquareEGCellPos[blockI][blockJ][outerK].p_y << "]:\t";
+				}
+				else
+				{
+					egressCellsNeigborPosFile << "[" << SquareEGCellPos[blockI][blockJ][outerK].p_x << "][" << SquareEGCellPos[blockI][blockJ][outerK].p_y << "]:\t\t";
+				}
+
+				for (unsigned int relL = 0; relL < SquareEGCellNumCorners[blockI][blockJ][outerK]; ++relL)
+				{
+					bool isInf = false;
+					if(SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].posCost == COST_MAX)
+					{
+						isInf = true;
+						egressCellsNeigborPosFile << "infi";
+					}
+					else
+					{
+						egressCellsNeigborPosFile << SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].posCost;
+					}
+
+					//Calculate the number of \t (tabs) to be appended (printed) to the file based on the value.
+					int tempVal = static_cast<int>(SquareEGCellNeighborPos[blockI][blockJ][outerK][relL].posCost * 100);
+					if ((tempVal % 100) != 0)
+					{
+						egressCellsNeigborPosFile << "\t\t";
+					}
+					else
+					{
+						if (isInf)
+						{
+							egressCellsNeigborPosFile << "\t\t";
+						}
+						else
+						{
+							egressCellsNeigborPosFile << "\t\t\t";
+						}
+					}
+				}
+				
+				egressCellsNeigborPosFile << "\n";
+			}
+
+			egressCellsNeigborPosFile << "\n";
+		}
+	}
+
+	egressCellsNeigborPosFile.close();
 }
 
 /*
@@ -403,6 +506,7 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 	EgressCellsUpdation(curBlock);
 
 	PrintEgressCellsValuesToFile();
+	PrintEgressCellsNeighborValuesToFile();
 
 	UpdateOpenClosedLists(curBlock);
 }
