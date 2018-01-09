@@ -488,7 +488,7 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 			}
 
 			//x'.h.
-			double neighborPosToGoalHeuristic = Heuristic(heuType, goalPos.p_x - neighborPositionInNeighborBlockGridAbs.p_x, goalPos.p_y - neighborPositionInNeighborBlockGridAbs.p_y);
+			double neighborPosToGoalHeuristic = Heuristic(heuType, abs(goalPos.p_x - neighborPositionInNeighborBlockGridAbs.p_x), abs(goalPos.p_y - neighborPositionInNeighborBlockGridAbs.p_y));
 
 			//tempHeapValue = x'.g + x'.h.
 			double tempHeapValue = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost + neighborPosToGoalHeuristic;
