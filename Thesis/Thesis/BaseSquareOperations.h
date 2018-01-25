@@ -76,7 +76,7 @@ void GenerateSquare(const Position nposStart, const Position nposGoal)
 			{
 				Initializer(i, j, WALL, WALL_CAME_FROM, WALL_CAME_FROM, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST);
 			}
-			else if ((j == 10) && (i > 10 && i < 18))
+			else if ((j == 10) && (i > 10 && i < 17))
 			{
 				Initializer(i, j, WALL, WALL_CAME_FROM, WALL_CAME_FROM, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST);
 			}

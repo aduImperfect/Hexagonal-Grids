@@ -416,8 +416,13 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 		for (unsigned int blkJ = 0; blkJ < SQUARE_LDDB_BLOCK_SIZE_J; ++blkJ)
 		{
 			ClosedList[blkI][blkJ] = false;
+			SquarePrevBlock[blkI][blkJ] = Position(-1, -1);
+			SquarePrevBlock[blkI][blkJ].posCost = -1;
 		}
 	}
+
+	SquarePrevBlock[startBlock.p_x][startBlock.p_y] = Position(startBlock.p_x, startBlock.p_y);
+	SquarePrevBlock[startBlock.p_x][startBlock.p_y].posCost = 0.0f;
 
 	priorityFrontier.push(startBlock);
 
@@ -445,6 +450,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 
 		if (curBlock == goalBlock)
 		{
+			goalBlock.posCost = curBlock.posCost;
 			//length = min (y in Y) (y.g + dist(y, goal), length).
 			for (unsigned int y = 0; y < ingress_Cells_curBlock.size(); ++y)
 			{
@@ -454,44 +460,72 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 				//dist(y, goal) = SquareLDDB[CurrentBlock][ingress(Y)][GoalPosInBlock].
 				double distYG = SquareLDDB[curBlock.p_x][curBlock.p_y][ingressPos.p_x][ingressPos.p_y][goalPosInBlock.p_x][goalPosInBlock.p_y];
 
+				if (distYG < 0.000f)
+				{
+					continue;
+				}
+
 				if ((ingressPos.posCost + distYG) < startToGoalCost)
 				{
 					//length = y.g + dist(y, goal).
 					startToGoalCost = ingressPos.posCost + distYG;
 				}
 			}
-			break;
+			//break;
 		}
 
 		SquareExpandCurBlock(curBlock, ingress_Cells_curBlock, npGoal, nheuristic);
 
+		PrintCostSoFar();
+
 		//If autoCompute or generateInstantaneous is set to true we just keep going through the while loop without asking the user for the next step or printing out the map.
-		//if (generateInstantaneous || autoCompute)
-			//continue;
+		if (generateInstantaneous || autoCompute)
+			continue;
 
 		//If we are going to show the various maps.
-		//if (showMap == 1)
-		//{
-			PrintCostSoFar();
-		//}
+		if (showMap == 1)
+		{
+		}
 
 		//If step by step algorithm is being expanded then we use nextStep's value to know if we want to get the next step.
 		//If this is set to false by the user, we change the mode to computing automatically.
-		//bool nextStep = false;
-		//printf("\nGet next step? (0 - no/1 - yes):\n");
-		//std::cin >> nextStep;
+		bool nextStep = false;
+		printf("\nGet next step? (0 - no/1 - yes):\n");
+		std::cin >> nextStep;
 
 		//If the user does not want to get the next step, we set it to calculating the next steps automatically.
-		//if (!nextStep)
-		//{
-			//generateInstantaneous = true;
-		//}
+		if (!nextStep)
+		{
+			generateInstantaneous = true;
+		}
 	}
 
 	//If goal is found.
 	if (startToGoalCost != COST_MAX)
 	{
 		//TODO: Reconstruct goal path.
+
+		//Now, traverse backwards from goal to start to save the goal path in a vector.
+		Position currentTraverse = goalBlock;
+
+		//Empty the goal path vector completely!
+		goalPath.clear();
+
+		//Add the goal position to the goal path vector.
+		goalPath.push_back(currentTraverse);
+
+		//Until, we cannot trace back to the start position, we keep repeating the process of updating the current position.
+		while (currentTraverse != startBlock)
+		{
+			//Update currentTraverse to point to the previous position from whence it came.
+			currentTraverse = SquarePrevBlock[currentTraverse.p_x][currentTraverse.p_y];
+
+			//Add currentTraverse to the goal path vector.
+			goalPath.push_back(currentTraverse);
+		}
+
+		//Reverse the whole vector to contain the whole list.
+		std::reverse(goalPath.begin(), goalPath.end());
 
 		return startToGoalCost;
 	}

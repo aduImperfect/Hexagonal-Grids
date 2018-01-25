@@ -17,7 +17,7 @@
 /*
 
 */
-void RegisterNeighborToCur(const Position & curBlock, const unsigned int & curOuterAxis, const unsigned int & curMaxRel, const Position & neighBlock, const Position & neighPosInBlock)
+void RegisterNeighborToCur(const Position & curBlock, const unsigned int & curOuterAxis, const unsigned int & curMaxRel, const Position & neighBlock, const Position & neighPosInBlock, const Position & neighPosGridAbs)
 {
 	if (AxisArray[neighPosInBlock.p_x][neighPosInBlock.p_y] == -1)
 	{
@@ -29,6 +29,7 @@ void RegisterNeighborToCur(const Position & curBlock, const unsigned int & curOu
 	if (SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][curOuterAxis][curMaxRel].posCost < SquareEGCellPos[neighBlock.p_x][neighBlock.p_y][neiOuterAxis].posCost)
 	{
 		SquareEGCellPos[neighBlock.p_x][neighBlock.p_y][neiOuterAxis] = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][curOuterAxis][curMaxRel];
+		cost_so_far[neighPosGridAbs.p_x][neighPosGridAbs.p_y] = SquareEGCellPos[neighBlock.p_x][neighBlock.p_y][neiOuterAxis].posCost;
 	}
 }
 
@@ -75,7 +76,7 @@ void EgressCellsUpdation(const Position & curBlock)
 			//neighbor block.
 			Position neighborBlock((tmpBlk.p_x < 0) ? (tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X) - 1 : tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (tmpBlk.p_y < 0) ? (tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) - 1 : tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 
-			RegisterNeighborToCur(curBlock, outerAxis, maxRel, neighborBlock, neighborPositionInNeighborBlock);
+			RegisterNeighborToCur(curBlock, outerAxis, maxRel, neighborBlock, neighborPositionInNeighborBlock, neighborPositionInNeighborBlockGridAbs);
 		}
 	}
 }
@@ -302,17 +303,43 @@ void UpdateOpenClosedLists(const Position & curBlock)
 				priorityFrontier.pop();
 
 				//If that element was the neighbor block, then early exit.
+				
+				//If NeighBlock in open list (priorityFrontier).
 				if ((topOfQueue.p_x == NeighBlock.p_x) && (topOfQueue.p_y == NeighBlock.p_y))
 				{
 					isFound = true;
+
+					//If NeighBlock's cost is less than that the same item's cost in the open list.
 					if (NeighBlock.posCost < topOfQueue.posCost)
-					{
+					{						
+						//We remove it from the closed list.
+						ClosedList[NeighBlock.p_x][NeighBlock.p_y] = false;
+
+						SquarePrevBlock[NeighBlock.p_x][NeighBlock.p_y] = curBlock;
+
 						//Push it to the back of the tempList.
 						tempList.push_back(NeighBlock);
 						break;
 					}
 				}
+				//If NeighBlock is in ClosedList.
+				else if (ClosedList[NeighBlock.p_x][NeighBlock.p_y])
+				{
+					isFound = true;
+					//If NeighBlock's cost is less than that the same item's cost in the closed list.
+					if (NeighBlock.posCost < SquareClosedList[curBlock.p_x][curBlock.p_y].posCost)
+					{
+						//We remove it from the closed list.
+						ClosedList[NeighBlock.p_x][NeighBlock.p_y] = false;
 
+						SquarePrevBlock[NeighBlock.p_x][NeighBlock.p_y] = curBlock;
+
+						//Push it to the back of the tempList.
+						tempList.push_back(NeighBlock);
+						break;
+					}
+				}
+				
 				//Push it to the back of the tempList.
 				tempList.push_back(topOfQueue);
 			}
@@ -321,6 +348,7 @@ void UpdateOpenClosedLists(const Position & curBlock)
 			{
 				if (!ClosedList[NeighBlock.p_x][NeighBlock.p_y])
 				{
+					SquarePrevBlock[NeighBlock.p_x][NeighBlock.p_y] = curBlock;
 					tempList.push_back(NeighBlock);
 				}
 			}
@@ -338,6 +366,7 @@ void UpdateOpenClosedLists(const Position & curBlock)
 	}
 
 	ClosedList[curBlock.p_x][curBlock.p_y] = true;
+	SquareClosedList[curBlock.p_x][curBlock.p_y] = Position(curBlock.p_x, curBlock.p_y);
 }
 
 
@@ -483,7 +512,7 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 				}
 
 				//x'.g = neighborposCost [min(x'.g, x.g + cost(x,x'))].
-				SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost = cost_so_far[neighborPositionInNeighborBlockGridAbs.p_x][neighborPositionInNeighborBlockGridAbs.p_y] = neighborPositionInNeighborBlock.posCost;
+				SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost = neighborPositionInNeighborBlock.posCost;
 
 			}
 

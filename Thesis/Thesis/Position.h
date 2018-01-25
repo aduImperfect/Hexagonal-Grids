@@ -172,4 +172,9 @@ Position SquareEGCellPos[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][OUT
 //Egress cells neighbor block positions.
 Position SquareEGCellNeighborPos[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J][OUTER_BORDERS_SIZE][MAX_RELATIONS];
 
+//Storing prev blocks for final goal pathing.
+Position SquarePrevBlock[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J];
+
+Position SquareClosedList[SQUARE_LDDB_BLOCK_SIZE_I][SQUARE_LDDB_BLOCK_SIZE_J];
+
 #endif
