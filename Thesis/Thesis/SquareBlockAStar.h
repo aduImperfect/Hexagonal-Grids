@@ -79,7 +79,7 @@ void InitNodes(const Position & blockIJ, const Position & fromKL, const Position
 /*
 
 */
-void CalculateBlockIngressNodes(Position & curBlock, std::vector<Position> & ingress_Cells_curBlock, const Position & startPosInBlock, const bool & isStartBlock)
+void CalculateBlockIngressNodes(Position & curBlock, std::vector<Position> & ingress_Cells_curBlock, const Position & startPosInBlock, const bool & isFirstExpansion)
 {
 	//Ingress cells (Y) = Boundary cells that have a different g-value now than what they had when the current block had been previously expanded.
 	//If the block is being expanded for the first time, all the boundary cells with a finite g-value are ingress cells.
@@ -99,7 +99,7 @@ void CalculateBlockIngressNodes(Position & curBlock, std::vector<Position> & ing
 
 			Position curPos(curBlock.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + rowI + 1, curBlock.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + rowJ + 1);
 
-			if (isStartBlock)
+			if (isFirstExpansion)
 			{
 				double tmpCost = (SquareLDDB[curBlock.p_x][curBlock.p_y][startPosInBlock.p_x][startPosInBlock.p_y][rowI][rowJ] < 0) ? COST_MAX: SquareLDDB[curBlock.p_x][curBlock.p_y][startPosInBlock.p_x][startPosInBlock.p_y][rowI][rowJ];
 
@@ -137,7 +137,7 @@ void PrintIngressNodes(Position & curBlock, std::vector<Position> & ingress_Cell
 /*
 
 */
-void CalculateStartHeapCost(const Position & curBlock, const Position & startPos, const HeuristicType & heuType, const Position & goalPos)
+void CalculateStartHeapCost(const Position & curBlock, const Position & startPosInBlock, const HeuristicType & heuType, const Position & goalPos)
 {
 	//The total number of elements in each block.
 	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
@@ -163,8 +163,17 @@ void CalculateStartHeapCost(const Position & curBlock, const Position & startPos
 		//x.h.
 		double posToGoalHeuristic = Heuristic(heuType, abs(goalPos.p_x - positionInCurBlockGridAbs.p_x), abs(goalPos.p_y - positionInCurBlockGridAbs.p_y));
 
+		//Get the LDDB cost stored in the SquareLDDB database = LDDB(y,x).
+		double LDDBCost = SquareLDDB[curBlock.p_x][curBlock.p_y][startPosInBlock.p_x][startPosInBlock.p_y][positionInCurBlock.p_x][positionInCurBlock.p_y];
+
+		//Convert float to int with a large multiplier of 1000 for better approximation.
+		int LDDBInt = (int)(LDDBCost * 1000.00000f);
+
+		//If the integral value is between -1 and 1 (negligible compared to large numbers) then set it to 0.
+		LDDBInt = ((LDDBInt >= -1) && (LDDBInt <= 1)) ? 0 : LDDBInt;
+
 		//tempHeapValue = x.g + x.h.
-		double tempHeapValue = SquareLDDB[curBlock.p_x][curBlock.p_y][startPos.p_x][startPos.p_y][positionInCurBlock.p_x][positionInCurBlock.p_y] + posToGoalHeuristic;
+		double tempHeapValue = ((LDDBInt < 0) ? COST_MAX : LDDBCost) + posToGoalHeuristic;
 
 		//tempHeapValue < neighborHeapCost.
 		if (((curBlock.p_x >= 0) && (curBlock.p_y >= 0) && (curBlock.p_x < SQUARE_LDDB_BLOCK_SIZE_I) && (curBlock.p_y < SQUARE_LDDB_BLOCK_SIZE_J)) && (tempHeapValue < BlockHeapCosts[curBlock.p_x][curBlock.p_y]))
@@ -408,7 +417,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 
 	CalculateAxisArray();
 
-	CalculateStartHeapCost(startBlock, npStart, nheuristic, npGoal);
+	//CalculateStartHeapCost(startBlock, startPosInBlock, nheuristic, npGoal);
 	startBlock.posCost = BlockHeapCosts[startBlock.p_x][startBlock.p_y];
 
 	for (unsigned int blkI = 0; blkI < SQUARE_LDDB_BLOCK_SIZE_I; ++blkI)
@@ -418,6 +427,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 			ClosedList[blkI][blkJ] = false;
 			SquarePrevBlock[blkI][blkJ] = Position(-1, -1);
 			SquarePrevBlock[blkI][blkJ].posCost = -1;
+			SquareClosedList[blkI][blkJ].posCost = COST_MAX;
 		}
 	}
 
@@ -430,21 +440,54 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	PrintEgressCellsNeighborValuesToFile();
 	PrintCostSoFar();
 
-	while ((!priorityFrontier.empty()) && (priorityFrontier.top().posCost < startToGoalCost))
+	bool isFirstExpansion = true;
+
+	while ((!priorityFrontier.empty()) && ((priorityFrontier.top().posCost < startToGoalCost) || (isFirstExpansion)))
 	{
 		Position curBlock = priorityFrontier.top();
+
+		//Make and clear the temporary list.
+		std::list<Position> tempList;
+		tempList.clear();
+
+		//Parse through the priority queue until it is empty.
+		while (!priorityFrontier.empty())
+		{
+			//Get the topmost element of the queue.
+			Position topOfQueue = priorityFrontier.top();
+
+			//Remove the top element of the priority queue.
+			priorityFrontier.pop();
+
+			//Push it to the back of the tempList.
+			tempList.push_back(topOfQueue);
+		}
+
+		std::cout << "\n Priority Queue:\n";
+		for each (Position listItem in tempList)
+		{
+			std::cout << "[" << listItem.p_x << ", " << listItem.p_y << "]: " << listItem.posCost << ".\t";
+		}
+		std::cout << "\n";
+
+		//Parse through the temporary list's elements until it is empty.
+		while (!tempList.empty())
+		{
+			//Add the temporary list's front element to the priority queue.
+			priorityFrontier.push(tempList.front());
+
+			//Pop out the front element of the tempList.
+			tempList.pop_front();
+		}
+
+
 		priorityFrontier.pop();
 
 		//Ingress cells in current block (Y).
 		std::vector<Position> ingress_Cells_curBlock;
 
-		bool isStartBlock = false;
-		if (curBlock == startBlock)
-		{
-			isStartBlock = true;
-		}
-
-		CalculateBlockIngressNodes(curBlock, ingress_Cells_curBlock, startPosInBlock, isStartBlock);
+		CalculateBlockIngressNodes(curBlock, ingress_Cells_curBlock, startPosInBlock, isFirstExpansion);
+		isFirstExpansion = false;
 
 		PrintIngressNodes(curBlock, ingress_Cells_curBlock);
 

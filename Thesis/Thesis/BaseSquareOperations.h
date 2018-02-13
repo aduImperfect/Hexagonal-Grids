@@ -43,11 +43,13 @@ This function takes in the positions of start and goal, it sets the values of al
 */
 void GenerateSquare(const Position nposStart, const Position nposGoal)
 {
+	bool makeWall = false;
 	//Iterate through the square grid position (I, J) [Row, Column].
 	for (int i = 0; i <= SQUARE_SIZE; ++i)
 	{
 		for (int j = 0; j <= SQUARE_SIZE; ++j)
 		{
+			makeWall = false;
 			//The boundary walls initialization.
 			if (j == 0 || j == SQUARE_SIZE)
 			{
@@ -67,16 +69,33 @@ void GenerateSquare(const Position nposStart, const Position nposGoal)
 			{
 				Initializer(i, j, GOAL, GOAL_CAME_FROM, GOAL_CAME_FROM, GOAL_COST, NULL, GOAL_COST, NULL, GOAL_COST, NULL);
 			}
+			else if (j == 2 && i < 5)
+			{
+				makeWall = true;
+			}
+			else if (i == 9 && j < 11)
+			{
+				makeWall = true;
+			}
+			else if (j == 9 && i < 11)
+			{
+				makeWall = true;
+			}
 			//The random walls position initialization.
 			else if (((i / 2) % (5) == 0) && ((2 * j) % (3) == 0))
 			{
-				Initializer(i, j, WALL, WALL_CAME_FROM, WALL_CAME_FROM, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST);
+				makeWall = true;
 			}
 			else if ((i == 10) && (j > 10 && j < 20))
 			{
-				Initializer(i, j, WALL, WALL_CAME_FROM, WALL_CAME_FROM, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST);
+				makeWall = true;
 			}
 			else if ((j == 10) && (i > 10 && i < 17))
+			{
+				makeWall = true;
+			}
+
+			if (makeWall)
 			{
 				Initializer(i, j, WALL, WALL_CAME_FROM, WALL_CAME_FROM, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST, WALL_COST);
 			}

@@ -54,10 +54,10 @@ void EgressCellsUpdation(const Position & curBlock)
 		for (unsigned int maxRel = 0; maxRel < SquareEGCellNumCorners[curBlock.p_x][curBlock.p_y][outerAxis]; ++maxRel)
 		{
 			//neighbor position in square grid.
-			Position neighborPositionInNeighborBlockGridAbs = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel];
+			Position neighborPositionInSquareGrid = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel];
 
 			//neighbor position in neighbor block.
-			Position neighborPositionInNeighborBlock((neighborPositionInNeighborBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neighborPositionInNeighborBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+			Position neighborPositionInNeighborBlock((neighborPositionInSquareGrid.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neighborPositionInSquareGrid.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 
 			if (neighborPositionInNeighborBlock.p_x < 0)
 			{
@@ -69,14 +69,14 @@ void EgressCellsUpdation(const Position & curBlock)
 			}
 
 			//neighbor position's cost info.
-			neighborPositionInNeighborBlock.posCost = neighborPositionInNeighborBlockGridAbs.posCost;
+			neighborPositionInNeighborBlock.posCost = neighborPositionInSquareGrid.posCost;
 
-			Position tmpBlk(neighborPositionInNeighborBlockGridAbs.p_x - 1, neighborPositionInNeighborBlockGridAbs.p_y - 1);
+			Position tmpBlk(neighborPositionInSquareGrid.p_x - 1, neighborPositionInSquareGrid.p_y - 1);
 
 			//neighbor block.
 			Position neighborBlock((tmpBlk.p_x < 0) ? (tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X) - 1 : tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (tmpBlk.p_y < 0) ? (tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) - 1 : tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 
-			RegisterNeighborToCur(curBlock, outerAxis, maxRel, neighborBlock, neighborPositionInNeighborBlock, neighborPositionInNeighborBlockGridAbs);
+			RegisterNeighborToCur(curBlock, outerAxis, maxRel, neighborBlock, neighborPositionInNeighborBlock, neighborPositionInSquareGrid);
 		}
 	}
 }
@@ -258,7 +258,12 @@ void PrintEgressCellsNeighborValuesToFile()
 }
 
 /*
-
+Updating the OPEN AND CLOSED LISTS.
+Parameters to the function:
+curBlock : const Position & - The current block position.
+Returns from the function:
+NONE
+This function takes in the current block and updates the OPEN and CLOSED lists based on the Heap cost values.
 */
 void UpdateOpenClosedLists(const Position & curBlock)
 {
@@ -267,31 +272,41 @@ void UpdateOpenClosedLists(const Position & curBlock)
 	{
 		for (unsigned int neighborJ = 0; neighborJ < 3; ++neighborJ)
 		{
+			//If it is the current block (continue).
 			if ((neighborI == 1) && (neighborJ == 1))
 				continue;
 
-			//NextBlock.heapValue = newHeapValue.
-			Position NeighBlock(curBlock.p_x + (neighborI - 1), curBlock.p_y + (neighborJ - 1));
+			Position ChildBlock(curBlock.p_x + (neighborI - 1), curBlock.p_y + (neighborJ - 1));
 
-			if ((NeighBlock.p_x < 0) || (NeighBlock.p_y < 0) || (NeighBlock.p_x >= SQUARE_LDDB_BLOCK_SIZE_I) || (NeighBlock.p_y >= SQUARE_LDDB_BLOCK_SIZE_J))
+			//If ChildBlock axis points are out of bounds of the square grid, skip it.
+			if ((ChildBlock.p_x < 0) || (ChildBlock.p_y < 0) || (ChildBlock.p_x >= SQUARE_LDDB_BLOCK_SIZE_I) || (ChildBlock.p_y >= SQUARE_LDDB_BLOCK_SIZE_J))
 			{
 				continue;
 			}
 			else
 			{
-				NeighBlock.posCost = BlockHeapCosts[NeighBlock.p_x][NeighBlock.p_y];
+				//ChildBlock.heapValue = newHeapValue (stored in the BlockHeapCosts[][] array).
+				ChildBlock.posCost = BlockHeapCosts[ChildBlock.p_x][ChildBlock.p_y];
 			}
 
-			if (NeighBlock.posCost == COST_MAX)
+			//If ChildBlock's heap cost is INFINITE (MAX!!!), skip as we don't care about an unreachable block.
+			if (ChildBlock.posCost == COST_MAX)
 			{
 				continue;
 			}
 
-			std::list<Position> tempList;
 			//Make and clear the temporary list.
+			std::list<Position> tempList;
 			tempList.clear();
 
-			bool isFound = false;
+			//A boolean for if the 'Block' isFound.
+			bool isFoundInOpen = false;
+			bool isFoundInClosed = false;
+
+			bool isLessInOpen = false;
+			bool isLessInClosed = false;
+
+			Position * itemFoundInOpen = nullptr;
 
 			//Parse through the priority queue until it is empty.
 			while (!priorityFrontier.empty())
@@ -301,55 +316,81 @@ void UpdateOpenClosedLists(const Position & curBlock)
 
 				//Remove the top element of the priority queue.
 				priorityFrontier.pop();
-
-				//If that element was the neighbor block, then early exit.
-				
-				//If NeighBlock in open list (priorityFrontier).
-				if ((topOfQueue.p_x == NeighBlock.p_x) && (topOfQueue.p_y == NeighBlock.p_y))
-				{
-					isFound = true;
-
-					//If NeighBlock's cost is less than that the same item's cost in the open list.
-					if (NeighBlock.posCost < topOfQueue.posCost)
-					{						
-						//We remove it from the closed list.
-						ClosedList[NeighBlock.p_x][NeighBlock.p_y] = false;
-
-						SquarePrevBlock[NeighBlock.p_x][NeighBlock.p_y] = curBlock;
-
-						//Push it to the back of the tempList.
-						tempList.push_back(NeighBlock);
-						break;
-					}
-				}
-				//If NeighBlock is in ClosedList.
-				else if (ClosedList[NeighBlock.p_x][NeighBlock.p_y])
-				{
-					isFound = true;
-					//If NeighBlock's cost is less than that the same item's cost in the closed list.
-					if (NeighBlock.posCost < SquareClosedList[curBlock.p_x][curBlock.p_y].posCost)
-					{
-						//We remove it from the closed list.
-						ClosedList[NeighBlock.p_x][NeighBlock.p_y] = false;
-
-						SquarePrevBlock[NeighBlock.p_x][NeighBlock.p_y] = curBlock;
-
-						//Push it to the back of the tempList.
-						tempList.push_back(NeighBlock);
-						break;
-					}
-				}
 				
 				//Push it to the back of the tempList.
 				tempList.push_back(topOfQueue);
 			}
 
-			if (!isFound)
+			for each (Position listItem in tempList)
 			{
-				if (!ClosedList[NeighBlock.p_x][NeighBlock.p_y])
+				//If that element was the neighbor block.
+				//If ChildBlock is not in open list (priorityFrontier), skip.
+				if ((listItem.p_x != ChildBlock.p_x) || (listItem.p_y != ChildBlock.p_y))
+					continue;
+
+				isFoundInOpen = true;
+				itemFoundInOpen = &listItem;
+
+				//If ChildBlock's cost is more than that the same item's cost in the open list, skip.
+				if (ChildBlock.posCost >= listItem.posCost)
+					continue;
+
+				//Found the item in the OPEN (Priority queue) list and the new heap cost is smaller.
+				isLessInOpen = true;
+
+				//Break out of the loop as the search has ended.
+				break;
+			}
+
+			//If ChildBlock is in ClosedList. (If it was already checked against in the OPEN list and found with cheaper cost, then it would have already been removed from the Closed List.
+			//Hence, the ChildBlock (if found in the ClosedList) points to either, it not being in the OPEN list or it being in the OPEN list but with an already cheapest cost than ChildBlock's heap cost info.
+			if (ClosedList[ChildBlock.p_x][ChildBlock.p_y])
+			{
+				isFoundInClosed = true;
+
+				//If ChildBlock's cost is less than that the same item's cost in the closed list.
+				if (ChildBlock.posCost < SquareClosedList[ChildBlock.p_x][ChildBlock.p_y].posCost)
 				{
-					SquarePrevBlock[NeighBlock.p_x][NeighBlock.p_y] = curBlock;
-					tempList.push_back(NeighBlock);
+					isLessInClosed = true;
+				}
+			}
+
+			//*
+			//If not found in open list and not found in closed list!!
+			if (!isFoundInOpen && !isFoundInClosed)
+			{	
+				//Store the path to previous block (which is the current block) from this Neighbor block.
+				SquarePrevBlock[ChildBlock.p_x][ChildBlock.p_y] = curBlock;
+
+				//Push it to the back of the tempList.
+				tempList.push_back(ChildBlock);
+			}
+			//*/
+
+			//If found in open list/closed list and is having less heap cost!!
+			//If check below auto implies that it is found in OPEN list.
+			else
+			{
+				if (isLessInOpen || isLessInClosed)
+				{
+					//We remove it from the closed list.
+					ClosedList[ChildBlock.p_x][ChildBlock.p_y] = false;
+
+					//Set the heap cost for that block position in the closed list to INFINITY to signify that its not in the list anymore!!
+					SquareClosedList[ChildBlock.p_x][ChildBlock.p_y].posCost = COST_MAX;
+					//
+
+					//Store the path to previous block (which is the current block) from this Neighbor block.
+					SquarePrevBlock[ChildBlock.p_x][ChildBlock.p_y] = curBlock;
+
+					if (itemFoundInOpen)
+					{
+						//Remove item from OPEN LIST.
+						tempList.remove(*itemFoundInOpen);
+					}
+
+					//Push the new cheaper heap cost ChildBlock into the OPEN LIST.
+					tempList.push_back(ChildBlock);
 				}
 			}
 
@@ -365,10 +406,13 @@ void UpdateOpenClosedLists(const Position & curBlock)
 		}
 	}
 
+	//In the end, add the current block to the ClosedList.
 	ClosedList[curBlock.p_x][curBlock.p_y] = true;
-	SquareClosedList[curBlock.p_x][curBlock.p_y] = Position(curBlock.p_x, curBlock.p_y);
-}
 
+	//Set the value of the closed list item with the block position and its heap cost.
+	SquareClosedList[curBlock.p_x][curBlock.p_y] = Position(curBlock.p_x, curBlock.p_y);
+	SquareClosedList[curBlock.p_x][curBlock.p_y].posCost = curBlock.posCost;
+}
 
 /*
 The expansion of the current block.
@@ -379,39 +423,10 @@ goalPos : Position - The goal position.
 heuType : HeuristicType - The type of heuristic.
 Returns from the function:
 NONE
-This function takes in the neighboring block's heap costs, the current block, the ingress cells associated with the current block, the goal position, and the heuristic type being used to find and add the valid neighboring blocks to the open list.
+This function takes in the current block, the ingress cells associated with the current block, the goal position, and the heuristic type being used to find and add the valid neighboring blocks to the open list.
 */
 void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position> ingress_Cells_curBlock, const Position & goalPos, const HeuristicType & heuType)
 {
-	/*
-	Y = set of CurBlock's ingress nodes.
-	Expand(CurBlock, Y)
-	{
-		for side of CurBlock with neighbor NextBlock
-		{
-			for valid egress node x on current side
-			{
-				x' = egress neighbor of x on current side
-				x.g = min[y in Y](y.g + LDDB(y,x), x.g)
-				x'.g = min(x'.g, x.g + cost(x,x'))
-			}
-			newheapvalue (priority) = min(updated x')(x'.g + x'.h)
-			if(newheapvalue < NextBlock.heapvalue)
-			{
-				NextBlock.heapvalue = newheapvalue
-				if(NextBlock not in OPEN)
-				{
-					insert NextBlock into OPEN
-				}
-				else
-				{
-					UpdateOPEN(NextBlock)
-				}
-			}
-		}
-	}
-	*/
-
 	//The total number of elements in each block.
 	unsigned int nTotalSize = SQUARE_LDDB_BLOCK_SPLIT_SIZE_X * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y;
 
@@ -424,30 +439,37 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 	//Parse through the outer nodes of the current block.
 	for (unsigned int outerAxis = 0; outerAxis < nOuterBordersSize; ++outerAxis)
 	{
-		//Get the grid absolute value of the current position in the block.
-		Position positionInCurBlockGridAbs = SquareEGCellPos[curBlock.p_x][curBlock.p_y][outerAxis];
+		//Current Position in Square Grid.
+		Position currentPosInSquareGrid = SquareEGCellPos[curBlock.p_x][curBlock.p_y][outerAxis];
 		
 		//Convert and find the current position with respect to the current block.
-		Position positionInCurBlock((positionInCurBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (positionInCurBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+		Position positionInCurBlock((currentPosInSquareGrid.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (currentPosInSquareGrid.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 		
 		//Transfer the cost.
-		positionInCurBlock.posCost = positionInCurBlockGridAbs.posCost;
+		positionInCurBlock.posCost = currentPosInSquareGrid.posCost;
 
 		//////////////////////////////////////////////////////////
-		//Code shift from INTERNAL:
+		//Code shift from ORIGINAL ALGO!
 		//It is redundant to be calculated there as it has no relation to any of the code inside the other for loops. 
 		//Better to calculate it once for every outerAxis and then use it later as needed.
 
 		//tempCost = x.g.
 		double tempCost = positionInCurBlock.posCost;
+		
+		//Parse the ingress cells of the current block.
 		for (unsigned int parseIngress = 0; parseIngress < ingress_Cells_curBlock.size(); ++parseIngress)
 		{
+			//Store Ingress Position into a local variable.
 			Position ingressPos(ingress_Cells_curBlock[parseIngress].p_x, ingress_Cells_curBlock[parseIngress].p_y);
 			ingressPos.posCost = ingress_Cells_curBlock[parseIngress].posCost;
 
+			//Get the LDDB cost stored in the SquareLDDB database = LDDB(y,x).
 			double LDDBCost = SquareLDDB[curBlock.p_x][curBlock.p_y][ingressPos.p_x][ingressPos.p_y][positionInCurBlock.p_x][positionInCurBlock.p_y];
 
+			//Convert float to int with a large multiplier of 1000 for better approximation.
 			int LDDBInt = (int)(LDDBCost * 1000.00000f);
+
+			//If the integral value is between -1 and 1 (negligible compared to large numbers) then set it to 0.
 			LDDBInt = ((LDDBInt >= -1) && (LDDBInt <= 1)) ? 0 : LDDBInt;
 
 			//newCost = y.g + LDDB(y,x).
@@ -472,10 +494,10 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 		for (unsigned int maxRel = 0; maxRel < SquareEGCellNumCorners[curBlock.p_x][curBlock.p_y][outerAxis]; ++maxRel)
 		{
 			//neighbor position in square grid.
-			Position neighborPositionInNeighborBlockGridAbs = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel];
+			Position neighborPositionInSquareGrid = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel];
 
 			//neighbor position in neighbor block.
-			Position neighborPositionInNeighborBlock((neighborPositionInNeighborBlockGridAbs.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neighborPositionInNeighborBlockGridAbs.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+			Position neighborPositionInNeighborBlock((neighborPositionInSquareGrid.p_x - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neighborPositionInSquareGrid.p_y - 1) % SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 
 			if (neighborPositionInNeighborBlock.p_x < 0)
 			{
@@ -487,23 +509,22 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 			}
 
 			//neighbor position's cost info.
-			neighborPositionInNeighborBlock.posCost = neighborPositionInNeighborBlockGridAbs.posCost;
+			neighborPositionInNeighborBlock.posCost = neighborPositionInSquareGrid.posCost;
 
-			Position tmpBlk(neighborPositionInNeighborBlockGridAbs.p_x - 1, neighborPositionInNeighborBlockGridAbs.p_y - 1);
+			//Array type neighbor Pos?
+			Position neiPosMinOne(neighborPositionInSquareGrid.p_x - 1, neighborPositionInSquareGrid.p_y - 1);
 
 			//neighbor block.
-			Position neighborBlock((tmpBlk.p_x < 0) ? (tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X) - 1 : tmpBlk.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (tmpBlk.p_y < 0) ? (tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) - 1: tmpBlk.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+			Position neighborBlock((neiPosMinOne.p_x < 0) ? (neiPosMinOne.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X) - 1 : neiPosMinOne.p_x / SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, (neiPosMinOne.p_y < 0) ? (neiPosMinOne.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y) - 1: neiPosMinOne.p_y / SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
 
 			//If current block's current position's (outerAxis) relation with one of the neighboring block positions (maxRel) is valid.
 			if (SquareEgressCells[curBlock.p_x][curBlock.p_y][outerAxis][maxRel])
 			{
-				//INTERNAL:
-
-				//costBetweenPosAndNeighbor = cost(x,x').
-				double costBetweenPosAndNeighbor = ((neighborPositionInNeighborBlockGridAbs.p_x == positionInCurBlockGridAbs.p_x) || (neighborPositionInNeighborBlockGridAbs.p_y == positionInCurBlockGridAbs.p_y)) ? COST_AXIS : COST_DIAGONAL;
+				//costBetweenCurrentAndNeighbor = cost(x,x').
+				double costBetweenCurrentAndNeighbor = ((neighborPositionInSquareGrid.p_x == currentPosInSquareGrid.p_x) || (neighborPositionInSquareGrid.p_y == currentPosInSquareGrid.p_y)) ? COST_AXIS : COST_DIAGONAL;
 
 				//newCost = currentposCost + costBetweenPosAndNeighbor.
-				double newCost = positionInCurBlock.posCost + costBetweenPosAndNeighbor;
+				double newCost = positionInCurBlock.posCost + costBetweenCurrentAndNeighbor;
 
 				//neighborposCost = min(x'.g, newCost).
 				if (newCost < neighborPositionInNeighborBlock.posCost)
@@ -513,11 +534,10 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 
 				//x'.g = neighborposCost [min(x'.g, x.g + cost(x,x'))].
 				SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost = neighborPositionInNeighborBlock.posCost;
-
 			}
 
-			//x'.h.
-			double neighborPosToGoalHeuristic = Heuristic(heuType, abs(goalPos.p_x - neighborPositionInNeighborBlockGridAbs.p_x), abs(goalPos.p_y - neighborPositionInNeighborBlockGridAbs.p_y));
+			//Neighbor Position To Goal Heuristic = x'.h.
+			double neighborPosToGoalHeuristic = Heuristic(heuType, abs(goalPos.p_x - neighborPositionInSquareGrid.p_x), abs(goalPos.p_y - neighborPositionInSquareGrid.p_y));
 
 			//tempHeapValue = x'.g + x'.h.
 			double tempHeapValue = SquareEGCellNeighborPos[curBlock.p_x][curBlock.p_y][outerAxis][maxRel].posCost + neighborPosToGoalHeuristic;
@@ -532,11 +552,16 @@ void SquareExpandCurBlock(const Position & curBlock, const std::vector<Position>
 		}
 	}
 
+	//Update the Egress Cells values' of the Current (and Neighbor Block).
 	EgressCellsUpdation(curBlock);
 
+	//Print the Egress Cells' Values to File.
 	PrintEgressCellsValuesToFile();
+
+	//Print the Egress Cells' Neighbor Values to File.
 	PrintEgressCellsNeighborValuesToFile();
 
+	//Update the Open and Closed lists with the Neighboring Blocks as needed.
 	UpdateOpenClosedLists(curBlock);
 }
 #endif

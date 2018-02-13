@@ -47,10 +47,10 @@ int /*success*/ main(int argc, char** argv)
 		Position posStart;
 		Position posGoal;
 
-		printf("Starting positions (x y):\n");
+		printf("Starting positions (Row : Column):\n");
 		std::cin >> posStart.p_x >> posStart.p_y;
 
-		printf("Goal positions (x y):\n");
+		printf("Goal positions (Row : Column):\n");
 		std::cin >> posGoal.p_x >> posGoal.p_y;
 
 		int showMap = 0;
