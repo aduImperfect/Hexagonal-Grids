@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-/// All content (c) 2017 DigiPen Institute of Technology, all rights reserved
+/// All content (c) 2017-2018 DigiPen Institute of Technology, all rights reserved
 /// FILE: SquareBlockAStar.h
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -26,6 +26,12 @@ This function initializes the different border values of the (start and/or goal)
 */
 void InitNodes(const Position & blockIJ, const Position & fromKL, const Position & pFrom)
 {
+	//Position absolute_top_left = (I * (TOT_X) + 1, J * (TOT_Y) + 1). Example: (2*4 + 1, 3*4 + 1) = (9, 13).
+	Position pTopLeft = Position(blockIJ.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + 1, blockIJ.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + 1);
+
+	//Position absolute_bottom_right = (I * (TOT_X) + TOT_X, J * (TOT_Y) + TOT_Y). Example: (2*4 + 4, 3*4 + 4) = (12, 16).
+	Position pBottomRight = Position(blockIJ.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, blockIJ.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
+
 	//Parse through the Positions_To[M][N] (A block containing 4x4 elements then parse through 16 elements).
 	for (int toM = 0; toM < SQUARE_LDDB_BLOCK_SPLIT_SIZE_X; ++toM)
 	{
@@ -34,15 +40,8 @@ void InitNodes(const Position & blockIJ, const Position & fromKL, const Position
 			//Position absolute_to = (M + I*(TOT_X) + 1, N + J * (TOT_Y) + 1). Example: (2 + 2*4 + 1, 3 + 3*4 + 1) = (11, 16).
 			Position pTo = Position(toM + blockIJ.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + 1, toN + blockIJ.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + 1);
 
-			//Position absolute_top_left = (I * (TOT_X) + 1, J * (TOT_Y) + 1). Example: (2*4 + 1, 3*4 + 1) = (9, 13).
-			Position pTopLeft = Position(blockIJ.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + 1, blockIJ.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + 1);
-
-			//Position absolute_bottom_right = (I * (TOT_X) + TOT_X, J * (TOT_Y) + TOT_Y). Example: (2*4 + 4, 3*4 + 4) = (12, 16).
-			Position pBottomRight = Position(blockIJ.p_x * SQUARE_LDDB_BLOCK_SPLIT_SIZE_X + SQUARE_LDDB_BLOCK_SPLIT_SIZE_X, blockIJ.p_y * SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y + SQUARE_LDDB_BLOCK_SPLIT_SIZE_Y);
-
 			//We have pos_From = (10, 15), and pos_To = (11, 16) in the main square grid.
 			//The block area where pos_From and pos_To are situated in spans from (9, 13) to (12, 16).
-
 
 #pragma region INVALIDS
 			//If (absolute_to is not a border inside absolute_top_left and absolute_bottom_right). Example: ((11, 16) is not a border inside (9, 13) to (12, 16)).
@@ -432,7 +431,7 @@ double /*startToGoalCost*/ SquareBlockAStar(Position npStart, Position npGoal, b
 	}
 
 	SquarePrevBlock[startBlock.p_x][startBlock.p_y] = Position(startBlock.p_x, startBlock.p_y);
-	SquarePrevBlock[startBlock.p_x][startBlock.p_y].posCost = 0.0f;
+	SquarePrevBlock[startBlock.p_x][startBlock.p_y].posCost = COST_MAX;
 
 	priorityFrontier.push(startBlock);
 

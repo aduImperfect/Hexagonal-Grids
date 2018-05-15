@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-/// All content (c) 2017 DigiPen Institute of Technology, all rights reserved
+/// All content (c) 2017-2018 DigiPen Institute of Technology, all rights reserved
 /// FILE: BaseBlockAStar.h
 /// AUTHOR(S): Aditya Subramanian <aditya.subramanian@digipen.edu>
 ///////////////////////////////////////////////////////////////////////////////////////

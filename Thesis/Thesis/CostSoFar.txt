@@ -1,14 +1,14 @@
 
 		[0]		[1]		[2]		[3]		[4]		[5]		[6]		[7]		[8]		[9]		[10]	[11]	[12]	[13]	[14]	[15]	[16]	[17]	[18]	[19]	[20]	[21]	[22]	[23]	
 [0]:	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
-[1]:	infi	infi	infi	infi	infi	7.64	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
-[2]:	infi	infi	infi	infi	infi	6.64	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
-[3]:	infi	infi	infi	infi	infi	5.64	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
-[4]:	infi	7.82	infi	infi	4.23	3.82	3.41	3		3.41	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
-[5]:	infi	infi	infi	5.64	3.82	2.82	2.41	2		2.41	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
-[6]:	infi	infi	infi	infi	3.41	2.41	infi	infi	1.41	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
-[7]:	infi	infi	infi	infi	3		2		infi	infi	1		infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
-[8]:	infi	infi	infi	infi	3.41	2.41	1.41	1		1.41	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
+[1]:	infi	0		infi	infi	infi	10.82	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
+[2]:	infi	1		infi	infi	infi	9.82	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
+[3]:	infi	2		infi	infi	infi	8.82	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
+[4]:	infi	3		infi	7		7.41	8.41	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
+[5]:	infi	4		infi	infi	infi	8		infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
+[6]:	infi	infi	infi	infi	infi	8.41	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
+[7]:	infi	infi	infi	infi	infi	8.82	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
+[8]:	infi	infi	infi	infi	infi	9.23	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
 [9]:	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
 [10]:	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	
 [11]:	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	infi	

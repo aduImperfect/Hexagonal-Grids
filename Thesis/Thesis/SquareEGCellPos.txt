@@ -2,18 +2,18 @@
 
 Block[0][0]:
 			[0]			[1]			[2]			[3]			
-[0]:		infi		infi		infi		7.23		
-[1]:		infi		infi		infi		6.23		
-[2]:		infi		infi		infi		5.23		
-[3]:		7.82		infi		5.23		4.23		
+[0]:		0			infi		infi		10.41		
+[1]:		1			infi		infi		9.41		
+[2]:		2			infi		infi		8.41		
+[3]:		3			infi		7			7.41		
 
 
 Block[0][1]:
 			[0]			[1]			[2]			[3]			
-[0]:		6.82		infi		6			6.41		
-[1]:		5.82		infi		infi		5.41		
-[2]:		4.82		infi		infi		4.41		
-[3]:		3.82		3.41		3			3.41		
+[0]:		10.82		infi		infi		infi		
+[1]:		9.82		infi		infi		infi		
+[2]:		8.82		infi		infi		infi		
+[3]:		8.41		infi		infi		infi		
 
 
 Block[0][2]:
@@ -42,18 +42,18 @@ Block[0][4]:
 
 Block[1][0]:
 			[0]			[1]			[2]			[3]			
-[0]:		6.82		5.82		4.82		3.82		
-[1]:		6.41		infi		infi		3.41		
-[2]:		6			infi		infi		3			
-[3]:		6.41		5.41		4.41		3.41		
+[0]:		4			5			6			7			
+[1]:		5			infi		infi		7.41		
+[2]:		6			infi		infi		7.82		
+[3]:		7			7.41		7.82		8.23		
 
 
 Block[1][1]:
 			[0]			[1]			[2]			[3]			
-[0]:		2.82		2.41		2			2.41		
-[1]:		2.41		infi		infi		1.41		
-[2]:		2			infi		infi		1			
-[3]:		2.41		1.41		1			1.41		
+[0]:		8			infi		infi		infi		
+[1]:		8.41		infi		infi		infi		
+[2]:		8.82		infi		infi		infi		
+[3]:		9.23		infi		infi		infi		
 
 
 Block[1][2]:
